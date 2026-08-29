@@ -1,0 +1,32 @@
+POR ÁGUILAS — Municipales de Águilas 2027
+Paquete de marca y web · versión 7 · agosto de 2026
+
+QUÉ HAY AQUÍ
+------------
+index.html            La web completa. Doble clic y se abre en el navegador.
+                      Es un único archivo: no necesita servidor ni instalación.
+                      Para subirla a un dominio, basta con copiar este archivo
+                      (renombrado index.html) a la raíz del hosting.
+
+MANUAL-DE-MARCA.md    El manual completo: estrategia, lema, ejes de campaña,
+                      logotipo, paleta, tipografía y tono de voz.
+                      Se lee con el Bloc de notas o con cualquier editor
+                      de Markdown (Obsidian, Typora, VS Code, Notion...).
+
+logo/                 El logotipo en vectorial (SVG), listo para imprenta:
+   por-aguilas-logotipo.svg    Versión completa con el nombre.
+   por-aguilas-isotipo.svg     Solo el sol con el peñón. Avatares y favicon.
+   por-aguilas-una-tinta.svg   Blanco sobre fondo oscuro, para serigrafía.
+
+                      Los SVG se abren en el navegador para verlos, y en
+                      Illustrator, Inkscape (gratis) o Figma para editarlos.
+                      Al ser vectoriales no pierden calidad a ningún tamaño.
+
+AVISO IMPORTANTE
+----------------
+La web lleva una barra superior que dice que es un borrador. Las notas de
+prensa, los actos de la agenda y las fechas son EJEMPLOS inventados para
+enseñar cómo queda: hay que sustituirlos por contenido real antes de
+publicar nada. El formulario de "Súmate" todavía no envía datos.
+
+En el manual, apartado 7, está la lista completa de lo que falta.

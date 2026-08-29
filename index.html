@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Por Águilas — candidatura municipalista de izquierdas para las elecciones municipales de Águilas de 2027.">
+<meta name="theme-color" content="#0E7A5F">
+<title>Por Águilas — Municipales 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* ============================================================
+   POR ÁGUILAS · v2
+   Referencia: izquierda alternativa europea (Die Linke, PTB-PVDA,
+   Bloco de Esquerda, Vänsterpartiet): fondo blanco, un rojo de
+   bandera, tinta negra, bloques planos, tipografía grande.
+   Sin morados ni magentas. Sin degradados ni sombras.
+   ============================================================ */
+:root{
+  --papel:#FFFFFF;
+  --papel-2:#EFF4F1;      /* gris muy claro sesgado al verde */
+  --papel-3:#E1EAE5;
+  --verde:#0E7A5F;        /* VERDE ÁGUILAS — color de marca. 5,3:1 sobre blanco */
+  --verde-osc:#0A5C47;
+  --verde-claro:#3FCB9E;  /* verde sobre fondo oscuro */
+  --negro:#141414;        /* NEGRO — tinta de todo el texto. 15,9:1 sobre blanco */
+  --negro-2:#403B3A;
+  --negro-3:#6F6867;
+  --negro-linea:#D5D0CE;
+  --marino:#0B2942;       /* azul marino: solo dentro del logotipo */
+  --marino-2:#2A4A63;
+  --rojo:#D9351F;         /* ROJO BERMELLÓN (PCE): la cuña, el «Por» y detalles */
+  --mar:#0F5B7A;          /* azul agua: enlaces, etiquetas, datos */
+  --mar-osc:#0B4560;
+  /* colores exclusivos del logotipo, no se usan en el resto del sistema */
+  --sol:#F4B826;          /* amarillo sol */
+  --tierra:#B0703C;       /* franja de tierra */
+  --turquesa:#1B96AD;     /* franja de mar */
+  --penon:#141414;        /* silueta del peñón */
+
+  --bg:var(--papel); --bg-2:var(--papel-2); --bg-3:var(--papel-3);
+  --line:var(--negro); --line-soft:var(--negro-linea);
+  --ink:var(--negro); --ink-2:var(--negro-2); --ink-3:var(--negro-3);
+  --accent:var(--verde); --accent-d:var(--verde-osc);
+  --cuna:var(--rojo);
+  --sea:var(--verde-osc); --sea-d:var(--verde);
+  --on-accent:#FFFFFF;
+  --deep:#141414; --on-deep:#D5D0CE; --on-deep-2:#9A9291; --on-deep-strong:#FFFFFF;
+
+  --f-display:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Public Sans","Helvetica Neue",Arial,sans-serif;
+  --maxw:1180px;
+  --wedge:44px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121011; --bg-2:#1B1818; --bg-3:#252121;
+    --line:#EDE9E8; --line-soft:#3A3534;
+    --ink:#F1EDEC; --ink-2:#C6C0BE; --ink-3:#948D8C;
+    --accent:#3FCB9E; --accent-d:#63DDB6;
+    --cuna:#D9351F;
+    --sea:#3FCB9E; --sea-d:#63DDB6;
+    --on-accent:#04231B;
+    --deep:#0A0909; --on-deep:#D5D0CE; --on-deep-2:#9A9291; --on-deep-strong:#FFFFFF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121011; --bg-2:#1B1818; --bg-3:#252121;
+  --line:#EDE9E8; --line-soft:#3A3534;
+  --ink:#F1EDEC; --ink-2:#C6C0BE; --ink-3:#948D8C;
+  --accent:#3FCB9E; --accent-d:#63DDB6;
+  --cuna:#D9351F;
+  --sea:#3FCB9E; --sea-d:#63DDB6;
+  --on-accent:#04231B;
+  --deep:#0A0909; --on-deep:#D5D0CE; --on-deep-2:#9A9291; --on-deep-strong:#FFFFFF;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--f-body); font-size:17px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display); margin:0; line-height:1.02;
+  letter-spacing:-.022em; text-wrap:balance; font-weight:700}
+p{margin:0}
+a{color:var(--sea); text-decoration-thickness:1.5px; text-underline-offset:3px}
+a:hover{color:var(--sea-d)}
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+img{max-width:100%}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+.u{font-family:var(--f-body); text-transform:uppercase; letter-spacing:.1em;
+  font-weight:800; font-size:11.5px}
+.num{font-variant-numeric:tabular-nums}
+
+/* cuña: el elemento gráfico del sistema */
+.wedge{display:inline-block; width:0; height:0; vertical-align:middle;
+  border-left:9px solid var(--cuna); border-top:6px solid transparent;
+  border-bottom:6px solid transparent; margin-right:9px}
+
+/* ---------- aviso de borrador ---------- */
+#demo{
+  background:var(--ink); color:var(--bg);
+  font-family:var(--f-body); font-size:13px; font-weight:600;
+  display:flex; gap:14px; align-items:center; justify-content:center;
+  padding:9px 18px; text-align:center; flex-wrap:wrap;
+}
+#demo button{font:inherit; font-weight:800; background:none; color:inherit;
+  border:1.5px solid currentColor; padding:2px 12px; cursor:pointer}
+#demo button:hover{background:var(--bg); color:var(--ink)}
+
+/* ---------- cabecera ---------- */
+header.top{position:sticky; top:0; z-index:50; background:var(--bg);
+  border-bottom:2px solid var(--line)}
+.topbar{display:flex; align-items:center; gap:20px; height:72px}
+.brand{display:flex; align-items:center; gap:11px; text-decoration:none;
+  color:var(--ink); margin-right:auto}
+.brand svg{display:block; flex:none}
+.brand .wordmark{font-family:var(--f-display); font-weight:700; font-size:23px;
+  letter-spacing:-.035em; line-height:1; display:block}
+.brand .wordmark i{font-style:normal; color:var(--cuna); font-weight:700}
+.brand .wordmark b{color:var(--accent); font-weight:700}
+.brand small{display:block; font-family:var(--f-body); font-size:9.5px; font-weight:800;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin-top:4px}
+nav.main{display:flex; gap:1px; align-items:center}
+nav.main button{font-family:var(--f-body); font-size:14px; font-weight:600;
+  background:none; border:0; color:var(--ink); padding:10px 12px; cursor:pointer}
+nav.main button:hover{background:var(--bg-2)}
+nav.main button[aria-current="page"]{box-shadow:inset 0 -4px 0 var(--accent)}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-family:var(--f-body); font-weight:800; font-size:14.5px; letter-spacing:.005em;
+  padding:13px 22px; border:2px solid transparent; border-radius:0; cursor:pointer;
+  text-decoration:none; transition:background .12s,color .12s,border-color .12s}
+.btn-primary{background:var(--accent); color:#fff; border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent-d); border-color:var(--accent-d); color:#fff}
+.btn-ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+.btn-ghost:hover{background:var(--ink); color:var(--bg)}
+.btn-onred{background:#fff; color:var(--verde-osc); border-color:#fff}
+.btn-onred:hover{background:transparent; color:#fff; border-color:#fff}
+.btn-onred-o{background:transparent; color:#fff; border-color:rgba(255,255,255,.6)}
+.btn-onred-o:hover{background:#fff; color:var(--verde-osc); border-color:#fff}
+#menubtn{display:none; background:none; border:2px solid var(--line); padding:9px 12px;
+  cursor:pointer; color:var(--ink); font-family:var(--f-body); font-weight:800; font-size:13px}
+
+/* ---------- portada ---------- */
+.herowrap{background:var(--rojo)}   /* la cuña roja que asoma bajo el verde */
+.hero{background:var(--verde); color:#fff; position:relative;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - var(--wedge)),0 100%)}
+.hero-in{padding:74px 0 calc(64px + var(--wedge))}
+.eyebrow{display:flex; align-items:center; gap:11px; margin-bottom:24px; color:#fff}
+.eyebrow::before{content:""; width:0; height:0; border-left:11px solid #fff;
+  border-top:7px solid transparent; border-bottom:7px solid transparent; flex:none}
+.hero h1{font-size:clamp(44px,8vw,96px); font-weight:700; letter-spacing:-.045em;
+  line-height:.95; max-width:14ch}
+.hero h1 .hl{box-shadow:inset 0 -.13em 0 rgba(255,255,255,.42)}
+.hero .lead{font-size:clamp(18px,2.1vw,21.5px); max-width:54ch; margin-top:24px;
+  line-height:1.5; color:#D8F2E8}
+.hero-cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:34px}
+.hero-meta{display:flex; gap:0; flex-wrap:wrap; margin-top:54px;
+  border-top:2px solid rgba(255,255,255,.35)}
+.hero-meta div{display:flex; flex-direction:column; gap:4px; padding:22px 34px 0 0;
+  margin-right:34px; border-right:2px solid rgba(255,255,255,.22)}
+.hero-meta div:last-child{border-right:0; margin-right:0}
+.hero-meta .k{font-family:var(--f-display); font-weight:700; font-size:38px;
+  line-height:1; letter-spacing:-.04em}
+.hero-meta .l{font-size:13px; color:#BFE8D8; font-weight:600}
+
+/* ---------- secciones ---------- */
+.page{padding:0 0 0}
+.sec{padding:70px 0}
+.sec.alt{background:var(--bg-2)}
+.sec.rule{border-top:2px solid var(--line)}
+.sec-head{max-width:60ch; margin-bottom:38px}
+.sec-head .u{color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:14px}
+.sec-head .u::before{content:""; width:0; height:0; flex:none;
+  border-left:10px solid var(--cuna); border-top:6.5px solid transparent;
+  border-bottom:6.5px solid transparent}
+.sec-head h2{font-size:clamp(30px,4.4vw,46px); font-weight:700}
+.sec-head p{color:var(--ink-2); margin-top:14px; font-size:18px}
+.prose{max-width:64ch}
+.prose p+p{margin-top:16px}
+.prose h3{font-size:23px; font-weight:700; margin:36px 0 10px}
+
+/* ---------- rejillas / bloques ---------- */
+.grid{display:grid; gap:2px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr))}
+.gap{gap:20px}
+.card{background:var(--bg); border:2px solid var(--line); padding:28px}
+.axis{background:var(--bg); border:2px solid var(--line); padding:0; display:flex; flex-direction:column}
+.axis .cap{background:var(--accent); color:#fff; padding:10px 20px; min-height:42px;
+  display:flex; align-items:center;
+  font-weight:800; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase}
+.axis .body{padding:24px 26px 28px}
+.axis h3{font-size:24px; font-weight:700; margin-bottom:10px}
+.axis p{color:var(--ink-2); font-size:16px}
+.axis ul{margin:18px 0 0; padding:0; list-style:none; font-size:15.5px; color:var(--ink-2)}
+.axis li{position:relative; padding-left:20px; margin-bottom:9px}
+.axis li::before{content:""; position:absolute; left:0; top:8px; width:0; height:0;
+  border-left:8px solid var(--cuna); border-top:5px solid transparent;
+  border-bottom:5px solid transparent}
+
+/* ---------- notas de prensa ---------- */
+.filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:30px}
+.chip{font-family:var(--f-body); font-size:12.5px; font-weight:800; letter-spacing:.05em;
+  text-transform:uppercase; padding:8px 15px; cursor:pointer; background:transparent;
+  border:2px solid var(--line-soft); color:var(--ink-2); border-radius:0}
+.chip:hover{border-color:var(--line); color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+.notas{display:flex; flex-direction:column; border-top:2px solid var(--line)}
+.nota{display:grid; grid-template-columns:150px 1fr; gap:26px; align-items:start;
+  padding:26px 0; border-bottom:1px solid var(--line-soft)}
+.nota time{font-size:12.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--ink-3); padding-top:5px}
+.nota h3{font-size:23px; font-weight:700; margin-bottom:9px}
+.nota p{color:var(--ink-2); font-size:16.5px; max-width:70ch}
+.tag{display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.1em;
+  text-transform:uppercase; padding:3px 9px; border:2px solid var(--sea);
+  color:var(--sea-d); margin-bottom:12px}
+.empty{padding:46px 0; color:var(--ink-3); text-align:center}
+
+/* ---------- agenda ---------- */
+.evento{display:grid; grid-template-columns:86px 1fr auto; gap:24px; align-items:center;
+  background:var(--bg); border:2px solid var(--line); padding:20px 24px}
+.fecha{text-align:center; border-right:2px solid var(--line-soft); padding-right:18px}
+.fecha .d{display:block; font-family:var(--f-display); font-size:36px; font-weight:700;
+  line-height:1; letter-spacing:-.04em; color:var(--accent)}
+.fecha .m{display:block; font-size:11px; font-weight:800; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-3); margin-top:5px}
+.evento h3{font-size:19px; font-weight:700}
+.evento p{font-size:15.5px; color:var(--ink-2); margin-top:5px}
+.evento .where{font-size:12.5px; font-weight:700; color:var(--ink-3); white-space:nowrap}
+
+/* ---------- calendario electoral ---------- */
+.hitos{list-style:none; margin:0; padding:0; position:relative}
+.hitos::before{content:""; position:absolute; left:6px; top:10px; bottom:10px;
+  width:2px; background:var(--line-soft)}
+.hitos li{position:relative; padding:0 0 28px 34px}
+.hitos li::before{content:""; position:absolute; left:0; top:6px; width:14px; height:14px;
+  background:var(--bg); border:3px solid var(--sea)}
+.hitos li.key::before{border-color:var(--accent); background:var(--accent)}
+.hitos .u{display:block; color:var(--ink-3); margin-bottom:5px}
+.hitos strong{font-family:var(--f-display); font-size:19px; font-weight:700; display:block;
+  letter-spacing:-.02em}
+.hitos span.d{color:var(--ink-2); font-size:16px}
+
+/* ---------- cuenta atrás ---------- */
+.countdown{background:var(--deep); color:#fff; padding:34px 36px;
+  display:flex; align-items:center; gap:32px; flex-wrap:wrap;
+  border-left:14px solid var(--rojo)}
+.countdown .big{font-family:var(--f-display); font-weight:700; font-size:66px;
+  line-height:.9; letter-spacing:-.05em; color:var(--verde-claro)}
+.countdown p{font-size:16.5px; max-width:46ch; color:#C8D8DE}
+.countdown strong{color:#fff}
+
+/* ---------- hueco de foto ---------- */
+.foto{background:var(--bg-3); border:2px dashed var(--line-soft);
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  min-height:230px; padding:24px; color:var(--ink-3); font-size:13.5px; font-weight:700}
+
+/* ---------- formulario ---------- */
+form.sumate{display:grid; gap:16px; max-width:520px}
+.field{display:flex; flex-direction:column; gap:6px}
+.field label{font-size:12px; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-2)}
+.field input,.field select,.field textarea{font-family:var(--f-body); font-size:16px;
+  color:var(--ink); background:var(--bg); border:2px solid var(--line-soft);
+  border-radius:0; padding:12px 13px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.consent{display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:var(--ink-2)}
+.consent input{margin-top:4px; accent-color:var(--accent); width:18px; height:18px}
+.formnote{font-size:14.5px; color:var(--ink-2); border-left:5px solid var(--cuna);
+  padding:2px 0 2px 14px}
+
+/* ---------- manual de marca ---------- */
+.swatches{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(158px,100%),1fr)); gap:2px}
+.sw{border:2px solid var(--line)}
+.sw .chip-col{height:86px}
+.sw .meta{padding:12px 14px; background:var(--bg)}
+.sw .meta b{font-family:var(--f-display); font-size:14.5px; display:block; font-weight:700}
+.sw .meta code{font-size:12px; color:var(--ink-3);
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+
+/* ---------- pie ---------- */
+footer{background:var(--deep); color:var(--on-deep); padding:60px 0 30px;
+  border-top:8px solid var(--verde)}
+footer a{color:var(--on-deep-strong)}
+footer a:hover{color:var(--verde-claro)}
+footer strong{color:var(--on-deep-strong)}
+.footgrid{display:grid; grid-template-columns:1.7fr 1fr 1fr; gap:44px}
+footer h4{font-size:11.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--on-deep-2); margin-bottom:15px}
+footer ul{list-style:none; margin:0; padding:0; font-size:15px}
+footer li{margin-bottom:9px}
+footer .impulsa{font-size:15px; line-height:1.6; max-width:42ch}
+footer .brand{color:var(--on-deep)}
+footer .brand .wordmark{color:var(--on-deep-strong)}
+footer .brand .wordmark b{color:var(--verde-claro)}
+footer .brand .wordmark i{color:var(--rojo)}
+.legal{border-top:1px solid rgba(255,255,255,.18); margin-top:40px; padding-top:20px;
+  display:flex; gap:20px; flex-wrap:wrap; justify-content:space-between;
+  font-size:13px; color:var(--on-deep-2)}
+.legal .links{display:flex; gap:18px; flex-wrap:wrap}
+
+@media (max-width:880px){
+  .footgrid{grid-template-columns:1fr; gap:30px}
+  .nota{grid-template-columns:1fr; gap:8px}
+  .evento{grid-template-columns:70px 1fr}
+  .evento .where{grid-column:1/-1; white-space:normal}
+}
+@media (max-width:780px){
+  #menubtn{display:block}
+  nav.main{display:none; position:absolute; top:72px; left:0; right:0;
+    flex-direction:column; align-items:stretch; gap:0; background:var(--bg);
+    border-bottom:2px solid var(--line); padding:6px 16px 16px}
+  nav.main.open{display:flex}
+  nav.main button{text-align:left; padding:14px 8px; font-size:16.5px;
+    border-bottom:1px solid var(--line-soft)}
+  nav.main button[aria-current="page"]{box-shadow:inset 4px 0 0 var(--accent)}
+  .topbar{position:relative}
+  :root{--wedge:26px}
+  .hero-in{padding:52px 0 calc(46px + 26px)}
+  .hero-meta div{padding-right:20px; margin-right:20px}
+  body{font-size:16.5px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important; transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+
+<div id="demo">
+  <span>Borrador de trabajo · los textos, notas de prensa y fechas son de ejemplo y hay que sustituirlos antes de publicar.</span>
+  <button type="button" onclick="this.parentElement.hidden=true">Entendido</button>
+</div>
+
+<header class="top">
+  <div class="wrap topbar">
+    <a class="brand" href="#" data-go="inicio">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M34.3 24.2 L39.2 21.5 L33.7 21.0 Z M32.3 18.1 L35.4 13.5 L30.3 15.5 Z M27.7 13.5 L28.6 8.0 L24.8 12.0 Z M21.6 11.3 L20.0 6.0 L18.4 11.3 Z M15.2 12.0 L11.4 8.0 L12.3 13.5 Z M9.7 15.5 L4.6 13.5 L7.7 18.1 Z M6.3 21.0 L0.8 21.5 L5.7 24.2 Z" fill="#D9351F"/>
+        <path d="M7.60 25.60 A12.40 12.40 0 0 1 32.40 25.60 Z" fill="#F4B826"/>
+        <path d="M9.2 25.6 L9.2 21.8 L8.7 21.8 L8.7 21.0 L10.5 21.0 L10.5 21.8 L10.0 21.8 L10.0 25.6 Z" fill="#141414"/><path d="M10.3 25.6 L11.84 22.04 L13.49 18.97 L14.94 17.12 L15.56 15.77 L15.56 14.91 L16.69 14.47 L17.63 14.55 L18.25 14.72 L18.31 15.28 L18.76 16.01 L19.59 16.95 L20.83 17.38 L22.58 17.72 L23.70 18.23 L25.15 19.01 L26.80 20.14 L28.46 21.66 L30.10 23.14 L31.13 24.49 L31.13 25.6 Z" fill="#141414"/>
+        <rect x="0.5" y="25.6" width="39" height="4.3" fill="#1B96AD"/>
+        <rect x="7" y="32.7" width="26" height="3.4" fill="#B0703C"/>
+      </svg>
+      <span>
+        <span class="wordmark"><i>Por</i> <b>Águilas</b></span>
+        <small>Municipales 2027</small>
+      </span>
+    </a>
+    <button id="menubtn" type="button" aria-expanded="false" aria-controls="nav">Menú</button>
+    <nav class="main" id="nav" aria-label="Principal">
+      <button type="button" data-go="inicio" aria-current="page">Inicio</button>
+      <button type="button" data-go="quienes">Quiénes somos</button>
+      <button type="button" data-go="ejes">Programa</button>
+      <button type="button" data-go="prensa">Prensa</button>
+      <button type="button" data-go="agenda">Agenda</button>
+      <button type="button" data-go="marca">Marca</button>
+      <button type="button" data-go="sumate" class="btn btn-primary" style="margin-left:10px">Súmate</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ==================== INICIO ==================== -->
+<section class="page" id="p-inicio">
+  <div class="herowrap"><div class="hero">
+    <div class="wrap hero-in">
+      <p class="eyebrow u">Candidatura municipalista · Águilas</p>
+      <h1>Águilas se vive <span class="hl">todo el año</span>.</h1>
+      <p class="lead">Somos las vecinas y vecinos que no se van en septiembre. Los que pagan el alquiler en enero, los que esperan en urgencias en noviembre y los que pelean por un pueblo que funcione los doce meses. Por Águilas pone el pueblo por delante del escaparate.</p>
+      <div class="hero-cta">
+        <button class="btn btn-onred" type="button" data-go="ejes">Nuestro programa</button>
+        <button class="btn btn-onred-o" type="button" data-go="sumate">Súmate a la candidatura</button>
+      </div>
+      <div class="hero-meta">
+        <div><span class="k num" id="cd-dias">—</span><span class="l">días para las municipales</span></div>
+        <div><span class="k num">21</span><span class="l">concejales en juego</span></div>
+        <div><span class="k num">4</span><span class="l">ejes que mandan en la campaña</span></div>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="u">Por dónde empezamos</span>
+        <h2>Cuatro cosas, dichas claras.</h2>
+        <p>No hacemos un programa de doscientas páginas que nadie lee. Hacemos cuatro compromisos que se pueden comprobar desde el primer pleno.</p>
+      </div>
+      <div class="grid g2" id="ejes-corto"></div>
+      <p style="margin-top:30px"><button class="btn btn-ghost" type="button" data-go="ejes">Ver las propuestas concretas</button></p>
+    </div>
+  </div>
+
+  <div class="sec alt rule">
+    <div class="wrap">
+      <div class="sec-head"><span class="u">Últimas notas</span><h2>Lo que hemos dicho esta semana</h2></div>
+      <div class="notas" id="home-notas"></div>
+      <p style="margin-top:30px"><button class="btn btn-ghost" type="button" data-go="prensa">Todas las notas de prensa</button></p>
+    </div>
+  </div>
+
+  <div class="sec rule">
+    <div class="wrap">
+      <div class="sec-head"><span class="u">Próximas citas</span><h2>Dónde nos vas a encontrar</h2></div>
+      <div class="grid gap" id="home-agenda"></div>
+      <p style="margin-top:30px"><button class="btn btn-ghost" type="button" data-go="agenda">Agenda completa y calendario electoral</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== QUIÉNES SOMOS ==================== -->
+<section class="page" id="p-quienes" hidden>
+  <div class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="u">Quiénes somos</span>
+        <h2>Una candidatura de Águilas, hecha en Águilas.</h2>
+        <p>Por Águilas es un proyecto municipalista de izquierdas. Nace del trabajo de Izquierda Unida y del Partido Comunista en el municipio y se abre a personas independientes del movimiento vecinal, sindical, feminista y ecologista que quieren gobernar este pueblo de otra manera.</p>
+      </div>
+      <div class="grid g2 gap" style="align-items:start">
+        <div class="prose">
+          <h3 style="margin-top:0">Por qué una marca propia</h3>
+          <p>Porque lo que se decide en mayo de 2027 no es un debate de siglas: es si en Águilas se puede alquilar un piso, si el centro de salud atiende en agosto y en febrero, y si la costa la ordena el pleno o la ordena quien compra. Por Águilas es el nombre bajo el que llevamos ese debate a la calle.</p>
+          <p>Detrás no hay ningún misterio: la impulsan <strong>Izquierda Unida</strong> y el <strong>Partido Comunista</strong>, y lo decimos con todas las letras aquí y en cada acto. Lo que hacemos es poner por delante el asunto —Águilas— y no el membrete. Quien quiera saber de dónde venimos lo tiene escrito en esta página; quien quiera sumarse no necesita carné para hacerlo.</p>
+          <h3>Cómo tomamos las decisiones</h3>
+          <p>Asamblea abierta mensual, cuentas publicadas y candidatura elaborada con participación de las personas inscritas en el proyecto. Los cargos electos se comprometen por escrito a limitación salarial, publicación de agenda y rendición de cuentas semestral ante la asamblea.</p>
+          <h3>Con quién contamos</h3>
+          <p>Con el tejido asociativo del municipio: asociaciones de vecinos de las barriadas y las diputaciones, colectivo pesquero y agrario, AMPAs, plataformas por la sanidad pública, entidades ecologistas del litoral y el sindicalismo de clase. La candidatura no sustituye a nadie: acompaña y traslada al pleno lo que ya se pelea en la calle.</p>
+        </div>
+        <div>
+          <div class="foto" style="min-height:320px">FOTO PENDIENTE<br>Grupo de la candidatura en la calle,<br>horizontal, luz natural</div>
+          <div class="formnote" style="margin-top:20px">Pendiente de completar: nombres del equipo, trayectoria de la persona candidata a la Alcaldía y enlace a los estatutos internos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== EJES / PROGRAMA ==================== -->
+<section class="page" id="p-ejes" hidden>
+  <div class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="u">Programa</span>
+        <h2>Cuatro ejes, propuestas comprobables.</h2>
+        <p>Cada propuesta se puede llevar a un pleno, se puede presupuestar y se puede auditar. El documento se ampliará con las aportaciones de la asamblea abierta y de las mesas sectoriales.</p>
+      </div>
+      <div class="grid g2" id="ejes-full"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PRENSA ==================== -->
+<section class="page" id="p-prensa" hidden>
+  <div class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="u">Sala de prensa</span>
+        <h2>Notas de prensa y posiciones públicas.</h2>
+        <p>Todo lo que decimos, con fecha y por escrito. Los medios pueden reproducir estos textos libremente citando la fuente.</p>
+      </div>
+      <div class="filters" id="filtros" role="group" aria-label="Filtrar por tema"></div>
+      <div class="notas" id="lista-notas"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== AGENDA ==================== -->
+<section class="page" id="p-agenda" hidden>
+  <div class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="u">Agenda</span><h2>Actos, asambleas y calendario electoral.</h2></div>
+      <div class="countdown">
+        <span class="big num" id="cd-dias-2">—</span>
+        <p>días para la jornada electoral. La fecha prevista es el <strong>domingo 23 de mayo de 2027</strong>, cuarto domingo de mayo, a confirmar en la convocatoria oficial.</p>
+      </div>
+      <h3 style="font-size:24px;font-weight:700;margin:48px 0 20px">Próximos actos</h3>
+      <div class="grid gap" id="lista-agenda"></div>
+      <h3 style="font-size:24px;font-weight:700;margin:56px 0 20px">Calendario electoral orientativo</h3>
+      <ul class="hitos" id="hitos"></ul>
+      <p class="formnote">Los plazos legales son orientativos y hay que contrastarlos con el calendario oficial que publique la Junta Electoral una vez convocadas las elecciones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MARCA ==================== -->
+<section class="page" id="p-marca" hidden>
+  <div class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="u">Uso interno</span>
+        <h2>Manual de marca, en corto.</h2>
+        <p>Para el equipo: quien haga un cartel, una publicación en redes o una pancarta debe poder consultar aquí los colores, la tipografía y el tono sin preguntar a nadie.</p>
+      </div>
+
+      <h3 style="font-size:22px;font-weight:700;margin-bottom:16px">Colores</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip-col" style="background:#0E7A5F"></div><div class="meta"><b>Verde Águilas</b><code>#0E7A5F</code><br><code>Color de marca. Bloques planos</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#141414"></div><div class="meta"><b>Negro</b><code>#141414</code><br><code>Tinta, filetes, pie</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#D9351F"></div><div class="meta"><b>Rojo bermellón</b><code>#D9351F</code><br><code>El bermellón del PCE. Solo la cuña, el «Por» y detalles</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#FFFFFF;box-shadow:inset 0 0 0 1px #C6D6CE"></div><div class="meta"><b>Blanco</b><code>#FFFFFF</code><br><code>Fondo por defecto</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#EFF4F1"></div><div class="meta"><b>Espuma</b><code>#EFF4F1</code><br><code>Secciones alternas</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#0B2942"></div><div class="meta"><b>Azul marino</b><code>#0B2942</code><br><code>Solo bloques puntuales</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#0A5C47"></div><div class="meta"><b>Verde oscuro</b><code>#0A5C47</code><br><code>Enlaces, etiquetas, fechas</code></div></div>
+      </div>
+      <p class="u" style="color:var(--ink-3);margin:26px 0 12px">Solo dentro del logotipo</p>
+      <div class="swatches">
+        <div class="sw"><div class="chip-col" style="background:#F4B826"></div><div class="meta"><b>Amarillo sol</b><code>#F4B826</code><br><code>El disco del sol</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#141414"></div><div class="meta"><b>Negro peñón</b><code>#141414</code><br><code>La silueta del Castillo</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#1B96AD"></div><div class="meta"><b>Turquesa</b><code>#1B96AD</code><br><code>La franja de agua</code></div></div>
+        <div class="sw"><div class="chip-col" style="background:#B0703C"></div><div class="meta"><b>Tierra</b><code>#B0703C</code><br><code>La franja de playa</code></div></div>
+      </div>
+      <p class="formnote" style="margin-top:20px"><strong>Fondo blanco y letra negra siempre.</strong> El color solo aparece para señalar lo que importa: <strong style="color:var(--accent)">verde</strong> para lo nuestro —la marca, los enlaces, los bloques— y <strong style="color:var(--cuna)">bermellón</strong> para la cuña, el «Por» y lo urgente. Nada más. El rojo <em>nunca</em> es un fondo: en cuanto ocupa una superficie grande, la pieza deja de ser nuestra y pasa a parecer del PSOE.</p>
+      <p class="formnote" style="margin-top:12px"><strong>Vetados:</strong> el morado y el magenta (lectura «marca feminista» automática), el <strong>verde lima o manzana</strong> (Vox) y el <strong>azul medio brillante</strong> (PP). Nuestro verde es profundo y marino; nuestro azul es casi negro.</p>
+
+      <h3 style="font-size:22px;font-weight:700;margin:48px 0 16px">Diferenciación frente al PSOE</h3>
+      <div class="grid g2">
+        <div class="card">
+          <span class="u" style="color:var(--ink-3)">Ellos</span>
+          <ul style="margin:14px 0 0;padding-left:18px;color:var(--ink-2);font-size:16px">
+            <li>Rojo como superficie dominante.</li>
+            <li>Símbolo orgánico y curvo (la rosa).</li>
+            <li>Siglas en mayúscula por delante del mensaje.</li>
+            <li>Foto con degradado y tono institucional.</li>
+            <li>Relato de gestión: lo que ya se ha hecho.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="u" style="color:var(--accent)">Nosotros</span>
+          <ul style="margin:14px 0 0;padding-left:18px;color:var(--ink-2);font-size:16px">
+            <li>Verde como superficie dominante; el rojo, solo la cuña.</li>
+            <li>Símbolo geométrico y anguloso (ala y horizonte).</li>
+            <li>El nombre del pueblo por delante de cualquier sigla.</li>
+            <li>Bloques planos, filetes duros, cero degradados.</li>
+            <li>Relato de futuro con cifras comprobables.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="formnote" style="margin-top:20px">La prueba del algodón: si al ver una pieza nuestra a diez metros y sin leerla alguien puede dudar de si es del PSOE, la pieza está mal. Debe ganar el verde.</p>
+
+      <h3 style="font-size:22px;font-weight:700;margin:48px 0 16px">Tipografía</h3>
+      <div class="grid g2">
+        <div class="card">
+          <span class="u" style="color:var(--accent)">Titulares</span>
+          <p style="font-family:var(--f-display);font-weight:700;font-size:44px;line-height:1;letter-spacing:-.045em;margin:12px 0">Familjen Grotesk</p>
+          <p style="font-size:15.5px;color:var(--ink-2)">Grotesca nórdica, peso 700, tracking cerrado. Frases cortas en caja baja, punto final, sin exclamaciones.</p>
+        </div>
+        <div class="card">
+          <span class="u" style="color:var(--accent)">Texto y datos</span>
+          <p style="font-family:var(--f-body);font-weight:700;font-size:32px;line-height:1.1;margin:12px 0">Public Sans</p>
+          <p style="font-size:15.5px;color:var(--ink-2)">Neutra y muy legible, también en cuerpos pequeños e impresa a una tinta. Etiquetas en versalitas con tracking abierto.</p>
+        </div>
+      </div>
+
+      <h3 style="font-size:22px;font-weight:700;margin:48px 0 16px">El logotipo</h3>
+      <div class="grid g2 gap" style="align-items:center">
+        <div class="card" style="padding:34px">
+          <svg viewBox="0 0 352 278" width="100%" style="max-width:430px;display:block;margin:0 auto"
+               aria-label="Logotipo Por Águilas: el sol asomando por el mar sobre el nombre apilado">
+            <g transform="rotate(-5 170 120)">
+              <path d="M300.4 109.8 L323.6 96.9 L297.2 94.6 Z M292.1 81.9 L309.6 62.0 L284.0 68.6 Z M275.0 58.3 L284.9 33.7 L262.8 48.5 Z M250.9 41.9 L252.1 15.4 L236.2 36.7 Z M222.8 34.4 L215.0 9.0 L207.2 34.4 Z M193.8 36.7 L177.9 15.4 L179.1 41.9 Z M167.2 48.5 L145.1 33.7 L155.0 58.3 Z M146.0 68.6 L120.4 62.0 L137.9 81.9 Z M132.8 94.6 L106.4 96.9 L129.6 109.8 Z" fill="#D9351F"/>
+              <path d="M137 120 A78 78 0 0 1 293 120 Z" fill="#F4B826"/>
+              <path d="M145.5 120 L145.5 97 L144 97 L144 93.5 L146.5 93.5 L146.5 91 L150 91 L150 93.5 L152.5 93.5 L152.5 97 L151 97 L151 120 Z" fill="#141414"/>
+              <rect x="145.5" y="104" width="5.5" height="4" fill="#F4B826"/>
+              <path d="M154 120 L156.6 115.4 L159.2 109.2 L161.8 103 L163.7 97.6 L165.7 92.2 L168.3 87.2 L170.9 82.9 L174.1 78.3 L177.4 74 L180.6 69.8 L183.2 66.7 L185.8 61.3 L187.1 58.2 L187.1 52.8 L189.1 50.5 L194.2 50 L194.2 46.5 L195.6 46.5 L195.6 50.2 L200.1 50.5 L204 51.6 L204.4 55.1 L205.9 58.9 L207.2 59.7 L208.8 62.8 L212.4 65.6 L216.3 67.1 L220.2 68.3 L223.4 67.7 L226.7 69.8 L231.2 70.4 L234.5 69.2 L238.3 73.6 L242.9 76.4 L247.4 78.5 L252.6 82.1 L257.8 85.6 L263 90.5 L268.2 95.2 L273.3 99.8 L278.5 104.5 L283.7 109.1 L285 113 L285 120 Z" fill="#141414"/>
+              <rect x="112" y="120" width="240" height="16" fill="#1B96AD"/>
+              <rect x="146" y="145" width="168" height="9" fill="#B0703C"/>
+              <text x="4" y="118" font-family="Familjen Grotesk, Helvetica Neue, Arial, sans-serif"
+                    font-weight="700" font-size="66" fill="#D9351F"
+                    textLength="112" lengthAdjust="spacingAndGlyphs">Por</text>
+              <text x="4" y="228" font-family="Familjen Grotesk, Helvetica Neue, Arial, sans-serif"
+                    font-weight="700" font-size="94" fill="#0E7A5F"
+                    textLength="330" lengthAdjust="spacingAndGlyphs">Águilas</text>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p style="font-size:16.5px;color:var(--ink-2)"><strong>El sol saliendo por detrás del Castillo.</strong> El sol de IU-Verdes asomando por el horizonte y, recortado en negro dentro de él, el perfil del peñón con el Castillo de San Juan y el faro al pie. El nombre va apilado debajo y el conjunto se inclina cinco grados, como si el bloque entero estuviera levantándose. Es la imagen literal del lema: aquí amanece todos los días, también en febrero.</p>
+          <p style="font-size:16.5px;color:var(--ink-2);margin-top:14px"><strong>Sol amarillo, rayos bermellón</strong> —el rojo del PCE, el mismo del «Por»—, y debajo las dos franjas: <strong>turquesa</strong> el agua y <strong>tierra</strong> la playa. <strong>«Águilas» en verde</strong>, que es el color de la casa y el que tiene que ganar.</p>
+          <p style="font-size:16.5px;color:var(--ink-2);margin-top:14px">El amarillo, el turquesa y el tierra <strong>viven solo dentro del logotipo</strong>. En carteles, redes y web manda el sistema de siempre: fondo blanco, letra negra, y verde o bermellón para señalar lo que importa.</p>
+          <p class="formnote" style="margin-top:18px">Este sol está dibujado de cero. Si me pasáis el archivo vectorial del sol oficial de IU-Verdes, ajusto el número de rayos y las proporciones para que sea reconocible como el suyo.</p>
+        </div>
+      </div>
+
+      <h4 style="font-family:var(--f-display);font-size:18px;font-weight:700;margin:40px 0 14px">Versiones</h4>
+      <div class="grid g2">
+        <div class="card" style="display:flex;gap:26px;align-items:center">
+          <svg width="76" height="76" viewBox="0 0 40 40" aria-label="Versión reducida: el sol sobre el mar">
+            <path d="M34.3 24.2 L39.2 21.5 L33.7 21.0 Z M32.3 18.1 L35.4 13.5 L30.3 15.5 Z M27.7 13.5 L28.6 8.0 L24.8 12.0 Z M21.6 11.3 L20.0 6.0 L18.4 11.3 Z M15.2 12.0 L11.4 8.0 L12.3 13.5 Z M9.7 15.5 L4.6 13.5 L7.7 18.1 Z M6.3 21.0 L0.8 21.5 L5.7 24.2 Z" fill="#D9351F"/>
+            <path d="M7.60 25.60 A12.40 12.40 0 0 1 32.40 25.60 Z" fill="#F4B826"/>
+            <path d="M9.2 25.6 L9.2 21.8 L8.7 21.8 L8.7 21.0 L10.5 21.0 L10.5 21.8 L10.0 21.8 L10.0 25.6 Z" fill="#141414"/><path d="M10.3 25.6 L11.84 22.04 L13.49 18.97 L14.94 17.12 L15.56 15.77 L15.56 14.91 L16.69 14.47 L17.63 14.55 L18.25 14.72 L18.31 15.28 L18.76 16.01 L19.59 16.95 L20.83 17.38 L22.58 17.72 L23.70 18.23 L25.15 19.01 L26.80 20.14 L28.46 21.66 L30.10 23.14 L31.13 24.49 L31.13 25.6 Z" fill="#141414"/>
+            <rect x="0.5" y="25.6" width="39" height="4.3" fill="#1B96AD"/>
+            <rect x="7" y="32.7" width="26" height="3.4" fill="#B0703C"/>
+          </svg>
+          <div>
+            <span class="u" style="color:var(--ink-3)">Isotipo</span>
+            <p style="font-size:15.5px;color:var(--ink-2);margin-top:8px">Solo el sol y el mar, sin texto. Para avatares de redes, favicon, chapas y sellos. A partir de 24&nbsp;px se usa esta y nunca el logotipo completo.</p>
+          </div>
+        </div>
+        <div class="card" style="display:flex;gap:26px;align-items:center">
+          <svg width="76" height="76" viewBox="0 0 40 40" aria-label="Versión a una tinta sobre fondo oscuro">
+            <rect width="40" height="40" fill="#0B2942"/>
+            <path d="M34.3 24.2 L39.2 21.5 L33.7 21.0 Z M32.3 18.1 L35.4 13.5 L30.3 15.5 Z M27.7 13.5 L28.6 8.0 L24.8 12.0 Z M21.6 11.3 L20.0 6.0 L18.4 11.3 Z M15.2 12.0 L11.4 8.0 L12.3 13.5 Z M9.7 15.5 L4.6 13.5 L7.7 18.1 Z M6.3 21.0 L0.8 21.5 L5.7 24.2 Z" fill="#fff"/>
+            <path d="M7.60 25.60 A12.40 12.40 0 0 1 32.40 25.60 Z" fill="#fff"/>
+            <path d="M9.2 25.6 L9.2 21.8 L8.7 21.8 L8.7 21.0 L10.5 21.0 L10.5 21.8 L10.0 21.8 L10.0 25.6 Z" fill="#0B2942"/><path d="M10.3 25.6 L11.84 22.04 L13.49 18.97 L14.94 17.12 L15.56 15.77 L15.56 14.91 L16.69 14.47 L17.63 14.55 L18.25 14.72 L18.31 15.28 L18.76 16.01 L19.59 16.95 L20.83 17.38 L22.58 17.72 L23.70 18.23 L25.15 19.01 L26.80 20.14 L28.46 21.66 L30.10 23.14 L31.13 24.49 L31.13 25.6 Z" fill="#0B2942"/>
+            <rect x="0.5" y="26.8" width="39" height="3.4" fill="#fff"/>
+            <rect x="7" y="32.7" width="26" height="2.6" fill="#fff"/>
+          </svg>
+          <div>
+            <span class="u" style="color:var(--ink-3)">Una tinta</span>
+            <p style="font-size:15.5px;color:var(--ink-2);margin-top:8px">Sobre fondo verde, marino o negro, todo en blanco y el peñón calado en el color del fondo. Para serigrafía barata, sellos y prensa a un color.</p>
+          </div>
+        </div>
+      </div>
+      <p class="formnote" style="margin-top:20px">Nunca: contorno, sombra, degradado, ni un tercer color. Nunca girar el sol ni cambiarle el número de rayos. La inclinación del conjunto es siempre de cinco grados a la izquierda y no se toca.</p>
+
+      <h3 style="font-size:22px;font-weight:700;margin:48px 0 16px">La cuña</h3>
+      <div class="card" style="display:flex;gap:30px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:0"><span class="wedge" style="border-left-width:44px;border-top-width:30px;border-bottom-width:30px;margin:0"></span></span>
+        <p style="font-size:16.5px;color:var(--ink-2);max-width:46ch">El símbolo es el sol; el elemento que ordena las piezas es <strong>la cuña bermellón</strong>. Es un rayo del sol suelto. Corta el pie de la portada, encabeza cada sección y marca cada punto del programa. Es el único sitio, junto al «Por», donde aparece el rojo, y por eso se ve. Siempre apuntando a la derecha, nunca girada ni de otro color.</p>
+      </div>
+
+      <h3 style="font-size:22px;font-weight:700;margin:48px 0 16px">Tono de voz</h3>
+      <div class="grid g2">
+        <div class="card">
+          <span class="u" style="color:var(--sea-d)">Sí</span>
+          <ul style="margin:14px 0 0;padding-left:18px;color:var(--ink-2);font-size:16px">
+            <li>Nombrar el problema concreto y quién lo sufre.</li>
+            <li>Dar una cifra o un caso verificable en cada nota.</li>
+            <li>Decir qué haríamos nosotros, no solo qué está mal.</li>
+            <li>Hablar como se habla en Águilas, sin traducir del manual.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="u" style="color:var(--accent)">No</span>
+          <ul style="margin:14px 0 0;padding-left:18px;color:var(--ink-2);font-size:16px">
+            <li>Jerga de partido: «correlación de fuerzas», «hoja de ruta».</li>
+            <li>Insultar al adversario en vez de rebatirlo.</li>
+            <li>Prometer lo que no depende del Ayuntamiento sin decirlo.</li>
+            <li>Notas de más de 400 palabras.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SÚMATE ==================== -->
+<section class="page" id="p-sumate" hidden>
+  <div class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="u">Participa</span>
+        <h2>Esto solo sale si lo hacemos entre muchas.</h2>
+        <p>No hace falta carné ni militancia previa. Se puede echar una mano un sábado al mes o meterse hasta el fondo. Dinos por dónde te viene bien empezar.</p>
+      </div>
+      <div class="grid g2 gap" style="align-items:start">
+        <form class="sumate" id="form-sumate">
+          <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="f-email">Correo electrónico</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-barrio">Barrio o diputación</label><input id="f-barrio" name="barrio" type="text" placeholder="Ej.: El Hornillo, Calabardina, Tébar…"></div>
+          <div class="field"><label for="f-como">Cómo quieres participar</label>
+            <select id="f-como" name="como">
+              <option>Recibir información y convocatorias</option>
+              <option>Venir a la asamblea abierta</option>
+              <option>Echar una mano en campaña (buzoneo, mesas, actos)</option>
+              <option>Aportar al programa en una mesa sectorial</option>
+              <option>Formar parte de la candidatura</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-msg">Algo que quieras contarnos</label><textarea id="f-msg" name="mensaje" rows="4"></textarea></div>
+          <label class="consent"><input type="checkbox" id="f-ok" required><span>He leído la información sobre protección de datos y acepto que Por Águilas me contacte con fines informativos y de participación política.</span></label>
+          <button class="btn btn-primary" type="submit" style="justify-self:start">Enviar</button>
+          <p id="form-msg" role="status" style="font-size:15px;font-weight:700;color:var(--accent)"></p>
+        </form>
+        <div>
+          <div class="card" style="margin-bottom:20px">
+            <span class="u" style="color:var(--accent)">Asamblea abierta</span>
+            <h3 style="font-size:22px;font-weight:700;margin:12px 0 10px">Primer viernes de cada mes, 19:00</h3>
+            <p style="font-size:16.5px;color:var(--ink-2)">Local de la candidatura. Se puede venir sin avisar, escuchar y marcharse. El orden del día se publica tres días antes en esta web.</p>
+          </div>
+          <div class="card">
+            <span class="u" style="color:var(--accent)">Contacto directo</span>
+            <ul style="list-style:none;margin:14px 0 0;padding:0;font-size:16.5px;line-height:2">
+              <li><strong>Correo:</strong> contacto@poraguilas.es</li>
+              <li><strong>Prensa:</strong> prensa@poraguilas.es</li>
+              <li><strong>Local:</strong> pendiente de confirmar</li>
+            </ul>
+          </div>
+          <p class="formnote" style="margin-top:20px">El formulario es una maqueta: todavía no envía nada. Antes de publicar hay que conectarlo a un servicio de correo o de listas y redactar la política de privacidad conforme al RGPD y a la LOPDGDD, con la base jurídica del tratamiento y el responsable identificado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <div class="brand" style="margin-bottom:18px">
+          <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M34.3 24.2 L39.2 21.5 L33.7 21.0 Z M32.3 18.1 L35.4 13.5 L30.3 15.5 Z M27.7 13.5 L28.6 8.0 L24.8 12.0 Z M21.6 11.3 L20.0 6.0 L18.4 11.3 Z M15.2 12.0 L11.4 8.0 L12.3 13.5 Z M9.7 15.5 L4.6 13.5 L7.7 18.1 Z M6.3 21.0 L0.8 21.5 L5.7 24.2 Z" fill="#D9351F"/>
+            <path d="M7.60 25.60 A12.40 12.40 0 0 1 32.40 25.60 Z" fill="#F4B826"/>
+            <path d="M9.2 25.6 L9.2 21.8 L8.7 21.8 L8.7 21.0 L10.5 21.0 L10.5 21.8 L10.0 21.8 L10.0 25.6 Z" fill="#141414"/><path d="M10.3 25.6 L11.84 22.04 L13.49 18.97 L14.94 17.12 L15.56 15.77 L15.56 14.91 L16.69 14.47 L17.63 14.55 L18.25 14.72 L18.31 15.28 L18.76 16.01 L19.59 16.95 L20.83 17.38 L22.58 17.72 L23.70 18.23 L25.15 19.01 L26.80 20.14 L28.46 21.66 L30.10 23.14 L31.13 24.49 L31.13 25.6 Z" fill="#141414"/>
+            <rect x="0.5" y="25.6" width="39" height="4.3" fill="#1B96AD"/>
+            <rect x="7" y="32.7" width="26" height="3.4" fill="#B0703C"/>
+          </svg>
+          <span><span class="wordmark"><i>Por</i> <b>Águilas</b></span></span>
+        </div>
+        <p class="impulsa">Candidatura municipalista de izquierdas para las elecciones municipales de Águilas de 2027. Impulsada por Izquierda Unida y el Partido Comunista, abierta a personas independientes del municipio.</p>
+      </div>
+      <div>
+        <h4>Secciones</h4>
+        <ul>
+          <li><a href="#" data-go="quienes">Quiénes somos</a></li>
+          <li><a href="#" data-go="ejes">Programa</a></li>
+          <li><a href="#" data-go="prensa">Notas de prensa</a></li>
+          <li><a href="#" data-go="agenda">Agenda</a></li>
+          <li><a href="#" data-go="sumate">Súmate</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li>contacto@poraguilas.es</li>
+          <li>prensa@poraguilas.es</li>
+          <li>Águilas, Región de Murcia</li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026–2027 Por Águilas · Contenidos reutilizables citando la fuente</span>
+      <span class="links">
+        <a href="#" data-go="quienes">Aviso legal</a>
+        <a href="#" data-go="quienes">Privacidad</a>
+        <a href="#" data-go="quienes">Transparencia y cuentas</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------------- datos ---------------- */
+const EJES = [
+  { n:"01", tema:"Vivienda y coste de vida",
+    t:"Que vivir aquí no sea un lujo de temporada",
+    d:"Un municipio costero donde el alquiler de temporada expulsa a quien vive los doce meses tiene un problema de vivienda, no de turismo. El Ayuntamiento tiene competencias reales y hay que usarlas.",
+    p:["Censo municipal público de vivienda vacía y de vivienda de uso turístico, actualizado cada semestre.",
+       "Regulación de las licencias de vivienda turística por zonas, empezando por el casco y el frente marítimo.",
+       "Recargo del IBI a la vivienda vacía de grandes tenedores, con la recaudación finalista a alquiler asequible.",
+       "Oficina municipal de vivienda: mediación en desahucios, gestión de ayudas y bolsa de alquiler para jóvenes y mayores.",
+       "Suelo municipal destinado a promoción pública en alquiler, nunca a venta."]},
+  { n:"02", tema:"Servicios públicos y cuidados",
+    t:"Sanidad, educación y cuidados que no cierran en invierno",
+    d:"Los servicios se dimensionan para el pico de agosto o para el mínimo de febrero, y en los dos casos falla alguien. Defender lo público desde el Ayuntamiento es exigir a quien tiene la competencia y no soltar la presión.",
+    p:["Exigencia permanente al Servicio Murciano de Salud por la apertura completa, y con todos los servicios comprometidos, de los recursos sanitarios del municipio.",
+       "Refuerzo de urgencias y de pediatría dimensionado a la población real, estacionalidad incluida.",
+       "Plan municipal de cuidados: ampliación de horarios de escuela infantil y de ayuda a domicilio.",
+       "Comedores escolares y actividades de verano con precios por renta, no por orden de solicitud.",
+       "Transporte público interno que conecte diputaciones y pedanías con el centro y con el hospital de referencia."]},
+  { n:"03", tema:"Modelo de pueblo: litoral, agua y trabajo",
+    t:"Litoral, agua y urbanismo decididos por el pueblo",
+    d:"Águilas vive del mar, del campo y de quien viene. Ninguna de las tres cosas aguanta si se sigue construyendo sobre la costa y regando sin saber con qué agua.",
+    p:["Moratoria de nuevos desarrollos urbanísticos en primera línea mientras no haya un plan de costa aprobado con participación vecinal.",
+       "Protección efectiva de las calas y del entorno de Cuatro Calas frente a la presión constructiva y al tráfico rodado.",
+       "Auditoría pública del ciclo del agua: quién consume, quién paga y en qué estado está la red.",
+       "Apoyo a la flota pesquera artesanal y a la comercialización directa del producto local.",
+       "Plan de empleo digno vinculado a rehabilitación de vivienda y eficiencia energética, con cláusulas sociales en toda la contratación municipal."]},
+  { n:"04", tema:"Democracia municipal",
+    t:"Un ayuntamiento que se pueda mirar por dentro",
+    d:"La transparencia no es publicar un PDF ilegible en una pestaña escondida. Es que cualquier vecina pueda saber en cinco minutos en qué se gasta su dinero y quién decidió gastarlo.",
+    p:["Portal de contratación con todos los contratos menores publicados en formato abierto y buscable.",
+       "Presupuestos participativos vinculantes con un porcentaje mínimo garantizado del presupuesto de inversiones.",
+       "Plenos en horario compatible con la jornada laboral y retransmitidos, con acta accesible en 72 horas.",
+       "Consejos sectoriales con capacidad real de dictamen en urbanismo, servicios sociales y medio ambiente.",
+       "Código ético para los cargos de la candidatura: limitación salarial, agenda pública e incompatibilidades declaradas."]}
+];
+
+const NOTAS = [
+  { f:"2026-08-25", tema:"Vivienda", t:"Por Águilas registra una moción para crear el censo municipal de vivienda vacía",
+    r:"La candidatura pide que el Ayuntamiento sepa cuántas viviendas hay sin uso antes de seguir aprobando promociones nuevas: «no se puede planificar a ciegas un municipio donde la gente joven se va porque no encuentra alquiler»." },
+  { f:"2026-08-18", tema:"Servicios públicos", t:"Exigimos un calendario público para la apertura completa de los servicios sanitarios comprometidos",
+    r:"Tras un nuevo verano con derivaciones a otros municipios, Por Águilas reclama que la Consejería concrete por escrito qué servicios abren, con qué plantilla y en qué fecha." },
+  { f:"2026-08-11", tema:"Modelo de pueblo", t:"Alegaciones al proyecto de aparcamiento en el entorno de las calas",
+    r:"La candidatura presenta alegaciones y propone una alternativa de acceso con lanzadera en temporada alta que evite la ocupación permanente de suelo protegido." },
+  { f:"2026-07-30", tema:"Democracia", t:"Pedimos que los plenos se celebren por la tarde y con acta publicada en 72 horas",
+    r:"Un pleno a las diez de la mañana de un martes es un pleno al que la gente que trabaja no puede ir. Proponemos modificar el reglamento orgánico municipal." },
+  { f:"2026-07-14", tema:"Vivienda", t:"Propuesta de recargo del IBI a la vivienda vacía de grandes tenedores",
+    r:"La normativa estatal permite el recargo desde 2022 y Águilas no lo ha aplicado. Proponemos destinar íntegramente lo recaudado a una bolsa de alquiler asequible." }
+];
+
+const EVENTOS = [
+  { f:"2026-09-04", t:"Asamblea abierta de septiembre", d:"Orden del día: arranque de curso político, calendario de mesas sectoriales y presentación de la web.", l:"Local de la candidatura · 19:00" },
+  { f:"2026-09-12", t:"Mesa sectorial de vivienda", d:"Encuentro con inquilinas, asociaciones vecinales y personas jóvenes para elaborar el eje 01 del programa.", l:"Por confirmar · 18:00" },
+  { f:"2026-09-20", t:"Ruta por el litoral y las calas", d:"Recorrido guiado con colectivos ecologistas para explicar sobre el terreno la propuesta de plan de costa.", l:"Punto de encuentro por confirmar · 10:00" },
+  { f:"2026-10-02", t:"Asamblea abierta de octubre", d:"Balance de las mesas sectoriales y debate sobre el método de elaboración de la candidatura.", l:"Local de la candidatura · 19:00" }
+];
+
+const HITOS = [
+  { c:"Otoño 2026", t:"Construcción del programa", d:"Mesas sectoriales abiertas por cada uno de los cuatro ejes y recogida de propuestas vecinales.", key:false },
+  { c:"Invierno 2026–27", t:"Elaboración de la candidatura", d:"Proceso interno de conformación de la lista con participación de las personas inscritas en el proyecto.", key:false },
+  { c:"Primavera 2027", t:"Presentación pública de la candidatura", d:"Acto de presentación de la persona candidata a la Alcaldía y del programa completo.", key:false },
+  { c:"Abril 2027 (orientativo)", t:"Convocatoria oficial", d:"Publicación del real decreto de convocatoria; a partir de ahí corren todos los plazos legales.", key:false },
+  { c:"Mayo 2027 (orientativo)", t:"Presentación de candidaturas y proclamación", d:"Registro de la lista ante la Junta Electoral de Zona y proclamación de candidaturas.", key:false },
+  { c:"Mayo 2027 (orientativo)", t:"Campaña electoral", d:"Quince días de campaña, precedidos por la jornada de reflexión.", key:false },
+  { c:"Domingo 23 de mayo de 2027", t:"Jornada electoral", d:"Cuarto domingo de mayo, fecha prevista por la ley electoral y pendiente de confirmación oficial.", key:true },
+  { c:"Junio 2027", t:"Constitución de la corporación", d:"Sesión constitutiva del nuevo Ayuntamiento y elección de Alcaldía.", key:false }
+];
+
+/* ---------------- utilidades ---------------- */
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESES_L = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const fechaLarga = iso => { const d = new Date(iso+"T00:00:00"); return `${d.getDate()} de ${MESES_L[d.getMonth()]} de ${d.getFullYear()}`; };
+
+/* ---------------- render ---------------- */
+const notaHTML = n => `<article class="nota">
+  <time datetime="${n.f}">${esc(fechaLarga(n.f))}</time>
+  <div><span class="tag">${esc(n.tema)}</span><h3>${esc(n.t)}</h3><p>${esc(n.r)}</p></div>
+</article>`;
+
+const eventoHTML = e => { const d = new Date(e.f+"T00:00:00");
+  return `<article class="evento">
+    <div class="fecha"><span class="d num">${d.getDate()}</span><span class="m">${MESES[d.getMonth()]}</span></div>
+    <div><h3>${esc(e.t)}</h3><p>${esc(e.d)}</p></div>
+    <span class="where">${esc(e.l)}</span>
+  </article>`; };
+
+const ejeHTML = (e, conLista) => `<article class="axis">
+  <div class="cap">Eje ${e.n} · ${esc(e.tema)}</div>
+  <div class="body">
+    <h3>${esc(e.t)}</h3>
+    <p>${esc(e.d)}</p>
+    ${conLista ? `<ul>${e.p.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+  </div>
+</article>`;
+
+document.getElementById("home-notas").innerHTML = NOTAS.slice(0,3).map(notaHTML).join("");
+document.getElementById("home-agenda").innerHTML = EVENTOS.slice(0,2).map(eventoHTML).join("");
+document.getElementById("lista-agenda").innerHTML = EVENTOS.map(eventoHTML).join("");
+document.getElementById("ejes-corto").innerHTML = EJES.map(e=>ejeHTML(e,false)).join("");
+document.getElementById("ejes-full").innerHTML = EJES.map(e=>ejeHTML(e,true)).join("");
+
+document.getElementById("hitos").innerHTML = HITOS.map(h => `
+  <li class="${h.key?"key":""}">
+    <span class="u">${esc(h.c)}</span>
+    <strong>${esc(h.t)}</strong>
+    <span class="d">${esc(h.d)}</span>
+  </li>`).join("");
+
+/* filtros de prensa */
+const temas = ["Todas", ...new Set(NOTAS.map(n=>n.tema))];
+let temaActivo = "Todas";
+const cFiltros = document.getElementById("filtros");
+cFiltros.innerHTML = temas.map(t =>
+  `<button class="chip" type="button" data-tema="${esc(t)}" aria-pressed="${t===temaActivo}">${esc(t)}</button>`).join("");
+function pintarNotas(){
+  const sel = temaActivo === "Todas" ? NOTAS : NOTAS.filter(n=>n.tema===temaActivo);
+  document.getElementById("lista-notas").innerHTML =
+    sel.length ? sel.map(notaHTML).join("") : `<p class="empty">Todavía no hay notas publicadas en este tema.</p>`;
+  cFiltros.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.tema===temaActivo));
+}
+cFiltros.addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if(!b) return;
+  temaActivo = b.dataset.tema; pintarNotas();
+});
+pintarNotas();
+
+/* cuenta atrás */
+(function(){
+  const dia = new Date("2027-05-23T09:00:00");
+  const dias = Math.max(0, Math.ceil((dia - new Date())/86400000));
+  document.getElementById("cd-dias").textContent = dias.toLocaleString("es-ES");
+  document.getElementById("cd-dias-2").textContent = dias.toLocaleString("es-ES");
+})();
+
+/* navegación */
+const PAGS = ["inicio","quienes","ejes","prensa","agenda","marca","sumate"];
+const nav = document.getElementById("nav");
+function ir(p){
+  if(!PAGS.includes(p)) p = "inicio";
+  PAGS.forEach(x => document.getElementById("p-"+x).hidden = (x!==p));
+  nav.querySelectorAll("button[data-go]").forEach(b => {
+    if(b.dataset.go===p) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current");
+  });
+  nav.classList.remove("open");
+  document.getElementById("menubtn").setAttribute("aria-expanded","false");
+  window.scrollTo({top:0, behavior:"instant"});
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-go]"); if(!t) return;
+  e.preventDefault(); ir(t.dataset.go);
+});
+document.getElementById("menubtn").addEventListener("click", function(){
+  const abierto = nav.classList.toggle("open");
+  this.setAttribute("aria-expanded", String(abierto));
+});
+
+/* formulario (maqueta) */
+document.getElementById("form-sumate").addEventListener("submit", e => {
+  e.preventDefault();
+  document.getElementById("form-msg").textContent =
+    "Maqueta: el formulario todavía no envía datos. Hay que conectarlo antes de publicar la web.";
+});
+</script>
+
+</body>
+</html>
