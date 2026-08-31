@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#FFFFFF;color:#141414;font-family:"Public Sans","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#0A5C47;text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:#0E7A5F}
+:focus-visible{outline:3px solid #0E7A5F;outline-offset:2px}
+@keyframes pa-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</helmet>
+
+<sc-if value="{{ aviso }}" hint-placeholder-val="{{ true }}">
+<div style="background:#141414;color:#fff;font-size:13px;font-weight:600;line-height:1.45;display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px clamp(20px,5vw,44px);text-align:center">
+  <span style="max-width:70ch">Borrador de trabajo · los textos, notas de prensa y fechas son de ejemplo y hay que sustituirlos antes de publicar.</span>
+  <button type="button" onClick="{{ cerrarAviso }}" style="font:inherit;font-weight:800;background:none;color:inherit;border:1.5px solid currentColor;padding:3px 13px;cursor:pointer;flex:none">Entendido</button>
+</div>
+</sc-if>
+
+<header style="position:sticky;top:0;z-index:60;background:#fff;border-bottom:2px solid #141414">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px);display:flex;align-items:center;gap:clamp(12px,3vw,28px);min-height:76px">
+    <a href="#inicio" onClick="{{ irInicio }}" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#141414;margin-right:auto;min-width:0">
+      <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:46px;height:46px;display:block;flex:none">
+      <span style="min-width:0">
+        <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.6vw,23px);letter-spacing:-.035em;line-height:1;display:block;white-space:nowrap"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
+        <span style="display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#6F6867;margin-top:5px;white-space:nowrap">Municipales 2027</span>
+      </span>
+    </a>
+
+    <sc-if value="{{ escritorio }}" hint-placeholder-val="{{ true }}">
+    <nav aria-label="Principal" style="display:flex;gap:2px;align-items:center">
+      <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="5">
+        <sc-if value="{{ it.activo }}">
+          <button type="button" onClick="{{ it.ir }}" aria-current="page" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:700;background:none;border:0;color:#141414;padding:11px 13px;cursor:pointer;box-shadow:inset 0 -4px 0 #0E7A5F">{{ it.label }}</button>
+        </sc-if>
+        <sc-if value="{{ it.inactivo }}">
+          <button type="button" onClick="{{ it.ir }}" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;background:none;border:0;color:#141414;padding:11px 13px;cursor:pointer">{{ it.label }}</button>
+        </sc-if>
+      </sc-for>
+      <button type="button" onClick="{{ irSumate }}" style="font-family:'Public Sans',sans-serif;font-weight:800;font-size:14.5px;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:13px 22px;cursor:pointer;margin-left:12px" style-hover="background:#0A5C47;border-color:#0A5C47">Súmate</button>
+    </nav>
+    </sc-if>
+
+    <sc-if value="{{ movil }}">
+    <button type="button" onClick="{{ abrirMenu }}" aria-expanded="false" style="display:flex;align-items:center;gap:9px;background:none;border:2px solid #141414;padding:11px 15px;cursor:pointer;color:#141414;font-family:'Public Sans',sans-serif;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;min-height:46px;flex:none">
+      <span style="display:flex;flex-direction:column;gap:4px"><span style="display:block;width:17px;height:2px;background:#141414"></span><span style="display:block;width:17px;height:2px;background:#141414"></span><span style="display:block;width:17px;height:2px;background:#141414"></span></span>
+      Menú
+    </button>
+    </sc-if>
+  </div>
+</header>
+
+<sc-if value="{{ menuAbierto }}">
+<div role="dialog" aria-label="Menú" style="position:fixed;inset:0;z-index:90;background:#fff;display:flex;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:12px;padding:0 clamp(20px,5vw,44px);min-height:76px;border-bottom:2px solid #141414;flex:none">
+    <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:42px;height:42px;display:block">
+    <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-.035em;margin-right:auto"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
+    <button type="button" onClick="{{ cerrarMenu }}" aria-label="Cerrar menú" style="background:none;border:2px solid #141414;color:#141414;font:800 13px/1 'Public Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:14px 16px;cursor:pointer;min-height:46px">Cerrar</button>
+  </div>
+  <nav aria-label="Principal" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:8px clamp(20px,5vw,44px) 28px">
+    <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="5">
+      <sc-if value="{{ it.activo }}">
+        <button type="button" onClick="{{ it.ir }}" aria-current="page" style="text-align:left;background:none;border:0;border-bottom:1px solid #D5D0CE;box-shadow:inset 5px 0 0 #0E7A5F;color:#141414;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;cursor:pointer;min-height:56px">{{ it.label }}</button>
+      </sc-if>
+      <sc-if value="{{ it.inactivo }}">
+        <button type="button" onClick="{{ it.ir }}" style="text-align:left;background:none;border:0;border-bottom:1px solid #D5D0CE;color:#141414;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;cursor:pointer;min-height:56px">{{ it.label }}</button>
+      </sc-if>
+    </sc-for>
+    <button type="button" onClick="{{ irSumate }}" style="margin-top:24px;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;font:800 16px/1 'Public Sans',sans-serif;padding:20px 22px;cursor:pointer;min-height:56px">Súmate a la candidatura</button>
+  </nav>
+</div>
+</sc-if>
+
+<main>
+
+<sc-if value="{{ esInicio }}" hint-placeholder-val="{{ true }}">
+<div>
+  <div style="background:#D9351F">
+    <div style="background:#0E7A5F;color:#fff;clip-path:polygon(0 0,100% 0,100% calc(100% - clamp(22px,3.4vw,44px)),0 100%)">
+      <div style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,78px) clamp(20px,5vw,44px) calc(clamp(46px,6vw,66px) + clamp(22px,3.4vw,44px))">
+        <p style="display:flex;align-items:center;gap:12px;margin:0 0 clamp(18px,3vw,26px);font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff">
+          <span style="width:0;height:0;border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+          Candidatura municipalista · Águilas
+        </p>
+        <h1 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(38px,7.6vw,92px);font-weight:700;letter-spacing:-.045em;line-height:.96;margin:0;max-width:15ch;text-wrap:balance">Águilas se vive <span style="box-shadow:inset 0 -.13em 0 rgba(255,255,255,.42)">todo el año</span>.</h1>
+        <p style="font-size:clamp(17px,2vw,21.5px);max-width:56ch;margin:clamp(20px,3vw,26px) 0 0;line-height:1.5;color:#D8F2E8;text-wrap:pretty">Somos las vecinas y vecinos que no se van en septiembre. Los que pagan el alquiler en enero, los que esperan en urgencias en noviembre y los que pelean por un pueblo que funcione los doce meses. Por Águilas pone el pueblo por delante del escaparate.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:clamp(28px,4vw,36px)">
+          <button type="button" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#fff;color:#0A5C47;border:2px solid #fff;padding:16px 24px;cursor:pointer;min-height:52px">Nuestro programa</button>
+          <button type="button" onClick="{{ irSumate }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6);padding:16px 24px;cursor:pointer;min-height:52px">Súmate a la candidatura</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:clamp(18px,3vw,32px);margin-top:clamp(38px,5.5vw,58px);padding-top:clamp(20px,3vw,26px);border-top:2px solid rgba(255,255,255,.35)">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(32px,5vw,42px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums">{{ dias }}</span>
+            <span style="font-size:13px;color:#BFE8D8;font-weight:600;line-height:1.35">días para las municipales</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(32px,5vw,42px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums">21</span>
+            <span style="font-size:13px;color:#BFE8D8;font-weight:600;line-height:1.35">concejales en juego</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(32px,5vw,42px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums">4</span>
+            <span style="font-size:13px;color:#BFE8D8;font-weight:600;line-height:1.35">ejes que mandan en la campaña</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ marquesina }}" hint-placeholder-val="{{ true }}">
+  <div style="overflow:hidden;border-bottom:2px solid #141414;background:#fff;padding:14px 0">
+    <div style="display:flex;width:max-content;animation:pa-marquee 34s linear infinite">
+      <div style="display:flex;align-items:center;gap:34px;padding-right:34px">
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap">Águilas se vive todo el año</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:#0E7A5F">Un pueblo, no un escaparate</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap">Aquí no sobra nadie</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:#0E7A5F">Enséñame las cuentas</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+      </div>
+      <div aria-hidden="true" style="display:flex;align-items:center;gap:34px;padding-right:34px">
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap">Águilas se vive todo el año</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:#0E7A5F">Un pueblo, no un escaparate</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap">Aquí no sobra nadie</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+        <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:#0E7A5F">Enséñame las cuentas</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="padding:clamp(52px,7vw,80px) 0">
+    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:clamp(28px,5vw,56px);align-items:center;margin-bottom:clamp(34px,5vw,48px)">
+        <div style="max-width:60ch">
+          <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+            <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+            Por dónde empezamos
+          </span>
+          <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro cosas, dichas claras.</h2>
+          <p style="margin:16px 0 0;color:#403B3A;font-size:clamp(16.5px,1.6vw,18px);line-height:1.6;max-width:52ch;text-wrap:pretty">No hacemos un programa de doscientas páginas que nadie lee. Hacemos cuatro compromisos que se pueden comprobar desde el primer pleno.</p>
+        </div>
+        <div style="display:flex;justify-content:center">
+          <img src="logo/por-aguilas-logotipo.svg" alt="Por Águilas" style="width:100%;max-width:340px;height:auto;display:block">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:2px">
+        <sc-for list="{{ ejesCorto }}" as="e" hint-placeholder-count="4">
+          <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
+            <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:59px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;line-height:1.3">{{ e.cap }}</div>
+            <div style="padding:24px clamp(20px,3vw,26px) 28px">
+              <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,24px);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin:0 0 11px">{{ e.t }}</h3>
+              <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">{{ e.d }}</p>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+      <p style="margin:clamp(26px,4vw,34px) 0 0"><button type="button" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#141414;color:#fff">Ver las propuestas concretas</button></p>
+    </div>
+  </div>
+
+  <div style="background:#EFF4F1;border-top:2px solid #141414;padding:clamp(52px,7vw,80px) 0">
+    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+      <div style="margin-bottom:clamp(30px,4vw,42px);max-width:60ch">
+        <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+          Últimas notas
+        </span>
+        <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Lo que hemos dicho esta semana</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(20px,2.5vw,28px)">
+        <sc-for list="{{ notasHome }}" as="n" hint-placeholder-count="3">
+          <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
+            <div style="aspect-ratio:16/10;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border-bottom:2px solid #141414;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center">
+              <span style="font:600 11px/1.5 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>{{ n.tema }}</span>
+            </div>
+            <div style="padding:22px clamp(18px,2.4vw,24px) 26px;display:flex;flex-direction:column;gap:11px;flex:1">
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <span style="font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border:2px solid #6B2D5C;color:#6B2D5C">{{ n.tema }}</span>
+                <span style="font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#6F6867">{{ n.fecha }}</span>
+              </div>
+              <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(19px,2.1vw,22px);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin:0;text-wrap:balance">{{ n.t }}</h3>
+              <p style="margin:0;color:#403B3A;font-size:15.5px;line-height:1.58;text-wrap:pretty">{{ n.r }}</p>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+      <p style="margin:clamp(26px,4vw,34px) 0 0"><button type="button" onClick="{{ irPrensa }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#141414;color:#fff">Todas las notas de prensa</button></p>
+    </div>
+  </div>
+
+  <div style="border-top:2px solid #141414;padding:clamp(52px,7vw,80px) 0">
+    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
+        <div>
+          <div style="aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border:2px solid #D5D0CE;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
+            <span style="font:600 11.5px/1.6 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>portada del programa<br>o acto de calle</span>
+          </div>
+        </div>
+        <div>
+          <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+            <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+            El programa
+          </span>
+          <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro ejes, propuestas comprobables.</h2>
+          <p style="margin:16px 0 0;color:#403B3A;font-size:clamp(16.5px,1.6vw,18px);line-height:1.6;max-width:50ch;text-wrap:pretty">Cada propuesta se puede llevar a un pleno, se puede presupuestar y se puede auditar. El documento se ampliará con las aportaciones de la asamblea abierta y de las mesas sectoriales.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
+            <button type="button" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#0A5C47;border-color:#0A5C47">Leer el programa</button>
+            <a href="#" onClick="{{ pdfPendiente }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;gap:9px;text-decoration:none" style-hover="background:#141414;color:#fff">Descargar en PDF</a>
+          </div>
+          <p style="margin:16px 0 0;font-size:14px;color:#6F6867;border-left:5px solid #D9351F;padding:2px 0 2px 14px;max-width:44ch">Pendiente: el PDF del programa se publicará cuando cierren las mesas sectoriales.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#EFF4F1;border-top:2px solid #141414;padding:clamp(52px,7vw,80px) 0">
+    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+      <div style="margin-bottom:clamp(30px,4vw,42px);max-width:60ch">
+        <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+          Próximas citas
+        </span>
+        <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Dónde nos vas a encontrar</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:clamp(16px,2vw,22px)">
+        <sc-for list="{{ eventosHome }}" as="e" hint-placeholder-count="2">
+          <article style="background:#fff;border:2px solid #141414;padding:clamp(18px,2.4vw,24px);display:flex;gap:clamp(16px,2.4vw,24px);align-items:flex-start">
+            <div style="text-align:center;border-right:2px solid #D5D0CE;padding-right:clamp(14px,2vw,18px);flex:none;min-width:64px">
+              <span style="display:block;font-family:'Familjen Grotesk',sans-serif;font-size:clamp(30px,4vw,36px);font-weight:700;line-height:1;letter-spacing:-.04em;color:#0E7A5F;font-variant-numeric:tabular-nums">{{ e.d }}</span>
+              <span style="display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6F6867;margin-top:6px">{{ e.m }}</span>
+            </div>
+            <div style="min-width:0">
+              <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.14;margin:0">{{ e.t }}</h3>
+              <p style="font-size:15.5px;color:#403B3A;margin:7px 0 0;line-height:1.55;text-wrap:pretty">{{ e.desc }}</p>
+              <p style="font-size:12.5px;font-weight:700;color:#6F6867;margin:11px 0 0">{{ e.l }}</p>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+      <p style="margin:clamp(26px,4vw,34px) 0 0"><button type="button" onClick="{{ irAgenda }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#141414;color:#fff">Agenda completa y calendario electoral</button></p>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ esQuienes }}">
+<div style="padding:clamp(46px,6vw,74px) 0 clamp(52px,7vw,86px)">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="max-width:62ch;margin-bottom:clamp(32px,4.5vw,46px)">
+      <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        Quiénes somos
+      </span>
+      <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Una candidatura de Águilas, hecha en Águilas.</h2>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Por Águilas es un proyecto municipalista de izquierdas. Nace del trabajo de Izquierda Unida y del Partido Comunista en el municipio y se abre a personas independientes del movimiento vecinal, sindical, feminista y ecologista que quieren gobernar este pueblo de otra manera.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
+      <div style="max-width:64ch">
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:23px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px">Por qué una marca propia</h3>
+        <p style="margin:0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Porque lo que se decide en mayo de 2027 no es un debate de siglas: es si en Águilas se puede alquilar un piso, si el centro de salud atiende en agosto y en febrero, y si la costa la ordena el pleno o la ordena quien compra. Por Águilas es el nombre bajo el que llevamos ese debate a la calle.</p>
+        <p style="margin:16px 0 0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Detrás no hay ningún misterio: la impulsan <strong>Izquierda Unida</strong> y el <strong>Partido Comunista</strong>, y lo decimos con todas las letras aquí y en cada acto. Lo que hacemos es poner por delante el asunto —Águilas— y no el membrete. Quien quiera saber de dónde venimos lo tiene escrito en esta página; quien quiera sumarse no necesita carné para hacerlo.</p>
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:23px;font-weight:700;letter-spacing:-.025em;margin:36px 0 10px">Cómo tomamos las decisiones</h3>
+        <p style="margin:0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Asamblea abierta mensual, cuentas publicadas y candidatura elaborada con participación de las personas inscritas en el proyecto. Los cargos electos se comprometen por escrito a limitación salarial, publicación de agenda y rendición de cuentas semestral ante la asamblea.</p>
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:23px;font-weight:700;letter-spacing:-.025em;margin:36px 0 10px">Con quién contamos</h3>
+        <p style="margin:0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Con el tejido asociativo del municipio: asociaciones de vecinos de las barriadas y las diputaciones, colectivo pesquero y agrario, AMPAs, plataformas por la sanidad pública, entidades ecologistas del litoral y el sindicalismo de clase. La candidatura no sustituye a nadie: acompaña y traslada al pleno lo que ya se pelea en la calle.</p>
+      </div>
+      <div>
+        <div style="aspect-ratio:3/4;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border:2px solid #D5D0CE;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
+          <span style="font:600 11.5px/1.7 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>grupo de la candidatura<br>en la calle, luz natural</span>
+        </div>
+        <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:22px 0 0;line-height:1.55">Pendiente de completar: nombres del equipo, trayectoria de la persona candidata a la Alcaldía y enlace a los estatutos internos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ esEjes }}">
+<div style="padding:clamp(46px,6vw,74px) 0 clamp(52px,7vw,86px)">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="max-width:62ch;margin-bottom:clamp(32px,4.5vw,46px)">
+      <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        Programa
+      </span>
+      <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro ejes, propuestas comprobables.</h2>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Cada propuesta se puede llevar a un pleno, se puede presupuestar y se puede auditar. El documento se ampliará con las aportaciones de la asamblea abierta y de las mesas sectoriales.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:2px">
+      <sc-for list="{{ ejesFull }}" as="e" hint-placeholder-count="4">
+        <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
+          <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:59px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;line-height:1.3">{{ e.cap }}</div>
+          <div style="padding:24px clamp(20px,3vw,26px) 28px">
+            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,24px);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin:0 0 11px">{{ e.t }}</h3>
+            <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">{{ e.d }}</p>
+            <ul style="margin:20px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px">
+              <sc-for list="{{ e.props }}" as="p" hint-placeholder-count="5">
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.55">
+                  <span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span>
+                  <span style="text-wrap:pretty">{{ p.txt }}</span>
+                </li>
+              </sc-for>
+            </ul>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ esPrensa }}">
+<div style="padding:clamp(46px,6vw,74px) 0 clamp(52px,7vw,86px)">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="max-width:62ch;margin-bottom:clamp(28px,4vw,40px)">
+      <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        Sala de prensa
+      </span>
+      <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Notas de prensa y posiciones públicas.</h2>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Todo lo que decimos, con fecha y por escrito. Los medios pueden reproducir estos textos libremente citando la fuente.</p>
+    </div>
+    <div role="group" aria-label="Filtrar por tema" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(26px,3.5vw,34px)">
+      <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+        <sc-if value="{{ c.activo }}">
+          <button type="button" onClick="{{ c.pick }}" aria-pressed="true" style="font:800 12.5px/1 'Public Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:13px 16px;cursor:pointer;background:#0E7A5F;border:2px solid #0E7A5F;color:#fff;min-height:44px">{{ c.label }}</button>
+        </sc-if>
+        <sc-if value="{{ c.inactivo }}">
+          <button type="button" onClick="{{ c.pick }}" aria-pressed="false" style="font:800 12.5px/1 'Public Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:13px 16px;cursor:pointer;background:transparent;border:2px solid #D5D0CE;color:#403B3A;min-height:44px" style-hover="border-color:#141414;color:#141414">{{ c.label }}</button>
+        </sc-if>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(20px,2.5vw,28px)">
+      <sc-for list="{{ notasFiltradas }}" as="n" hint-placeholder-count="5">
+        <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
+          <div style="aspect-ratio:16/10;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border-bottom:2px solid #141414;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center">
+            <span style="font:600 11px/1.5 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>{{ n.tema }}</span>
+          </div>
+          <div style="padding:22px clamp(18px,2.4vw,24px) 26px;display:flex;flex-direction:column;gap:11px;flex:1">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span style="font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border:2px solid #6B2D5C;color:#6B2D5C">{{ n.tema }}</span>
+              <span style="font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#6F6867">{{ n.fecha }}</span>
+            </div>
+            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(19px,2.1vw,22px);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin:0;text-wrap:balance">{{ n.t }}</h3>
+            <p style="margin:0;color:#403B3A;font-size:15.5px;line-height:1.58;text-wrap:pretty">{{ n.r }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <sc-if value="{{ sinNotas }}">
+      <p style="padding:46px 0;color:#6F6867;text-align:center;margin:0">Todavía no hay notas publicadas en este tema.</p>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ esAgenda }}">
+<div style="padding:clamp(46px,6vw,74px) 0 clamp(52px,7vw,86px)">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="max-width:62ch;margin-bottom:clamp(28px,4vw,40px)">
+      <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        Agenda
+      </span>
+      <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Actos, asambleas y calendario electoral.</h2>
+    </div>
+
+    <div style="background:#141414;color:#fff;padding:clamp(24px,3.5vw,36px);display:flex;align-items:center;gap:clamp(20px,3vw,32px);flex-wrap:wrap;border-left:14px solid #D9351F">
+      <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(46px,8vw,66px);line-height:.9;letter-spacing:-.05em;color:#3FCB9E;font-variant-numeric:tabular-nums">{{ dias }}</span>
+      <p style="font-size:clamp(15.5px,1.7vw,16.5px);max-width:46ch;color:#C8D8DE;margin:0;line-height:1.55;text-wrap:pretty">días para la jornada electoral. La fecha prevista es el <strong style="color:#fff">domingo 23 de mayo de 2027</strong>, cuarto domingo de mayo, a confirmar en la convocatoria oficial.</p>
+    </div>
+
+    <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(22px,2.6vw,26px);font-weight:700;letter-spacing:-.025em;margin:clamp(38px,5vw,52px) 0 20px">Próximos actos</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:clamp(16px,2vw,22px)">
+      <sc-for list="{{ eventos }}" as="e" hint-placeholder-count="4">
+        <article style="background:#fff;border:2px solid #141414;padding:clamp(18px,2.4vw,24px);display:flex;gap:clamp(16px,2.4vw,24px);align-items:flex-start">
+          <div style="text-align:center;border-right:2px solid #D5D0CE;padding-right:clamp(14px,2vw,18px);flex:none;min-width:64px">
+            <span style="display:block;font-family:'Familjen Grotesk',sans-serif;font-size:clamp(30px,4vw,36px);font-weight:700;line-height:1;letter-spacing:-.04em;color:#0E7A5F;font-variant-numeric:tabular-nums">{{ e.d }}</span>
+            <span style="display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6F6867;margin-top:6px">{{ e.m }}</span>
+          </div>
+          <div style="min-width:0">
+            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.14;margin:0">{{ e.t }}</h3>
+            <p style="font-size:15.5px;color:#403B3A;margin:7px 0 0;line-height:1.55;text-wrap:pretty">{{ e.desc }}</p>
+            <p style="font-size:12.5px;font-weight:700;color:#6F6867;margin:11px 0 0">{{ e.l }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+
+    <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(22px,2.6vw,26px);font-weight:700;letter-spacing:-.025em;margin:clamp(42px,5.5vw,58px) 0 22px">Calendario electoral orientativo</h3>
+    <ul style="list-style:none;margin:0;padding:0 0 0 34px;position:relative;border-left:2px solid #D5D0CE;max-width:70ch">
+      <sc-for list="{{ hitos }}" as="h" hint-placeholder-count="8">
+        <li style="position:relative;padding:0 0 28px">
+          <sc-if value="{{ h.clave }}">
+            <span style="position:absolute;left:-42px;top:5px;width:14px;height:14px;background:#0E7A5F;border:3px solid #0E7A5F"></span>
+          </sc-if>
+          <sc-if value="{{ h.normal }}">
+            <span style="position:absolute;left:-42px;top:5px;width:14px;height:14px;background:#fff;border:3px solid #6B2D5C"></span>
+          </sc-if>
+          <span style="display:block;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6F6867;margin-bottom:6px">{{ h.c }}</span>
+          <strong style="font-family:'Familjen Grotesk',sans-serif;font-size:19px;font-weight:700;display:block;letter-spacing:-.02em;line-height:1.15">{{ h.t }}</strong>
+          <span style="display:block;color:#403B3A;font-size:16px;line-height:1.55;margin-top:4px;text-wrap:pretty">{{ h.d }}</span>
+        </li>
+      </sc-for>
+    </ul>
+    <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:8px 0 0;max-width:62ch;line-height:1.55">Los plazos legales son orientativos y hay que contrastarlos con el calendario oficial que publique la Junta Electoral una vez convocadas las elecciones.</p>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ esSumate }}">
+<div style="padding:clamp(46px,6vw,74px) 0 clamp(52px,7vw,86px)">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="max-width:62ch;margin-bottom:clamp(32px,4.5vw,46px)">
+      <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        Súmate
+      </span>
+      <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Aquí no hace falta carné.</h2>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Se puede colaborar de tres maneras: apuntándote al proyecto, echando horas en la calle o poniendo dinero. Las tres cuentan y ninguna obliga a nada más.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
+      <div>
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,25px);font-weight:700;letter-spacing:-.025em;margin:0 0 20px">Apúntate al proyecto</h3>
+        <form onSubmit="{{ enviar }}" style="display:grid;gap:16px;max-width:540px">
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label for="pa-nombre" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Nombre y apellidos</label>
+            <input id="pa-nombre" name="nombre" type="text" required style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:16px">
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <label for="pa-email" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Correo electrónico</label>
+              <input id="pa-email" name="email" type="email" required style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <label for="pa-tel" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Teléfono <span style="font-weight:600;text-transform:none;letter-spacing:0;color:#6F6867">(opcional)</span></label>
+              <input id="pa-tel" name="tel" type="tel" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label for="pa-zona" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Barrio, barriada o diputación</label>
+            <input id="pa-zona" name="zona" type="text" placeholder="Casco, Las Molinetas, Calarreona, Tébar…" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label for="pa-como" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Cómo quieres colaborar</label>
+            <select id="pa-como" name="como" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+              <option>Solo quiero recibir información</option>
+              <option>Ir a las asambleas abiertas</option>
+              <option>Echar horas en la calle y en actos</option>
+              <option>Aportar en una mesa sectorial</option>
+              <option>Estar en la candidatura</option>
+              <option>Colaborar económicamente</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label for="pa-msg" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Cuéntanos algo <span style="font-weight:600;text-transform:none;letter-spacing:0;color:#6F6867">(opcional)</span></label>
+            <textarea id="pa-msg" name="mensaje" rows="4" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;resize:vertical" style-focus="border-color:#0E7A5F"></textarea>
+          </div>
+          <label style="display:flex;gap:12px;align-items:flex-start;font-size:14.5px;color:#403B3A;line-height:1.5">
+            <input type="checkbox" required style="margin-top:4px;accent-color:#6B2D5C;width:20px;height:20px;flex:none">
+            <span>He leído y acepto la política de privacidad. Mis datos se usan solo para contactarme sobre la candidatura y no se ceden a nadie.</span>
+          </label>
+          <div>
+            <button type="submit" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:17px 26px;cursor:pointer;min-height:54px" style-hover="background:#0A5C47;border-color:#0A5C47">Enviar</button>
+          </div>
+          <sc-if value="{{ mensajeForm }}">
+            <p role="status" style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:0;line-height:1.55">{{ mensajeForm }}</p>
+          </sc-if>
+        </form>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="border:2px solid #141414;background:#fff">
+          <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Voluntariado</div>
+          <div style="padding:24px clamp(20px,3vw,26px) 28px">
+            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px">Echar unas horas</h3>
+            <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">No hay tarea pequeña. Reparto de material, mesas informativas, traducción de propuestas a lenguaje claro, fotografía, redes o café para la asamblea.</p>
+            <ul style="margin:18px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>Buzoneo y mesas en el paseo y en las barriadas</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>Apoyo técnico: datos, web, vídeo, diseño</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>Interventores y apoderados para el 23 de mayo</span></li>
+            </ul>
+          </div>
+        </div>
+        <div style="border:2px solid #141414;background:#141414;color:#fff">
+          <div style="background:#D9351F;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Financiación</div>
+          <div style="padding:24px clamp(20px,3vw,26px) 28px">
+            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px;color:#fff">Una campaña pagada por el pueblo</h3>
+            <p style="margin:0;color:#D5D0CE;font-size:16px;line-height:1.58;text-wrap:pretty">Sin bancos y sin empresas del sector. Micromecenazgo de vecinas y vecinos, con las cuentas publicadas y auditadas al terminar la campaña.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
+              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">10 €</span>
+              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">25 €</span>
+              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">50 €</span>
+              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">Otra cantidad</span>
+            </div>
+            <p style="margin:20px 0 0;font-size:14px;color:#9A9291;border-left:5px solid #D9351F;padding:2px 0 2px 14px;line-height:1.55">Pendiente: cuenta de campaña y pasarela de pago. Los importes son de ejemplo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</main>
+
+<footer style="background:#141414;color:#D5D0CE;padding:clamp(44px,6vw,64px) 0 30px;border-top:8px solid #0E7A5F;position:relative">
+  <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:3px;background:#6B2D5C"></div>
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:clamp(28px,4vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:46px;height:46px;display:block;flex:none">
+          <span>
+            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.035em;line-height:1;display:block;color:#fff"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#3FCB9E;font-weight:700">Águilas</b></span>
+            <span style="display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9A9291;margin-top:5px">Municipales 2027</span>
+          </span>
+        </div>
+        <p style="font-size:15px;line-height:1.6;max-width:42ch;margin:0">Candidatura municipalista de izquierdas para Águilas. Impulsada por <strong style="color:#fff">Izquierda Unida</strong> y el <strong style="color:#fff">Partido Comunista</strong>, abierta a personas independientes.</p>
+      </div>
+      <div>
+        <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Secciones</h4>
+        <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="5">
+            <li><a href="#" onClick="{{ it.ir }}" style="color:#fff">{{ it.label }}</a></li>
+          </sc-for>
+          <li><a href="#" onClick="{{ irSumate }}" style="color:#fff">Súmate</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Contacto</h4>
+        <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
+          <li>Local de la candidatura · Águilas</li>
+          <li><a href="mailto:hola@poraguilas.es" style="color:#fff">hola@poraguilas.es</a></li>
+          <li style="color:#9A9291">Dirección y teléfono pendientes</li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.18);margin-top:clamp(30px,4vw,42px);padding-top:20px;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;font-size:13px;color:#9A9291">
+      <span>© 2026 Por Águilas · Borrador de trabajo</span>
+      <span style="display:flex;gap:18px;flex-wrap:wrap">
+        <a href="#" style="color:#9A9291">Aviso legal</a>
+        <a href="#" style="color:#9A9291">Privacidad</a>
+        <a href="#" style="color:#9A9291">Cookies</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;avisoBorrador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;marquesina&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;fechaElectoral&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2027-05-23&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;}}">
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESES_L = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const fechaLarga = iso => { const d = new Date(iso+"T00:00:00"); return d.getDate()+" de "+MESES_L[d.getMonth()]+" de "+d.getFullYear(); };
+
+const EJES = [
+  { n:"01", tema:"Vivienda y coste de vida",
+    t:"Que vivir aquí no sea un lujo de temporada",
+    d:"Un municipio costero donde el alquiler de temporada expulsa a quien vive los doce meses tiene un problema de vivienda, no de turismo. El Ayuntamiento tiene competencias reales y hay que usarlas.",
+    p:["Censo municipal público de vivienda vacía y de vivienda de uso turístico, actualizado cada semestre.",
+       "Regulación de las licencias de vivienda turística por zonas, empezando por el casco y el frente marítimo.",
+       "Recargo del IBI a la vivienda vacía de grandes tenedores, con la recaudación finalista a alquiler asequible.",
+       "Oficina municipal de vivienda: mediación en desahucios, gestión de ayudas y bolsa de alquiler para jóvenes y mayores.",
+       "Suelo municipal destinado a promoción pública en alquiler, nunca a venta."]},
+  { n:"02", tema:"Servicios públicos y cuidados",
+    t:"Sanidad, educación y cuidados que no cierran en invierno",
+    d:"Los servicios se dimensionan para el pico de agosto o para el mínimo de febrero, y en los dos casos falla alguien. Defender lo público desde el Ayuntamiento es exigir a quien tiene la competencia y no soltar la presión.",
+    p:["Exigencia permanente al Servicio Murciano de Salud por la apertura completa, y con todos los servicios comprometidos, de los recursos sanitarios del municipio.",
+       "Refuerzo de urgencias y de pediatría dimensionado a la población real, estacionalidad incluida.",
+       "Plan municipal de cuidados: ampliación de horarios de escuela infantil y de ayuda a domicilio.",
+       "Comedores escolares y actividades de verano con precios por renta, no por orden de solicitud.",
+       "Transporte público interno que conecte diputaciones y pedanías con el centro y con el hospital de referencia."]},
+  { n:"03", tema:"Modelo de pueblo: litoral, agua y trabajo",
+    t:"Litoral, agua y urbanismo decididos por el pueblo",
+    d:"Águilas vive del mar, del campo y de quien viene. Ninguna de las tres cosas aguanta si se sigue construyendo sobre la costa y regando sin saber con qué agua.",
+    p:["Moratoria de nuevos desarrollos urbanísticos en primera línea mientras no haya un plan de costa aprobado con participación vecinal.",
+       "Protección efectiva de las calas y del entorno de Cuatro Calas frente a la presión constructiva y al tráfico rodado.",
+       "Auditoría pública del ciclo del agua: quién consume, quién paga y en qué estado está la red.",
+       "Apoyo a la flota pesquera artesanal y a la comercialización directa del producto local.",
+       "Plan de empleo digno vinculado a rehabilitación de vivienda y eficiencia energética, con cláusulas sociales en toda la contratación municipal."]},
+  { n:"04", tema:"Democracia municipal",
+    t:"Un ayuntamiento que se pueda mirar por dentro",
+    d:"La transparencia no es publicar un PDF ilegible en una pestaña escondida. Es que cualquier vecina pueda saber en cinco minutos en qué se gasta su dinero y quién decidió gastarlo.",
+    p:["Portal de contratación con todos los contratos menores publicados en formato abierto y buscable.",
+       "Presupuestos participativos vinculantes con un porcentaje mínimo garantizado del presupuesto de inversiones.",
+       "Plenos en horario compatible con la jornada laboral y retransmitidos, con acta accesible en 72 horas.",
+       "Consejos sectoriales con capacidad real de dictamen en urbanismo, servicios sociales y medio ambiente.",
+       "Código ético para los cargos de la candidatura: limitación salarial, agenda pública e incompatibilidades declaradas."]}
+];
+
+const NOTAS = [
+  { f:"2026-08-25", tema:"Vivienda", t:"Por Águilas registra una moción para crear el censo municipal de vivienda vacía",
+    r:"La candidatura pide que el Ayuntamiento sepa cuántas viviendas hay sin uso antes de seguir aprobando promociones nuevas: «no se puede planificar a ciegas un municipio donde la gente joven se va porque no encuentra alquiler»." },
+  { f:"2026-08-18", tema:"Servicios públicos", t:"Exigimos un calendario público para la apertura completa de los servicios sanitarios comprometidos",
+    r:"Tras un nuevo verano con derivaciones a otros municipios, Por Águilas reclama que la Consejería concrete por escrito qué servicios abren, con qué plantilla y en qué fecha." },
+  { f:"2026-08-11", tema:"Modelo de pueblo", t:"Alegaciones al proyecto de aparcamiento en el entorno de las calas",
+    r:"La candidatura presenta alegaciones y propone una alternativa de acceso con lanzadera en temporada alta que evite la ocupación permanente de suelo protegido." },
+  { f:"2026-07-30", tema:"Democracia", t:"Pedimos que los plenos se celebren por la tarde y con acta publicada en 72 horas",
+    r:"Un pleno a las diez de la mañana de un martes es un pleno al que la gente que trabaja no puede ir. Proponemos modificar el reglamento orgánico municipal." },
+  { f:"2026-07-14", tema:"Vivienda", t:"Propuesta de recargo del IBI a la vivienda vacía de grandes tenedores",
+    r:"La normativa estatal permite el recargo desde 2022 y Águilas no lo ha aplicado. Proponemos destinar íntegramente lo recaudado a una bolsa de alquiler asequible." }
+];
+
+const EVENTOS = [
+  { f:"2026-09-04", t:"Asamblea abierta de septiembre", d:"Orden del día: arranque de curso político, calendario de mesas sectoriales y presentación de la web.", l:"Local de la candidatura · 19:00" },
+  { f:"2026-09-12", t:"Mesa sectorial de vivienda", d:"Encuentro con inquilinas, asociaciones vecinales y personas jóvenes para elaborar el eje 01 del programa.", l:"Por confirmar · 18:00" },
+  { f:"2026-09-20", t:"Ruta por el litoral y las calas", d:"Recorrido guiado con colectivos ecologistas para explicar sobre el terreno la propuesta de plan de costa.", l:"Punto de encuentro por confirmar · 10:00" },
+  { f:"2026-10-02", t:"Asamblea abierta de octubre", d:"Balance de las mesas sectoriales y debate sobre el método de elaboración de la candidatura.", l:"Local de la candidatura · 19:00" }
+];
+
+const HITOS = [
+  { c:"Otoño 2026", t:"Construcción del programa", d:"Mesas sectoriales abiertas por cada uno de los cuatro ejes y recogida de propuestas vecinales.", key:false },
+  { c:"Invierno 2026–27", t:"Elaboración de la candidatura", d:"Proceso interno de conformación de la lista con participación de las personas inscritas en el proyecto.", key:false },
+  { c:"Primavera 2027", t:"Presentación pública de la candidatura", d:"Acto de presentación de la persona candidata a la Alcaldía y del programa completo.", key:false },
+  { c:"Abril 2027 (orientativo)", t:"Convocatoria oficial", d:"Publicación del real decreto de convocatoria; a partir de ahí corren todos los plazos legales.", key:false },
+  { c:"Mayo 2027 (orientativo)", t:"Presentación de candidaturas y proclamación", d:"Registro de la lista ante la Junta Electoral de Zona y proclamación de candidaturas.", key:false },
+  { c:"Mayo 2027 (orientativo)", t:"Campaña electoral", d:"Quince días de campaña, precedidos por la jornada de reflexión.", key:false },
+  { c:"Domingo 23 de mayo de 2027", t:"Jornada electoral", d:"Cuarto domingo de mayo, fecha prevista por la ley electoral y pendiente de confirmación oficial.", key:true },
+  { c:"Junio 2027", t:"Constitución de la corporación", d:"Sesión constitutiva del nuevo Ayuntamiento y elección de Alcaldía." , key:false}
+];
+
+const PAGS = [
+  { id:"inicio", label:"Inicio" },
+  { id:"quienes", label:"Quiénes somos" },
+  { id:"ejes", label:"Programa" },
+  { id:"prensa", label:"Prensa" },
+  { id:"agenda", label:"Agenda" }
+];
+
+class Component extends DCLogic {
+  state = { pag:"inicio", tema:"Todas", menu:false, ancho:1200, aviso:true, msg:"" };
+
+  componentDidMount(){
+    this._r = () => {
+      const el = document.documentElement;
+      const w = Math.max(el.clientWidth || 0, window.innerWidth || 0);
+      if(w && w !== this.state.ancho) this.setState({ ancho: w });
+    };
+    this._r();
+    requestAnimationFrame(this._r);
+    setTimeout(this._r, 120);
+    setTimeout(this._r, 500);
+    window.addEventListener("resize", this._r);
+    if(typeof ResizeObserver !== "undefined"){
+      this._ro = new ResizeObserver(this._r);
+      this._ro.observe(document.documentElement);
+    }
+  }
+  componentWillUnmount(){
+    window.removeEventListener("resize", this._r);
+    if(this._ro) this._ro.disconnect();
+  }
+
+  ir(p){ this.setState({ pag:p, menu:false }); window.scrollTo({ top:0, behavior:"instant" }); }
+
+  renderVals(){
+    const s = this.state;
+    const escritorio = s.ancho >= 900;
+    const fecha = new Date((this.props.fechaElectoral || "2027-05-23") + "T09:00:00");
+    const dias = Math.max(0, Math.ceil((fecha - new Date())/86400000)).toLocaleString("es-ES");
+
+    const mapEje = (e, conLista) => ({
+      cap: "Eje " + e.n + " · " + e.tema,
+      t: e.t, d: e.d,
+      props: conLista ? e.p.map(x => ({ txt:x })) : []
+    });
+    const mapNota = n => ({ tema:n.tema, fecha:fechaLarga(n.f), t:n.t, r:n.r });
+    const mapEvento = e => { const d = new Date(e.f+"T00:00:00");
+      return { d:String(d.getDate()), m:MESES[d.getMonth()], t:e.t, desc:e.d, l:e.l }; };
+
+    const temas = ["Todas", ...new Set(NOTAS.map(n => n.tema))];
+    const sel = s.tema === "Todas" ? NOTAS : NOTAS.filter(n => n.tema === s.tema);
+
+    return {
+      escritorio, movil: !escritorio,
+      menuAbierto: s.menu && !escritorio,
+      aviso: s.aviso && (this.props.avisoBorrador ?? true),
+      marquesina: this.props.marquesina ?? true,
+      cerrarAviso: () => this.setState({ aviso:false }),
+      abrirMenu: () => this.setState({ menu:true }),
+      cerrarMenu: () => this.setState({ menu:false }),
+      dias,
+      navItems: PAGS.map(p => ({
+        label:p.label, activo:s.pag === p.id, inactivo:s.pag !== p.id,
+        ir:(ev) => { if(ev && ev.preventDefault) ev.preventDefault(); this.ir(p.id); }
+      })),
+      irInicio:(ev) => { if(ev) ev.preventDefault(); this.ir("inicio"); },
+      irEjes:() => this.ir("ejes"),
+      irPrensa:() => this.ir("prensa"),
+      irAgenda:() => this.ir("agenda"),
+      irSumate:(ev) => { if(ev && ev.preventDefault) ev.preventDefault(); this.ir("sumate"); },
+      pdfPendiente:(ev) => { ev.preventDefault(); this.ir("ejes"); },
+      esInicio:s.pag === "inicio", esQuienes:s.pag === "quienes", esEjes:s.pag === "ejes",
+      esPrensa:s.pag === "prensa", esAgenda:s.pag === "agenda", esSumate:s.pag === "sumate",
+      ejesCorto: EJES.map(e => mapEje(e, false)),
+      ejesFull: EJES.map(e => mapEje(e, true)),
+      notasHome: NOTAS.slice(0,3).map(mapNota),
+      notasFiltradas: sel.map(mapNota),
+      sinNotas: sel.length === 0,
+      chips: temas.map(t => ({
+        label:t, activo:t === s.tema, inactivo:t !== s.tema,
+        pick:() => this.setState({ tema:t })
+      })),
+      eventos: EVENTOS.map(mapEvento),
+      eventosHome: EVENTOS.slice(0,2).map(mapEvento),
+      hitos: HITOS.map(h => ({ c:h.c, t:h.t, d:h.d, clave:h.key, normal:!h.key })),
+      mensajeForm: s.msg,
+      enviar:(ev) => { ev.preventDefault();
+        this.setState({ msg:"Maqueta: el formulario todavía no envía datos. Hay que conectarlo a un servicio de listas o de correo antes de publicar la web." }); }
+    };
+  }
+}
+
+</script>
+</body>
+</html>
