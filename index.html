@@ -1,16 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E7A5F">
+<link rel="icon" href="/logo/por-aguilas-isotipo.svg" type="image/svg+xml">
+
+<!-- ==========================================================================
+     TODO LO QUE HAY ENTRE ESTOS DOS MARCADORES LO SUSTITUYE EL SERVIDOR.
+     server.js reemplaza el bloque entero por los metadatos de la ruta pedida
+     (título, descripción, canonical, og:*, twitter:*, JSON-LD y la tabla de
+     rutas para el cliente), con las URL absolutas del dominio real desde el
+     que se está sirviendo.
+
+     ¿Por qué en el servidor y no en JavaScript? Porque los rastreadores de
+     WhatsApp, Telegram, Twitter y Facebook NO ejecutan JavaScript: leen el
+     HTML tal como sale del servidor. Una og:title puesta desde el runtime no
+     la ve nadie.
+
+     Lo que hay escrito aquí abajo son los valores de la portada, y solo se ven
+     si se abre este fichero sin servidor. Para editarlos de verdad hay que ir
+     a la tabla META de server.js.
+     ========================================================================== -->
+<!-- metadatos:inicio -->
+<title>Por Águilas · Candidatura municipalista de izquierdas · Municipales 2027</title>
+<meta name="description" content="Candidatura municipalista de izquierdas para las elecciones municipales de 2027 en Águilas. Vivienda, servicios públicos, litoral y democracia municipal.">
+<link rel="canonical" href="/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Por Águilas">
+<meta property="og:title" content="Por Águilas · Municipales 2027">
+<meta property="og:description" content="Candidatura municipalista de izquierdas para Águilas. Vivienda, servicios públicos, litoral y democracia municipal.">
+<meta property="og:image" content="/og/por-aguilas-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<!-- metadatos:fin -->
+<!-- Tipografías auto-alojadas: cero peticiones a Google (RGPD) y cero
+     dependencia de fonts.googleapis.com. Ficheros y licencia en fonts/. -->
+<link rel="preload" href="/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/familjen-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Familjen Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/familjen-grotesk-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Familjen Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/familjen-grotesk-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/public-sans-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/public-sans-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+</style>
+
+<!-- ==========================================================================
+     ATENCIÓN · NO BORRAR ESTE BLOQUE
+     support.js descarga React y ReactDOM de unpkg.com salvo que encuentre la
+     URL exacta como clave en window.__resources. Con este mapa la web no hace
+     NINGUNA petición externa: si unpkg está caído o bloqueado, sigue pintando.
+     Efecto secundario: sin __resources el runtime vuelve a descargar
+     location.href entero al arrancar (68 KB duplicados); con el mapa, no.
+
+     Las claves son las URLs LITERALES que support.js lleva dentro, versión
+     incluida. Si algún día se regenera support.js con otra versión de React,
+     estas claves dejan de coincidir y se vuelve al CDN sin avisar. El script
+     de comprobación que hay debajo de support.js lo detecta y grita en consola.
+     Para actualizar: grep "unpkg.com" support.js, descargar a vendor/ y
+     cambiar las claves aquí.
+     ========================================================================== -->
+<script>
+window.__resources = {
+  "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "/vendor/react.production.min.js",
+  "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "/vendor/react-dom.production.min.js"
+};
+</script>
 <script src="./support.js"></script>
+<script>
+// Centinela: si alguna vez vuelve a colarse una petición a un tercero (porque
+// support.js se regeneró con otras URLs, o porque alguien añadió un <link>
+// externo), queda constancia en consola en lugar de pasar desapercibido.
+addEventListener("load", function () {
+  var fuera = performance.getEntriesByType("resource")
+    .map(function (r) { return r.name; })
+    .filter(function (n) { return n.indexOf(location.origin) !== 0 && /^https?:/.test(n); });
+  if (fuera.length) {
+    console.error("[por-aguilas] Dependencia externa en tiempo de ejecución:", fuera,
+      "· Revisa window.__resources en index.html y las URLs de CDN de support.js.");
+  }
+});
+</script>
 </head>
 <body>
 <x-dc>
 <helmet data-dc-atomics>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#FFFFFF;color:#141414;font-family:"Public Sans","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
@@ -32,7 +108,7 @@ a:hover{color:#0E7A5F}
 
 <header style="position:sticky;top:0;z-index:60;background:#fff;border-bottom:2px solid #141414">
   <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px);display:flex;align-items:center;gap:clamp(12px,3vw,28px);min-height:76px">
-    <a href="#inicio" onClick="{{ irInicio }}" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#141414;margin-right:auto;min-width:0">
+    <a href="/" onClick="{{ irInicio }}" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#141414;margin-right:auto;min-width:0">
       <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:46px;height:46px;display:block;flex:none">
       <span style="min-width:0">
         <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.6vw,23px);letter-spacing:-.035em;line-height:1;display:block;white-space:nowrap"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
@@ -44,13 +120,13 @@ a:hover{color:#0E7A5F}
     <nav aria-label="Principal" style="display:flex;gap:2px;align-items:center">
       <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="5">
         <sc-if value="{{ it.activo }}">
-          <button type="button" onClick="{{ it.ir }}" aria-current="page" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:700;background:none;border:0;color:#141414;padding:11px 13px;cursor:pointer;box-shadow:inset 0 -4px 0 #0E7A5F">{{ it.label }}</button>
+          <a href="{{ it.href }}" onClick="{{ it.ir }}" aria-current="page" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:700;color:#141414;text-decoration:none;padding:11px 13px;box-shadow:inset 0 -4px 0 #0E7A5F">{{ it.label }}</a>
         </sc-if>
         <sc-if value="{{ it.inactivo }}">
-          <button type="button" onClick="{{ it.ir }}" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;background:none;border:0;color:#141414;padding:11px 13px;cursor:pointer">{{ it.label }}</button>
+          <a href="{{ it.href }}" onClick="{{ it.ir }}" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#141414;text-decoration:none;padding:11px 13px" style-hover="color:#0A5C47">{{ it.label }}</a>
         </sc-if>
       </sc-for>
-      <button type="button" onClick="{{ irSumate }}" style="font-family:'Public Sans',sans-serif;font-weight:800;font-size:14.5px;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:13px 22px;cursor:pointer;margin-left:12px" style-hover="background:#0A5C47;border-color:#0A5C47">Súmate</button>
+      <a href="/sumate" onClick="{{ irSumate }}" style="font-family:'Public Sans',sans-serif;font-weight:800;font-size:14.5px;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;padding:13px 22px;margin-left:12px;display:inline-flex;align-items:center" style-hover="background:#0A5C47;border-color:#0A5C47">Súmate</a>
     </nav>
     </sc-if>
 
@@ -73,13 +149,13 @@ a:hover{color:#0E7A5F}
   <nav aria-label="Principal" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:8px clamp(20px,5vw,44px) 28px">
     <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="5">
       <sc-if value="{{ it.activo }}">
-        <button type="button" onClick="{{ it.ir }}" aria-current="page" style="text-align:left;background:none;border:0;border-bottom:1px solid #D5D0CE;box-shadow:inset 5px 0 0 #0E7A5F;color:#141414;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;cursor:pointer;min-height:56px">{{ it.label }}</button>
+        <a href="{{ it.href }}" onClick="{{ it.ir }}" aria-current="page" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;box-shadow:inset 5px 0 0 #0E7A5F;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">{{ it.label }}</a>
       </sc-if>
       <sc-if value="{{ it.inactivo }}">
-        <button type="button" onClick="{{ it.ir }}" style="text-align:left;background:none;border:0;border-bottom:1px solid #D5D0CE;color:#141414;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;cursor:pointer;min-height:56px">{{ it.label }}</button>
+        <a href="{{ it.href }}" onClick="{{ it.ir }}" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">{{ it.label }}</a>
       </sc-if>
     </sc-for>
-    <button type="button" onClick="{{ irSumate }}" style="margin-top:24px;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;font:800 16px/1 'Public Sans',sans-serif;padding:20px 22px;cursor:pointer;min-height:56px">Súmate a la candidatura</button>
+    <a href="/sumate" onClick="{{ irSumate }}" style="margin-top:24px;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;font:800 16px/1 'Public Sans',sans-serif;padding:20px 22px;min-height:56px;display:flex;align-items:center;justify-content:center">Súmate a la candidatura</a>
   </nav>
 </div>
 </sc-if>
@@ -98,8 +174,8 @@ a:hover{color:#0E7A5F}
         <h1 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(38px,7.6vw,92px);font-weight:700;letter-spacing:-.045em;line-height:.96;margin:0;max-width:15ch;text-wrap:balance">Águilas se vive <span style="box-shadow:inset 0 -.13em 0 rgba(255,255,255,.42)">todo el año</span>.</h1>
         <p style="font-size:clamp(17px,2vw,21.5px);max-width:56ch;margin:clamp(20px,3vw,26px) 0 0;line-height:1.5;color:#D8F2E8;text-wrap:pretty">Somos las vecinas y vecinos que no se van en septiembre. Los que pagan el alquiler en enero, los que esperan en urgencias en noviembre y los que pelean por un pueblo que funcione los doce meses. Por Águilas pone el pueblo por delante del escaparate.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:clamp(28px,4vw,36px)">
-          <button type="button" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#fff;color:#0A5C47;border:2px solid #fff;padding:16px 24px;cursor:pointer;min-height:52px">Nuestro programa</button>
-          <button type="button" onClick="{{ irSumate }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6);padding:16px 24px;cursor:pointer;min-height:52px">Súmate a la candidatura</button>
+          <a href="/programa" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#fff;color:#0A5C47;text-decoration:none;border:2px solid #fff;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center">Nuestro programa</a>
+          <a href="/sumate" onClick="{{ irSumate }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#fff;text-decoration:none;border:2px solid rgba(255,255,255,.6);padding:16px 24px;min-height:52px;display:inline-flex;align-items:center">Súmate a la candidatura</a>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:clamp(18px,3vw,32px);margin-top:clamp(38px,5.5vw,58px);padding-top:clamp(20px,3vw,26px);border-top:2px solid rgba(255,255,255,.35)">
           <div style="display:flex;flex-direction:column;gap:6px">
@@ -165,7 +241,7 @@ a:hover{color:#0E7A5F}
           </article>
         </sc-for>
       </div>
-      <p style="margin:clamp(26px,4vw,34px) 0 0"><button type="button" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#141414;color:#fff">Ver las propuestas concretas</button></p>
+      <p style="margin:clamp(26px,4vw,34px) 0 0"><a href="/programa" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;text-decoration:none;border:2px solid #141414;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#141414;color:#fff">Ver las propuestas concretas</a></p>
     </div>
   </div>
 
@@ -195,7 +271,7 @@ a:hover{color:#0E7A5F}
           </article>
         </sc-for>
       </div>
-      <p style="margin:clamp(26px,4vw,34px) 0 0"><button type="button" onClick="{{ irPrensa }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#141414;color:#fff">Todas las notas de prensa</button></p>
+      <p style="margin:clamp(26px,4vw,34px) 0 0"><a href="/prensa" onClick="{{ irPrensa }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;text-decoration:none;border:2px solid #141414;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#141414;color:#fff">Todas las notas de prensa</a></p>
     </div>
   </div>
 
@@ -215,8 +291,8 @@ a:hover{color:#0E7A5F}
           <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro ejes, propuestas comprobables.</h2>
           <p style="margin:16px 0 0;color:#403B3A;font-size:clamp(16.5px,1.6vw,18px);line-height:1.6;max-width:50ch;text-wrap:pretty">Cada propuesta se puede llevar a un pleno, se puede presupuestar y se puede auditar. El documento se ampliará con las aportaciones de la asamblea abierta y de las mesas sectoriales.</p>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
-            <button type="button" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#0A5C47;border-color:#0A5C47">Leer el programa</button>
-            <a href="#" onClick="{{ pdfPendiente }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;gap:9px;text-decoration:none" style-hover="background:#141414;color:#fff">Descargar en PDF</a>
+            <a href="/programa" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#0A5C47;border-color:#0A5C47">Leer el programa</a>
+            <a href="/programa" onClick="{{ pdfPendiente }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;gap:9px;text-decoration:none" style-hover="background:#141414;color:#fff">Descargar en PDF</a>
           </div>
           <p style="margin:16px 0 0;font-size:14px;color:#6F6867;border-left:5px solid #D9351F;padding:2px 0 2px 14px;max-width:44ch">Pendiente: el PDF del programa se publicará cuando cierren las mesas sectoriales.</p>
         </div>
@@ -248,7 +324,7 @@ a:hover{color:#0E7A5F}
           </article>
         </sc-for>
       </div>
-      <p style="margin:clamp(26px,4vw,34px) 0 0"><button type="button" onClick="{{ irAgenda }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px" style-hover="background:#141414;color:#fff">Agenda completa y calendario electoral</button></p>
+      <p style="margin:clamp(26px,4vw,34px) 0 0"><a href="/agenda" onClick="{{ irAgenda }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;text-decoration:none;border:2px solid #141414;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#141414;color:#fff">Agenda completa y calendario electoral</a></p>
     </div>
   </div>
 </div>
@@ -428,7 +504,7 @@ a:hover{color:#0E7A5F}
         Súmate
       </span>
       <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Aquí no hace falta carné.</h2>
-      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Se puede colaborar de tres maneras: apuntándote al proyecto, echando horas en la calle o poniendo dinero. Las tres cuentan y ninguna obliga a nada más.</p>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Se puede colaborar de dos maneras: apuntándote al proyecto o echando horas en la calle y en los actos. Las dos cuentan y ninguna obliga a nada más.</p>
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
@@ -494,20 +570,11 @@ a:hover{color:#0E7A5F}
             </ul>
           </div>
         </div>
-        <div style="border:2px solid #141414;background:#141414;color:#fff">
-          <div style="background:#D9351F;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Financiación</div>
-          <div style="padding:24px clamp(20px,3vw,26px) 28px">
-            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px;color:#fff">Una campaña pagada por el pueblo</h3>
-            <p style="margin:0;color:#D5D0CE;font-size:16px;line-height:1.58;text-wrap:pretty">Sin bancos y sin empresas del sector. Micromecenazgo de vecinas y vecinos, con las cuentas publicadas y auditadas al terminar la campaña.</p>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
-              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">10 €</span>
-              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">25 €</span>
-              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">50 €</span>
-              <span style="font:800 15px/1 'Public Sans',sans-serif;border:2px solid rgba(255,255,255,.4);padding:14px 18px;min-height:48px;display:inline-flex;align-items:center">Otra cantidad</span>
-            </div>
-            <p style="margin:20px 0 0;font-size:14px;color:#9A9291;border-left:5px solid #D9351F;padding:2px 0 2px 14px;line-height:1.55">Pendiente: cuenta de campaña y pasarela de pago. Los importes son de ejemplo.</p>
-          </div>
-        </div>
+        <!-- Aquí iba la tarjeta de "Financiación" con importes de ejemplo.
+             Retirada a propósito: no se pide dinero hasta que haya cuenta
+             electoral abierta y administrador electoral designado. Ver
+             BACKEND-SUMATE.md para lo que haría falta antes de volver a
+             ponerla. -->
       </div>
     </div>
   </div>
@@ -534,9 +601,9 @@ a:hover{color:#0E7A5F}
         <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Secciones</h4>
         <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
           <sc-for list="{{ navItems }}" as="it" hint-placeholder-count="5">
-            <li><a href="#" onClick="{{ it.ir }}" style="color:#fff">{{ it.label }}</a></li>
+            <li><a href="{{ it.href }}" onClick="{{ it.ir }}" style="color:#fff">{{ it.label }}</a></li>
           </sc-for>
-          <li><a href="#" onClick="{{ irSumate }}" style="color:#fff">Súmate</a></li>
+          <li><a href="/sumate" onClick="{{ irSumate }}" style="color:#fff">Súmate</a></li>
         </ul>
       </div>
       <div>
@@ -631,6 +698,36 @@ const HITOS = [
   { c:"Junio 2027", t:"Constitución de la corporación", d:"Sesión constitutiva del nuevo Ayuntamiento y elección de Alcaldía." , key:false}
 ];
 
+// --- Rutas -------------------------------------------------------------------
+// La navegación es por estado interno, pero cada estado tiene su URL real para
+// que se pueda compartir, abrir en pestaña nueva y encontrar en un buscador.
+// Esta tabla es la fuente de la verdad; si se añade una ruta hay que darla de
+// alta también en RUTAS_SPA (server.js) y en sitemap.xml.
+const RUTAS = {
+  inicio:  "/",
+  quienes: "/quienes-somos",
+  ejes:    "/programa",
+  prensa:  "/prensa",
+  agenda:  "/agenda",
+  sumate:  "/sumate"
+};
+
+// Títulos y descripciones. NO se declaran aquí: el servidor los inyecta en el
+// <head> como un bloque JSON (ver la tabla META de server.js) y aquí solo se
+// leen, para que vivan en un único sitio y no se desincronicen.
+const META_SERVIDOR = (() => {
+  try { return JSON.parse(document.getElementById("pa-meta").textContent); }
+  catch { return null; }
+})();
+
+const metaDeRuta = (p) => (META_SERVIDOR && META_SERVIDOR.rutas[RUTAS[p] || "/"]) || null;
+
+// Tolera barra final y barras repetidas: /programa/ y /programa son lo mismo.
+const pagDesdeRuta = (ruta) => {
+  const limpia = "/" + String(ruta || "/").replace(/^\/+|\/+$/g, "");
+  return Object.keys(RUTAS).find((k) => RUTAS[k] === limpia) || "inicio";
+};
+
 const PAGS = [
   { id:"inicio", label:"Inicio" },
   { id:"quienes", label:"Quiénes somos" },
@@ -640,7 +737,9 @@ const PAGS = [
 ];
 
 class Component extends DCLogic {
-  state = { pag:"inicio", tema:"Todas", menu:false, ancho:1200, aviso:true, msg:"" };
+  // La página inicial sale de la URL, no es siempre "inicio": así funcionan los
+  // enlaces directos a /programa, /prensa, etc.
+  state = { pag:pagDesdeRuta(location.pathname), tema:"Todas", menu:false, ancho:1200, aviso:true, msg:"" };
 
   componentDidMount(){
     this._r = () => {
@@ -653,6 +752,14 @@ class Component extends DCLogic {
     setTimeout(this._r, 120);
     setTimeout(this._r, 500);
     window.addEventListener("resize", this._r);
+
+    // Botón Atrás/Adelante del navegador.
+    this._pop = () => this.mostrar(pagDesdeRuta(location.pathname));
+    window.addEventListener("popstate", this._pop);
+    // Si se ha entrado directamente por /programa, el <title> estático es el de
+    // la portada; hay que corregirlo en cuanto monta.
+    this.aplicarMeta(this.state.pag);
+
     if(typeof ResizeObserver !== "undefined"){
       this._ro = new ResizeObserver(this._r);
       this._ro.observe(document.documentElement);
@@ -660,10 +767,46 @@ class Component extends DCLogic {
   }
   componentWillUnmount(){
     window.removeEventListener("resize", this._r);
+    window.removeEventListener("popstate", this._pop);
     if(this._ro) this._ro.disconnect();
   }
 
-  ir(p){ this.setState({ pag:p, menu:false }); window.scrollTo({ top:0, behavior:"instant" }); }
+  // Título, descripción y canonical al día en cada cambio de ruta. Esto lo lee
+  // Google, que sí ejecuta JavaScript. Las og:* NO se tocan desde aquí a
+  // propósito: los rastreadores de WhatsApp, Telegram, Twitter y Facebook no
+  // renderizan, así que cambiarlas en el DOM no serviría de nada y solo daría
+  // la falsa impresión de que funciona. Las og:* correctas las escribe el
+  // servidor en el HTML de cada ruta.
+  aplicarMeta(p){
+    const m = metaDeRuta(p);
+    if(m) document.title = m.titulo;
+
+    const url = location.origin + (RUTAS[p] || "/");
+    let can = document.querySelector('link[rel="canonical"]');
+    if(!can){ can = document.createElement("link"); can.rel = "canonical"; document.head.appendChild(can); }
+    can.setAttribute("href", url);
+
+    if(m){
+      let d = document.querySelector('meta[name="description"]');
+      if(!d){ d = document.createElement("meta"); d.setAttribute("name", "description"); document.head.appendChild(d); }
+      d.setAttribute("content", m.desc);
+    }
+  }
+
+  // Pinta una página sin tocar el historial. Lo usan tanto ir() como el
+  // listener de popstate, que no debe apilar una entrada nueva.
+  mostrar(p){
+    this.setState({ pag:p, menu:false });
+    this.aplicarMeta(p);
+    window.scrollTo({ top:0, behavior:"instant" });
+  }
+
+  ir(p){
+    // Sin el guardia, pulsar dos veces la misma pestaña llena el historial de
+    // entradas idénticas y el botón Atrás deja de servir para nada.
+    if(p !== this.state.pag) history.pushState({ pag:p }, "", RUTAS[p] || "/");
+    this.mostrar(p);
+  }
 
   renderVals(){
     const s = this.state;
@@ -683,6 +826,15 @@ class Component extends DCLogic {
     const temas = ["Todas", ...new Set(NOTAS.map(n => n.tema))];
     const sel = s.tema === "Todas" ? NOTAS : NOTAS.filter(n => n.tema === s.tema);
 
+    // Manejador para los enlaces de navegación. Deja pasar al navegador el
+    // Ctrl/Cmd-clic, el Shift-clic y el clic central: es justo lo que hace
+    // útiles los href de verdad (abrir en pestaña nueva, copiar el enlace).
+    const enlace = (p) => (ev) => {
+      if(ev && (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button === 1)) return;
+      if(ev && ev.preventDefault) ev.preventDefault();
+      this.ir(p);
+    };
+
     return {
       escritorio, movil: !escritorio,
       menuAbierto: s.menu && !escritorio,
@@ -693,15 +845,16 @@ class Component extends DCLogic {
       cerrarMenu: () => this.setState({ menu:false }),
       dias,
       navItems: PAGS.map(p => ({
-        label:p.label, activo:s.pag === p.id, inactivo:s.pag !== p.id,
-        ir:(ev) => { if(ev && ev.preventDefault) ev.preventDefault(); this.ir(p.id); }
+        label:p.label, href:RUTAS[p.id], activo:s.pag === p.id, inactivo:s.pag !== p.id,
+        ir:enlace(p.id)
       })),
-      irInicio:(ev) => { if(ev) ev.preventDefault(); this.ir("inicio"); },
-      irEjes:() => this.ir("ejes"),
-      irPrensa:() => this.ir("prensa"),
-      irAgenda:() => this.ir("agenda"),
-      irSumate:(ev) => { if(ev && ev.preventDefault) ev.preventDefault(); this.ir("sumate"); },
-      pdfPendiente:(ev) => { ev.preventDefault(); this.ir("ejes"); },
+      irInicio:enlace("inicio"),
+      irEjes:enlace("ejes"),
+      irPrensa:enlace("prensa"),
+      irAgenda:enlace("agenda"),
+      irSumate:enlace("sumate"),
+      // El PDF del programa todavía no existe: de momento lleva al programa web.
+      pdfPendiente:enlace("ejes"),
       esInicio:s.pag === "inicio", esQuienes:s.pag === "quienes", esEjes:s.pag === "ejes",
       esPrensa:s.pag === "prensa", esAgenda:s.pag === "agenda", esSumate:s.pag === "sumate",
       ejesCorto: EJES.map(e => mapEje(e, false)),

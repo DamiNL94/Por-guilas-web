@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Borrar mis datos · Por Águilas</title>
+<meta name="description" content="Pide que borremos todo lo que tengamos tuyo. Sin dar explicaciones.">
+<meta name="robots" content="noindex,follow">
+<link rel="icon" href="/logo/por-aguilas-isotipo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/legal/legal.css">
+</head>
+<body>
+<a class="pa-salto" href="#contenido">Ir al contenido</a>
+
+<header class="pa-cab">
+  <div class="pa-env">
+    <a class="pa-marca" href="/">
+      <img src="/logo/por-aguilas-isotipo.svg" alt="">
+      <span><b><i>Por</i> <em>Águilas</em></b><small>Municipales 2027</small></span>
+    </a>
+  </div>
+</header>
+
+<main id="contenido">
+<div class="pa-env">
+  <p class="pa-eyebrow">Derecho de supresión</p>
+  <h1>Borrar mis datos</h1>
+  <p style="font-size:19px">Lo más rápido es el enlace de baja que va al final de cualquier correo nuestro: un clic y listo. Si no lo encuentras o ya lo has borrado, pídelo desde aquí.</p>
+
+  <!-- Formulario HTML normal, sin JavaScript: el servidor responde con una
+       redirección. Así funciona aunque falle el script, aunque el navegador
+       sea antiguo y aunque haya una CSP estricta. -->
+  <form method="post" action="/api/sumate/borrar" style="display:grid;gap:16px;max-width:480px;margin-top:32px">
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <label for="email" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Tu correo electrónico</label>
+      <input id="email" name="email" type="email" required autocomplete="email" maxlength="254"
+             style="font-family:inherit;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px;min-height:50px">
+    </div>
+    <!-- Trampa para robots: si viene relleno, se ignora la petición en silencio. -->
+    <div aria-hidden="true" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden">
+      <label for="pa-web-b">No rellenes esto</label>
+      <input id="pa-web-b" name="pa_web" type="text" tabindex="-1" autocomplete="off">
+    </div>
+    <div>
+      <button type="submit" class="pa-btn" style="border:2px solid #D9351F;background:#D9351F">Pedir el borrado</button>
+    </div>
+  </form>
+
+  <div class="pa-dest">
+    <h2 style="margin-top:0">Cómo funciona</h2>
+    <ol>
+      <li>Te mandamos un correo con un enlace, para asegurarnos de que eres tú quien lo pide y no un tercero.</li>
+      <li>Pinchas el enlace.</li>
+      <li>Se borra la ficha entera: correo, nombre, lo que nos contaras y la prueba del consentimiento. <strong>No queda nada</strong> y no se puede deshacer.</li>
+    </ol>
+    <p style="margin-bottom:0">Por seguridad te contestamos siempre lo mismo, estés en la lista o no. Así nadie puede usar esta página para averiguar si otra persona se apuntó.</p>
+  </div>
+
+  <p>Si prefieres hacerlo por escrito, o quieres ejercer cualquier otro derecho —acceso, rectificación, portabilidad—, escribe a <a href="mailto:hola@poraguilas.es">hola@poraguilas.es</a>. Todo lo demás está en la <a href="/legal/privacidad">política de privacidad</a>.</p>
+</div>
+</main>
+
+<footer class="pa-pie">
+  <div class="pa-env pa-pie-fila">
+    <span>© 2026 Por Águilas · Municipales 2027</span>
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="/legal/aviso-legal">Aviso legal</a>
+      <a href="/legal/privacidad">Privacidad</a>
+      <a href="/legal/cookies">Cookies</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
