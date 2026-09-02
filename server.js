@@ -76,6 +76,7 @@ const TIPOS = {
   ".woff2": "font/woff2",
   ".ttf": "font/ttf",
   ".pdf": "application/pdf",
+  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   ".txt": "text/plain; charset=utf-8",
   ".xml": "application/xml; charset=utf-8",
   ".webmanifest": "application/manifest+json",
