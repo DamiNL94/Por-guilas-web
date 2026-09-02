@@ -107,11 +107,13 @@ a:hover{color:#0E7A5F}
    formularios con más de treinta campos, etiquetas, casillas y mensajes de
    error, y repetir la misma declaración treinta veces es la forma más fiable
    de que una de ellas acabe distinta de las demás. Todos los valores salen del
-   manual de marca; ninguno introduce un color nuevo.
+   manual de marca, salvo el morado que sustituye al bermellón como color de
+   acento y que todavía hay que reflejar en MANUAL-DE-MARCA.md.
 
    Contrastes comprobados sobre blanco: negro #141414 18,4:1 · verde #0E7A5F
    5,3:1 · gris de etiqueta #403B3A 11,0:1 · gris opcional #6F6867 5,4:1 ·
-   bermellón #D9351F 4,7:1. Todos por encima del 4,5:1 que exige la AA. */
+   morado #7C2BD9 6,5:1. Todos por encima del 4,5:1 que exige la AA.
+   El bermellón #D9351F 4,7:1 queda ya solo para los estados de error. */
 .pa-f{display:grid;gap:18px;max-width:560px}
 .pa-c{display:flex;flex-direction:column;gap:7px}
 .pa-fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:16px}
@@ -164,15 +166,20 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
    acabe distinta de las demás, y además la impresión necesita poder decir
    «todos los ejes empiezan en página nueva» en una sola regla.
 
-   Todos los valores salen del manual de marca; ninguno introduce un color
-   nuevo. Contrastes comprobados sobre blanco: negro #141414 18,4:1 ·
+   Todos los valores salen del manual de marca, salvo el morado que sustituye
+   al bermellón como color de acento y que todavía hay que reflejar en
+   MANUAL-DE-MARCA.md. Contrastes comprobados sobre blanco: negro #141414 18,4:1 ·
    verde #0E7A5F 5,3:1 · verde oscuro #0A5C47 7,7:1 · gris #403B3A 11,0:1 ·
-   bermellón #D9351F 4,7:1. Blanco sobre verde #0E7A5F, 5,3:1. Todos por
-   encima del 4,5:1 que exige la AA.
+   morado #7C2BD9 6,5:1. Blanco sobre verde #0E7A5F, 5,3:1. Todos por
+   encima del 4,5:1 que exige la AA. Sobre el negro #141414 del pie y del
+   contador este morado no llega (2,7:1): allí va el morado claro #B98CFF,
+   7,2:1, igual que el verde pasa de #0E7A5F a #3FCB9E.
 
-   El bermellón aparece solo en las cuñas y en la línea de «borrador»: es lo
-   urgente. Los números de las quince medidas van en verde oscuro a propósito,
-   porque quince cifras rojas seguidas dejan de señalar nada. */
+   El morado aparece solo en las cuñas, en el «Por» y en la línea de
+   «borrador»: es lo urgente. Los números de las quince medidas van en verde
+   oscuro a propósito, porque quince cifras de color seguidas dejan de señalar
+   nada. El bermellón #D9351F ya no es color de marca: queda como color de
+   error (campo inválido, estado fallido, botón de borrado). */
 
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -183,7 +190,7 @@ html{scroll-behavior:smooth}
 /* La cuña. Un triángulo hecho con bordes: sin fichero, sin petición y sin
    texto que un lector de pantalla pueda leer quince veces seguidas. En el
    marcado va siempre con aria-hidden. */
-.pa-cuna{display:inline-block;width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none}
+.pa-cuna{display:inline-block;width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none}
 .pa-cuna-s{border-left-width:8px;border-top-width:5px;border-bottom-width:5px}
 
 .pa-pg-cab{max-width:64ch;border-bottom:2px solid #141414;padding-bottom:clamp(26px,3.4vw,36px);margin-bottom:clamp(26px,3.4vw,36px)}
@@ -192,7 +199,7 @@ html{scroll-behavior:smooth}
 .pa-pg-lema{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(20px,2.6vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:14px 0 0;color:#0E7A5F}
 .pa-pg-meta{margin:18px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#403B3A;line-height:1.5}
 .pa-pg-meta+.pa-pg-meta{margin-top:4px}
-.pa-pg-version{margin:16px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#D9351F}
+.pa-pg-version{margin:16px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#7C2BD9}
 .pa-pg-nota{margin:14px 0 0;font-size:14.5px;line-height:1.6;color:#403B3A;max-width:72ch;text-wrap:pretty}
 
 /* Índice de la página. Es la navegación entre ejes que pide el manual: anclas
@@ -313,7 +320,7 @@ html{scroll-behavior:smooth}
     <a href="/" onClick="{{ irInicio }}" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#141414;margin-right:auto;min-width:0">
       <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:46px;height:46px;display:block;flex:none">
       <span style="min-width:0">
-        <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.6vw,23px);letter-spacing:-.035em;line-height:1;display:block;white-space:nowrap"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
+        <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.6vw,23px);letter-spacing:-.035em;line-height:1;display:block;white-space:nowrap"><i style="font-style:normal;color:#7C2BD9">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
         <span style="display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#6F6867;margin-top:5px;white-space:nowrap">Municipales 2027</span>
       </span>
     </a>
@@ -345,7 +352,7 @@ html{scroll-behavior:smooth}
 <div role="dialog" aria-label="Menú" style="position:fixed;inset:0;z-index:90;background:#fff;display:flex;flex-direction:column">
   <div style="display:flex;align-items:center;gap:12px;padding:0 clamp(20px,5vw,44px);min-height:76px;border-bottom:2px solid #141414;flex:none">
     <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:42px;height:42px;display:block">
-    <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-.035em;margin-right:auto"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
+    <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-.035em;margin-right:auto"><i style="font-style:normal;color:#7C2BD9">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
     <button type="button" onClick="{{ cerrarMenu }}" aria-label="Cerrar menú" style="background:none;border:2px solid #141414;color:#141414;font:800 13px/1 'Public Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:14px 16px;cursor:pointer;min-height:46px">Cerrar</button>
   </div>
   <nav aria-label="Principal" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:8px clamp(20px,5vw,44px) 28px">
@@ -359,7 +366,7 @@ html{scroll-behavior:smooth}
     </sc-for>
     <p style="margin:20px 14px 4px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#403B3A">Los cuatro ejes</p>
     <sc-for list="{{ ejesCorto }}" as="e" hint-placeholder-count="4">
-      <a href="{{ e.ancla }}" style="display:flex;align-items:center;gap:11px;border-bottom:1px solid #D5D0CE;color:#0A5C47;text-decoration:none;font:700 16px/1.3 'Public Sans',sans-serif;padding:15px 14px;min-height:48px"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none" aria-hidden="true"></span>Eje {{ e.n }} · {{ e.tema }}</a>
+      <a href="{{ e.ancla }}" style="display:flex;align-items:center;gap:11px;border-bottom:1px solid #D5D0CE;color:#0A5C47;text-decoration:none;font:700 16px/1.3 'Public Sans',sans-serif;padding:15px 14px;min-height:48px"><span style="width:0;height:0;border-left:8px solid #7C2BD9;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none" aria-hidden="true"></span>Eje {{ e.n }} · {{ e.tema }}</a>
     </sc-for>
     <a href="/sumate" onClick="{{ irSumate }}" style="margin-top:24px;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;font:800 16px/1 'Public Sans',sans-serif;padding:20px 22px;min-height:56px;display:flex;align-items:center;justify-content:center">Súmate a la candidatura</a>
   </nav>
@@ -370,7 +377,7 @@ html{scroll-behavior:smooth}
 
 <sc-if value="{{ esInicio }}" hint-placeholder-val="{{ true }}">
 <div>
-  <div style="background:#D9351F">
+  <div style="background:#7C2BD9">
     <div style="background:#0E7A5F;color:#fff;clip-path:polygon(0 0,100% 0,100% calc(100% - clamp(22px,3.4vw,44px)),0 100%)">
       <div style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,78px) clamp(20px,5vw,44px) calc(clamp(46px,6vw,66px) + clamp(22px,3.4vw,44px))">
         <p style="display:flex;align-items:center;gap:12px;margin:0 0 clamp(18px,3vw,26px);font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff">
@@ -406,12 +413,12 @@ html{scroll-behavior:smooth}
     <div style="display:flex;width:max-content;animation:pa-marquee 34s linear infinite">
       <div style="display:flex;align-items:center;gap:34px;padding-right:34px">
         <sc-for list="{{ marquesinaItems }}" as="m" hint-placeholder-count="5">
-          <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:{{ m.color }}">{{ m.txt }}</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none" aria-hidden="true"></span>
+          <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:{{ m.color }}">{{ m.txt }}</span><span style="width:0;height:0;border-left:11px solid #7C2BD9;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none" aria-hidden="true"></span>
         </sc-for>
       </div>
       <div aria-hidden="true" style="display:flex;align-items:center;gap:34px;padding-right:34px">
         <sc-for list="{{ marquesinaItems }}" as="m" hint-placeholder-count="5">
-          <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:{{ m.color }}">{{ m.txt }}</span><span style="width:0;height:0;border-left:11px solid #D9351F;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none" aria-hidden="true"></span>
+          <span style="font:700 clamp(19px,2.6vw,28px)/1 'Familjen Grotesk',sans-serif;letter-spacing:-.035em;white-space:nowrap;color:{{ m.color }}">{{ m.txt }}</span><span style="width:0;height:0;border-left:11px solid #7C2BD9;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none" aria-hidden="true"></span>
         </sc-for>
       </div>
     </div>
@@ -423,7 +430,7 @@ html{scroll-behavior:smooth}
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:clamp(28px,5vw,56px);align-items:center;margin-bottom:clamp(34px,5vw,48px)">
         <div style="max-width:60ch">
           <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-            <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none" aria-hidden="true"></span>
+            <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none" aria-hidden="true"></span>
             Por dónde empezamos
           </span>
           <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro cosas, dichas claras.</h2>
@@ -449,7 +456,7 @@ html{scroll-behavior:smooth}
 
       <div style="margin-top:clamp(44px,5.5vw,64px);border-top:2px solid #141414;padding-top:clamp(28px,3.5vw,38px)">
         <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none" aria-hidden="true"></span>
+          <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none" aria-hidden="true"></span>
           Las 15 medidas
         </span>
         <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(23px,2.8vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:0;text-wrap:balance">Quince medidas para empezar</h3>
@@ -471,7 +478,7 @@ html{scroll-behavior:smooth}
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
       <div style="margin-bottom:clamp(30px,4vw,42px);max-width:60ch">
         <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+          <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
           Últimas notas
         </span>
         <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Lo que hemos dicho esta semana</h2>
@@ -507,7 +514,7 @@ html{scroll-behavior:smooth}
         </div>
         <div>
           <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-            <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+            <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
             El programa
           </span>
           <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro ejes, propuestas comprobables.</h2>
@@ -516,7 +523,7 @@ html{scroll-behavior:smooth}
             <a href="/programa" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#0A5C47;border-color:#0A5C47">Leer el programa</a>
             <a href="{{ descargaHref }}" download style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;gap:9px;text-decoration:none" style-hover="background:#141414;color:#fff">Descargar el programa</a>
           </div>
-          <p style="margin:16px 0 0;font-size:14px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;max-width:46ch">El documento que se descarga es un borrador de trabajo. Mientras lo sea, lo que manda es esta web.</p>
+          <p style="margin:16px 0 0;font-size:14px;color:#403B3A;border-left:5px solid #7C2BD9;padding:2px 0 2px 14px;max-width:46ch">El documento que se descarga es un borrador de trabajo. Mientras lo sea, lo que manda es esta web.</p>
         </div>
       </div>
     </div>
@@ -526,7 +533,7 @@ html{scroll-behavior:smooth}
     <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
       <div style="margin-bottom:clamp(30px,4vw,42px);max-width:60ch">
         <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+          <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
           Próximas citas
         </span>
         <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Dónde nos vas a encontrar</h2>
@@ -557,7 +564,7 @@ html{scroll-behavior:smooth}
   <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
     <div style="max-width:62ch;margin-bottom:clamp(32px,4.5vw,46px)">
       <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
         Quiénes somos
       </span>
       <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Una candidatura de Águilas, hecha en Águilas.</h2>
@@ -577,7 +584,7 @@ html{scroll-behavior:smooth}
         <div style="aspect-ratio:3/4;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border:2px solid #D5D0CE;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
           <span style="font:600 11.5px/1.7 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>grupo de la candidatura<br>en la calle, luz natural</span>
         </div>
-        <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:22px 0 0;line-height:1.55">Pendiente de completar: nombres del equipo, trayectoria de la persona candidata a la Alcaldía y enlace a los estatutos internos.</p>
+        <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #7C2BD9;padding:2px 0 2px 14px;margin:22px 0 0;line-height:1.55">Pendiente de completar: nombres del equipo, trayectoria de la persona candidata a la Alcaldía y enlace a los estatutos internos.</p>
       </div>
     </div>
   </div>
@@ -720,7 +727,7 @@ html{scroll-behavior:smooth}
   <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
     <div style="max-width:62ch;margin-bottom:clamp(28px,4vw,40px)">
       <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
         Sala de prensa
       </span>
       <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Notas de prensa y posiciones públicas.</h2>
@@ -765,13 +772,13 @@ html{scroll-behavior:smooth}
   <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
     <div style="max-width:62ch;margin-bottom:clamp(28px,4vw,40px)">
       <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
         Agenda
       </span>
       <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Actos, asambleas y calendario electoral.</h2>
     </div>
 
-    <div style="background:#141414;color:#fff;padding:clamp(24px,3.5vw,36px);display:flex;align-items:center;gap:clamp(20px,3vw,32px);flex-wrap:wrap;border-left:14px solid #D9351F">
+    <div style="background:#141414;color:#fff;padding:clamp(24px,3.5vw,36px);display:flex;align-items:center;gap:clamp(20px,3vw,32px);flex-wrap:wrap;border-left:14px solid #B98CFF">
       <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(46px,8vw,66px);line-height:.9;letter-spacing:-.05em;color:#3FCB9E;font-variant-numeric:tabular-nums" data-pa-dias="{{ fechaElectoralIso }}">{{ dias }}</span>
       <p style="font-size:clamp(15.5px,1.7vw,16.5px);max-width:46ch;color:#C8D8DE;margin:0;line-height:1.55;text-wrap:pretty">días para la jornada electoral. La fecha prevista es el <strong style="color:#fff">domingo 23 de mayo de 2027</strong>, cuarto domingo de mayo, a confirmar en la convocatoria oficial.</p>
     </div>
@@ -809,7 +816,7 @@ html{scroll-behavior:smooth}
         </li>
       </sc-for>
     </ul>
-    <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:8px 0 0;max-width:62ch;line-height:1.55">Los plazos legales son orientativos y hay que contrastarlos con el calendario oficial que publique la Junta Electoral una vez convocadas las elecciones.</p>
+    <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #7C2BD9;padding:2px 0 2px 14px;margin:8px 0 0;max-width:62ch;line-height:1.55">Los plazos legales son orientativos y hay que contrastarlos con el calendario oficial que publique la Junta Electoral una vez convocadas las elecciones.</p>
   </div>
 </div>
 </sc-if>
@@ -819,7 +826,7 @@ html{scroll-behavior:smooth}
   <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
     <div style="max-width:62ch;margin-bottom:clamp(32px,4.5vw,46px)">
       <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
         Súmate
       </span>
       <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Aquí no hace falta carné.</h2>
@@ -943,11 +950,11 @@ html{scroll-behavior:smooth}
             <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px">Colabora con tu tiempo</h3>
             <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">No hay tarea pequeña. Esto no es otro formulario: si te encaja algo de la lista, márcalo arriba en «cómo quieres colaborar» y te escribimos.</p>
             <ul style="margin:18px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Reparto.</b> Buzoneo por barriadas y diputaciones, y pegada de cartelería.</span></li>
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Mesas.</b> Mesas informativas en el paseo, en el mercado y en las fiestas de barrio.</span></li>
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Redes.</b> Escribir, grabar, editar vídeo y fotografiar los actos.</span></li>
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Datos.</b> Rastrear presupuestos y contratos municipales, y traducirlos a lenguaje claro.</span></li>
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Jornada electoral.</b> Interventores y apoderados para el 23 de mayo.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #7C2BD9;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Reparto.</b> Buzoneo por barriadas y diputaciones, y pegada de cartelería.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #7C2BD9;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Mesas.</b> Mesas informativas en el paseo, en el mercado y en las fiestas de barrio.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #7C2BD9;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Redes.</b> Escribir, grabar, editar vídeo y fotografiar los actos.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #7C2BD9;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Datos.</b> Rastrear presupuestos y contratos municipales, y traducirlos a lenguaje claro.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #7C2BD9;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Jornada electoral.</b> Interventores y apoderados para el 23 de mayo.</span></li>
             </ul>
           </div>
         </div>
@@ -958,7 +965,7 @@ html{scroll-behavior:smooth}
     <div style="margin-top:clamp(48px,6vw,78px);border-top:2px solid #141414;padding-top:clamp(32px,4vw,46px)">
       <div style="max-width:62ch;margin-bottom:clamp(26px,3.5vw,36px)">
         <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+          <span style="width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
           Donaciones
         </span>
         <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:0;text-wrap:balance">Una campaña cuesta dinero, y el nuestro no sale de ningún banco.</h3>
@@ -1011,7 +1018,7 @@ html{scroll-behavior:smooth}
              puede elegir a qué se dedica. El resto de las reglas de la LO 8/2007
              están donde les toca: las que afectan a quien dona, en las cinco
              declaraciones del formulario; las demás, en el aviso legal. -->
-        <p style="margin:20px 0 0;font-size:14.5px;line-height:1.6;color:#403B3A;border-left:5px solid #D9351F;padding:4px 0 4px 14px">{{ avisoNoRevocable }} {{ avisoNoFinalista }}</p>
+        <p style="margin:20px 0 0;font-size:14.5px;line-height:1.6;color:#403B3A;border-left:5px solid #7C2BD9;padding:4px 0 4px 14px">{{ avisoNoRevocable }} {{ avisoNoFinalista }}</p>
       </div>
 
       <div style="margin-top:clamp(30px,4vw,46px)">
@@ -1120,7 +1127,7 @@ html{scroll-behavior:smooth}
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
           <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:46px;height:46px;display:block;flex:none">
           <span>
-            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.035em;line-height:1;display:block;color:#fff"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#3FCB9E;font-weight:700">Águilas</b></span>
+            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.035em;line-height:1;display:block;color:#fff"><i style="font-style:normal;color:#B98CFF">Por</i> <b style="color:#3FCB9E;font-weight:700">Águilas</b></span>
             <span style="display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9A9291;margin-top:5px">Municipales 2027</span>
           </span>
         </div>
