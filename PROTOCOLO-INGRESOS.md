@@ -29,7 +29,7 @@ cruzan.
 
 ```bash
 curl -s -H "Authorization: Bearer $ADMIN_TOKEN" \
-  "https://poraguilas.es/api/admin/donaciones?estado=comunicada"
+  "https://por-aguilas.es/api/admin/donaciones?estado=comunicada"
 ```
 
 El listado trae, por cada comunicación: nombre, apellidos, DNI, importe, fecha prevista y el

@@ -122,7 +122,7 @@ código. Deja la tarjeta como está y anota lo que haría falta.
 - **Servidor**: ampliar el `server.js` actual (sin dependencias) o pasar a
   Express/Fastify. Si añades dependencias, justifica cada una.
 - **Correo transaccional** para el doble opt-in: Resend, Brevo o Mailjet. Ten en
-  cuenta que el dominio `poraguilas.es` necesitará SPF, DKIM y DMARC.
+  cuenta que el dominio `por-aguilas.es` necesitará SPF, DKIM y DMARC.
 - Cómo mantener el sitio servido y la API en el mismo servicio y puerto
   (`process.env.PORT`), sin CORS ni segundo despliegue.
 

@@ -1,0 +1,96 @@
+/* Generado por scripts/compilar.js. No editar a mano:
+   los estilos viven en index.html y se regeneran al compilar. */
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#FFFFFF;color:#141414;font-family:"Public Sans","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#0A5C47;text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:#0E7A5F}
+:focus-visible{outline:3px solid #0E7A5F;outline-offset:2px}
+@keyframes pa-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* --- Formularios de Súmate y de donaciones ---------------------------------
+   El resto de la página va con estilos en línea, nodo a nodo. Aquí no: son dos
+   formularios con más de treinta campos, etiquetas, casillas y mensajes de
+   error, y repetir la misma declaración treinta veces es la forma más fiable
+   de que una de ellas acabe distinta de las demás. Todos los valores salen del
+   manual de marca; ninguno introduce un color nuevo.
+
+   Contrastes comprobados sobre blanco: negro #141414 18,4:1 · verde #0E7A5F
+   5,3:1 · gris de etiqueta #403B3A 11,0:1 · gris opcional #6F6867 5,4:1 ·
+   bermellón #D9351F 4,7:1. Todos por encima del 4,5:1 que exige la AA. */
+.pa-f{display:grid;gap:18px;max-width:560px}
+.pa-c{display:flex;flex-direction:column;gap:7px}
+.pa-fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:16px}
+.pa-lab{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A}
+.pa-opt{font-weight:600;text-transform:none;letter-spacing:0;color:#6F6867}
+.pa-in{font:400 16px/1.4 'Public Sans',sans-serif;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:13px 14px;min-height:50px;width:100%;border-radius:0}
+textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
+.pa-in:focus{border-color:#0E7A5F}
+.pa-in[aria-invalid="true"]{border-color:#D9351F}
+/* Regiones vivas (errores de campo y aviso de copiado). El hueco existe SIEMPRE
+   en el DOM, aunque esté vacío: un aria-live que se crea a la vez que su
+   contenido no lo anuncia, porque el lector de pantalla necesita estar ya
+   observando la región cuando cambia.
+   El detalle que obliga a escribirlo así: el runtime de Claude Design envuelve
+   cada interpolación en un <span class="sc-interp">, de modo que el párrafo
+   NUNCA está vacío y :empty sobre él no serviría de nada. El filete y el
+   espacio se cuelgan por eso del span, que sí queda vacío cuando no hay texto. */
+.pa-err,.pa-vivo{margin:0}
+.pa-err>.sc-interp,.pa-vivo>.sc-interp{display:block}
+.pa-err>.sc-interp:empty,.pa-vivo>.sc-interp:empty{display:none}
+.pa-err>.sc-interp{font-size:14.5px;line-height:1.5;color:#141414;font-weight:600;border-left:4px solid #D9351F;padding:1px 0 1px 11px}
+.pa-vivo>.sc-interp{font-size:15px;line-height:1.55;color:#141414;border-left:5px solid #0E7A5F;padding:6px 0 6px 14px}
+/* Variante con texto fijo alrededor de la interpolación: ahí el recuadro va en
+   el propio párrafo, porque siempre tiene algo que enseñar. */
+.pa-err-fijo{margin:0;font-size:14.5px;line-height:1.5;color:#141414;font-weight:600;border-left:4px solid #D9351F;padding:1px 0 1px 11px}
+.pa-err-fijo>.sc-interp{display:inline}
+.pa-set{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pa-leg{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A;padding:0;margin:0 0 2px}
+.pa-chk{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.5;color:#403B3A;cursor:pointer}
+.pa-chk input{margin:3px 0 0;accent-color:#0E7A5F;width:20px;height:20px;flex:none}
+.pa-chk b{color:#141414;font-weight:700}
+.pa-bt{font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:17px 26px;cursor:pointer;min-height:54px}
+.pa-bt:hover{background:#0A5C47;border-color:#0A5C47}
+.pa-bt[disabled]{background:#6F6867;border-color:#6F6867;cursor:progress}
+.pa-bt2{font:800 13.5px/1 'Public Sans',sans-serif;background:#fff;color:#0A5C47;border:2px solid #0E7A5F;padding:12px 16px;cursor:pointer;min-height:46px}
+.pa-bt2:hover{background:#EFF4F1}
+.pa-est{margin:0;font-size:15px;line-height:1.55;color:#141414;border-left:5px solid #0E7A5F;padding:6px 0 6px 14px}
+.pa-est-mal{border-left-color:#D9351F}
+.pa-dat{font:700 15px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;color:#141414;background:#EFF4F1;border:2px solid #D5D0CE;padding:12px 14px;word-break:break-all;user-select:all}
+.pa-nota{font-size:14px;line-height:1.55;color:#403B3A;margin:0}
+/* Trampa para robots. Fuera de la pantalla, fuera del orden de tabulación y
+   oculta al lector de pantalla: quien rellene esto no es una persona. */
+.pa-trampa{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+</span>
+
+/* Reglas de style-hover y style-focus de la plantilla. */
+.pa-g0:hover{color:#0A5C47}
+.pa-g1:hover{color:#0A5C47}
+.pa-g2:hover{color:#0A5C47}
+.pa-g3:hover{color:#0A5C47}
+.pa-g4:hover{background:#0A5C47;border-color:#0A5C47}
+.pa-g5:hover{background:#141414;color:#fff}
+.pa-g6:hover{background:#141414;color:#fff}
+.pa-g7:hover{background:#0A5C47;border-color:#0A5C47}
+.pa-g8:hover{background:#141414;color:#fff}
+.pa-g9:hover{background:#141414;color:#fff}
+.pa-g5:hover{border-color:#141414;color:#141414}
+.pa-g6:hover{border-color:#141414;color:#141414}
+.pa-g7:hover{border-color:#141414;color:#141414}
+.pa-g8:hover{border-color:#141414;color:#141414}
+.pa-g4:hover{color:#0A5C47}
+.pa-g5:hover{background:#0A5C47;border-color:#0A5C47}
+
+/* La cabecera decide con media queries lo que antes decidía JavaScript
+   midiendo la ventana. Así la página correcta llega ya pintada. */
+@media (max-width:899px){ .pa-solo-escritorio{display:none!important} }
+@media (min-width:900px){ .pa-solo-movil{display:none!important} }
+
+/* Los chips del filtro de prensa. Antes el aspecto del activo venía
+   horneado en el marcado, porque quien decidía cuál lo estaba era la
+   plantilla al pintarse. Ahora lo decide el usuario, así que el estilo
+   cuelga de aria-pressed: un solo sitio, y además el atributo que un
+   lector de pantalla ya anuncia. */
+[data-pa-tema][aria-pressed]{background:transparent;border:2px solid #D5D0CE;color:#403B3A}
+[data-pa-tema][aria-pressed="true"]{background:#0E7A5F;border-color:#0E7A5F;color:#fff}

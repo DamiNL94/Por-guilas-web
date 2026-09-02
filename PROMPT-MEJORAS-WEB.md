@@ -185,7 +185,7 @@ Faltan cosas concretas:
 - Todo el contenido es de ejemplo, como avisa la propia barra negra superior:
   notas de prensa, fechas de agenda y datos de contacto. La barra se controla
   con la prop `avisoBorrador` y hay que quitarla antes de publicar.
-- `hola@poraguilas.es` aparece en el pie: comprueba que el buzón existe de
+- `admin@por-aguilas.es` aparece en el pie: comprueba que el buzón existe de
   verdad antes de publicitarlo.
 
 ---

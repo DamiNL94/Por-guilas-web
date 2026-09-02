@@ -14,39 +14,39 @@
      órganos suyos y usan ese mismo NIF. Antes esto estaba mal declarado y se
      ha corregido en las tres páginas.
 
-     Lo que falta por rellenar:
+     YA NO QUEDA NINGÚN HUECO DE TEXTO  ·  2 de septiembre de 2026
+     El arranque dejó de bloquear por motivos legales. Este bloque se conserva
+     porque sigue haciendo falta para otra cosa: para que quien edite estas
+     páginas sepa de dónde sale cada dato y qué no debe escribir aquí a mano.
 
-       [SEDE_AGUILAS]       Dirección de la sede de IU en Águilas. Es la que
-                            cumple como "datos de contacto del responsable"
-                            (art. 13.1.a RGPD) en la política y como
-                            "establecimiento permanente en España"
-                            (art. 10.1.a LSSI) en el aviso legal. Publicarla
-                            requiere permiso de la organización, y lo hay.
-                            BLOQUEA mientras no haya ninguna dirección.  FALTA
-       [DOMICILIO_SOCIAL]   Domicilio social de Izquierda Unida en el Registro
-                            de Partidos. NO bloquea: la LSSI admite en su lugar
-                            la dirección del establecimiento permanente. Pero es
-                            un dato público y quita cualquier duda.      FALTA
-       [INSCRIPCION]        Datos de inscripción de Izquierda Unida en el
-                            Registro de Partidos Políticos del Ministerio
-                            del Interior: tomo, folio e inscripción.      FALTA
-       [DPD]                Contacto del delegado de protección de datos.
-                            Izquierda Unida trata datos de opinión política
-                            a gran escala, así que está obligada a tenerlo
-                            (art. 37 RGPD y art. 34 LOPDGDD). Es muy
-                            probable que ya esté designado: hay que pedirle
-                            a la organización estatal su contacto.        FALTA
-
-     Ya resueltos, y por qué no se escriben aquí:
+     De dónde sale cada dato:
 
        [RESPONSABLE_LEGAL]  Izquierda Unida. Vive en config.responsable
                             (src/config.js) y el arranque comprueba que las
                             páginas legales dicen lo mismo.
-       [NIF]                Puesto. Mismo sitio. El arranque valida además su
-                            dígito de control.
-       [EMAIL_CONTACTO]     hola@poraguilas.es. Falta comprobar que el buzón
-                            existe y que lo lee alguien.
-       [DOMINIO_WEB]        poraguilas.es.
+       [NIF]                G78269206. Mismo sitio. El arranque valida además
+                            su dígito de control.
+       [SEDE_AGUILAS]       Calle Echegaray, 3, bajo A · Águilas (Murcia). Es
+                            la que cumple como "datos de contacto del
+                            responsable" (art. 13.1.a RGPD) en la política y
+                            como "establecimiento permanente en España"
+                            (art. 10.1.a LSSI) en el aviso legal. El arranque
+                            bloquea si no queda ninguna dirección.
+       [DOMICILIO_SOCIAL]   Avenida de la Albufera, 9 · Madrid. Es el que
+                            consta en el Registro de Partidos y NO coincide con
+                            la sede federal de hoy, Calle Villablanca, 53-55.
+                            Se publican las dos, cada una con su etiqueta: el
+                            asiento registral está sin actualizar desde 1992 y
+                            disimularlo sería peor que enseñarlo.
+       [INSCRIPCION]        Registro de Partidos Políticos del Ministerio del
+                            Interior, 2 de noviembre de 1992. Hay una prueba
+                            que falla si el aviso legal deja de nombrarlos.
+       [DPD]                dpd@izquierdaunida.org · Calle Villablanca 53-55,
+                            28032 Madrid. Ya estaba designado por la
+                            organización estatal: no hubo que nombrar a nadie
+                            desde Águilas.
+       [EMAIL_CONTACTO]     admin@por-aguilas.es.
+       [DOMINIO_WEB]        por-aguilas.es, CON GUION.
        [PLAZO_CONSERVACION] 30 días sin confirmar · 12 meses la IP · hasta el
                             30-11-2027 la lista · 4 años las donaciones.
        [IBAN]               No se escribe aquí a propósito: vive SOLO en
@@ -55,12 +55,13 @@
                             aparece a mano en ningún fichero.
        [TITULAR_CUENTA]     Izquierda Unida Región de Murcia, mismo sitio.
 
-     Y dos que no son placeholders de texto pero bloquean igual:
+     Lo que sigue pendiente. No es texto de esta página, pero bloquea igual:
 
        · Contrato de encargado del tratamiento (art. 28 RGPD) firmado con
          Brevo y con Railway.
        · Confirmar si la cuenta de donaciones es de uso exclusivo y está
          comunicada al Tribunal de Cuentas (art. 8 LO 8/2007).
+       · Comprobar que admin@por-aguilas.es existe y que lo lee alguien.
 
      La lista completa, con quién hace cada cosa, está en README-DESPLIEGUE.md.
      =========================================================================
@@ -75,7 +76,7 @@
 <!-- Identificador de versión del texto de consentimiento. El servidor lo lee al
      arrancar y aborta si no coincide con el suyo: así no se puede guardar un
      consentimiento que apunte a un texto distinto del publicado. -->
-<meta name="pa-version-politica" content="privacidad-2026-09-03">
+<meta name="pa-version-politica" content="privacidad-2026-09-05">
 <link rel="icon" href="/logo/por-aguilas-isotipo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/legal/legal.css">
 </head>
@@ -96,18 +97,20 @@
 
   <p class="pa-eyebrow">Información legal</p>
   <h1>Política de privacidad</h1>
-  <p class="pa-fecha">Versión <strong>privacidad-2026-09-03</strong> · en vigor desde el 3 de septiembre de 2026. Si cambiamos algo, cambia la versión y te lo contamos antes.</p>
-  <p class="pa-fecha"><strong>Cambios respecto a la versión anterior.</strong> Hemos corregido quién es el responsable del tratamiento: es <strong>Izquierda Unida</strong>, con NIF G78269206, y no la asamblea local, que no es una entidad jurídica separada. Con ello cambia también la casilla de cesión, que antes pedía permiso para comunicar los datos a Izquierda Unida —lo que no era una cesión, porque es el mismo responsable— y ahora pregunta solo por el Partido Comunista de España, que es la única organización distinta que hay en juego.</p>
+  <p class="pa-fecha">Versión <strong>privacidad-2026-09-05</strong> · en vigor desde el 5 de septiembre de 2026. Si cambiamos algo, cambia la versión y te lo contamos antes.</p>
+  <p class="pa-fecha"><strong>Cambios respecto a la versión anterior.</strong> Hemos <strong>retirado la casilla que permitía ceder tus datos al Partido Comunista de España</strong>. Con ella desaparece la única vía por la que tu ficha podía salir hacia otra organización: ahora no se cede a nadie, y no es una promesa, es que ya no existe ni la casilla ni el sitio donde guardar ese permiso.</p>
+  <p class="pa-fecha">De las versiones anteriores se mantiene lo demás: el responsable es <strong>Izquierda Unida</strong>, con NIF G78269206, y no la asamblea local, que no es una entidad jurídica separada; las casillas dicen primero a qué te apuntas —la candidatura— y después quién custodia los datos; y la dirección de contacto es <a href="mailto:admin@por-aguilas.es">admin@por-aguilas.es</a>.</p>
   <p class="pa-fecha">De la versión anterior se mantiene lo demás: el tratamiento de las <a href="#donaciones">comunicaciones de donación</a> con su propia base jurídica y sus propios plazos, los permisos del formulario de Súmate en casillas separadas, y el teléfono recogido solo de quien marca la casilla de colaborar.</p>
 
   <div class="pa-dest">
     <h2 style="margin-top:0">En corto</h2>
     <ul>
+      <li>Te apuntas a <strong>Por Águilas</strong>, que es una candidatura municipal, no a un partido. Quien custodia los datos y responde de ellos es Izquierda Unida, y te lo decimos aquí y en la propia casilla.</li>
       <li>Solo recogemos datos si los escribes tú, en el formulario de <a href="/sumate">Súmate</a> o en el de aviso de donación.</li>
       <li>Apuntarte revela tu afinidad política. Eso es un dato especialmente protegido y por eso te pedimos un permiso expreso, no un visto bueno genérico.</li>
       <li>Son <strong>dos cosas distintas y no se mezclan</strong>: apuntarte a la lista va con tu permiso y puedes retirarlo cuando quieras; avisarnos de una donación va con una obligación legal que no depende de tu permiso, porque la ley de financiación de partidos nos obliga a saber quién dona.</li>
       <li>Los usamos para hablar contigo sobre la candidatura y, en el caso de las donaciones, para rendir cuentas de ellas. Para nada más.</li>
-      <li><strong>No vendemos la lista ni la compartimos con empresas.</strong> Sale de Izquierda Unida en un solo caso: si marcas la casilla del <strong>Partido Comunista de España</strong>, que es voluntaria y va aparte.</li>
+      <li><strong>No cedemos tu ficha a nadie. A nadie.</strong> Ni a otros partidos, ni al Partido Comunista, ni a empresas. Los únicos que la tocan son los dos proveedores técnicos que hacen falta para que esto funcione, y trabajan siguiendo nuestras instrucciones.</li>
       <li>Puedes borrarte entero cuando quieras, desde el enlace que va en todos nuestros correos, sin dar explicaciones y sin hablar con nadie.</li>
       <li>La web no tiene cookies ni analítica. Nadie te sigue por aquí.</li>
     </ul>
@@ -121,7 +124,7 @@
       <tr><th>NIF</th><td>G78269206</td></tr>
       <tr><th>Dirección de contacto</th><td>Calle Echegaray, 3, bajo A · Águilas (Murcia). Es la sede desde la que se lleva la candidatura, y donde te contestarán si escribes por carta.</td></tr>
       <tr><th>Domicilio social</th><td>Avenida de la Albufera, 9 · Madrid — el que consta en el Registro de Partidos Políticos, donde Izquierda Unida está inscrita desde el 2 de noviembre de 1992. La sede federal está hoy en Calle Villablanca, 53-55, 28032 Madrid.</td></tr>
-      <tr><th>Correo de contacto</th><td><a href="mailto:hola@poraguilas.es">hola@poraguilas.es</a></td></tr>
+      <tr><th>Correo de contacto</th><td><a href="mailto:admin@por-aguilas.es">admin@por-aguilas.es</a></td></tr>
       <tr><th>Delegado de protección de datos</th><td><a href="mailto:dpd@izquierdaunida.org">dpd@izquierdaunida.org</a> · Calle Villablanca 53-55, 28032 Madrid. Es el delegado de Izquierda Unida, y puedes escribirle directamente sin pasar por nosotros.</td></tr>
     </tbody>
   </table>
@@ -192,11 +195,7 @@
         <td><strong>Tu consentimiento</strong>, en una casilla aparte de la anterior.</td>
         <td>Sí, y al retirarlo se borra el teléfono.</td>
       </tr>
-      <tr>
-        <td>Comunicar tus datos al Partido Comunista de España</td>
-        <td><strong>Tu consentimiento</strong>, en una tercera casilla aparte.</td>
-        <td>Sí. Si no la marcas, no salen de Izquierda Unida.</td>
-      </tr>
+
       <tr>
         <td>Los datos de tu aviso de donación</td>
         <td><strong>Obligación legal</strong> — art. 6.1.c RGPD, para cumplir la Ley Orgánica 8/2007 de financiación de partidos y la normativa fiscal y contable.</td>
@@ -232,11 +231,13 @@
   <p>Los borrados de la lista no dependen de que alguien se acuerde de hacerlos: están programados en el sistema y se ejecutan solos. El de las donaciones no, y es a propósito: un borrado automático de datos que la ley obliga a conservar sería un fallo, no una garantía. Ese se revisa a mano cuando toca.</p>
 
   <h2>6. Quién más ve tus datos</h2>
-  <p><strong>No vendemos tus datos ni los compartimos con nadie que te quiera vender algo.</strong> Hay tres supuestos en los que salen de aquí, y los tres se explican abajo: si tú marcas la casilla de cesión, si donas, y los dos proveedores técnicos que necesitamos para que esto funcione.</p>
+  <p><strong>Tu ficha de Súmate no se cede a ninguna organización.</strong> Ni a otros partidos, ni al Partido Comunista, ni a nadie que te quiera vender algo. Salen de aquí en dos supuestos, y los dos se explican abajo: si donas —donde la ley obliga— y los dos proveedores técnicos que necesitamos para que esto funcione.</p>
 
-  <h3>Si marcas la casilla del Partido Comunista</h3>
-  <p>Tus datos se comunican al <strong>Partido Comunista de España</strong>, que impulsa la candidatura junto a Izquierda Unida y es una organización distinta, con su propia personalidad jurídica. Es voluntario, va en su propia casilla y no marcarla no te penaliza en nada: sigues en la lista igual. Si no la marcas, tus datos no salen de Izquierda Unida.</p>
-  <p class="pa-aviso">Aquí antes decíamos otra cosa y estaba mal, así que lo corregimos a la vista de todo el mundo en vez de cambiarlo por lo callado. La versión anterior de esta política pedía permiso para comunicar tus datos «a Izquierda Unida y al Partido Comunista», en una sola casilla. Pero Izquierda Unida no es un tercero: <strong>es el responsable</strong>. Pedir permiso para pasarle tus datos a quien ya responde de ellos no te daba ninguna garantía, y además metía en el mismo saco la única comunicación que sí es real. Ahora la casilla pregunta solo por el PCE.</p>
+  <div class="pa-dest">
+    <h3 style="margin-top:0">Antes había una casilla para ceder tus datos al PCE. Ya no.</h3>
+    <p>Hasta el 4 de septiembre de 2026, el formulario tenía una casilla voluntaria para comunicar tus datos al <strong>Partido Comunista de España</strong>, que impulsa la candidatura junto a Izquierda Unida y es una organización distinta. <strong>Esa casilla se ha retirado.</strong></p>
+    <p style="margin-bottom:0">Lo que eso significa, dicho sin rodeos: <strong>ya no existe ninguna vía por la que tu ficha llegue a otra organización</strong>, ni marcándola ni sin marcarla. No es que hayamos dejado de preguntarlo y sigamos haciéndolo por defecto: es que no se hace, no hay dónde guardar ese permiso y no hay destinatario. Si algún día hiciera falta, tendríamos que volver a preguntártelo con una casilla nueva y una versión nueva de esta política. No se puede aplicar hacia atrás.</p>
+  </div>
 
   <h3>Si nos avisas de una donación</h3>
   <p>La cuenta en la que se ingresan las donaciones es de <strong>Izquierda Unida Región de Murcia</strong>, la federación regional, que es quien recibe el dinero y quien responde de rendirlo. Es un órgano de Izquierda Unida, el mismo responsable que figura arriba, así que tus datos de donante <strong>no cambian de manos</strong>: se mueven por dentro de la misma organización.</p>
@@ -281,7 +282,7 @@
   <div class="pa-dest">
     <h3 style="margin-top:0">Cómo se hace</h3>
     <p><strong>Lo más rápido:</strong> el enlace de baja que va al final de todos nuestros correos. Un clic y estás fuera, sin escribir a nadie ni esperar respuesta.</p>
-    <p><strong>Para lo demás:</strong> escribe a <a href="mailto:hola@poraguilas.es">hola@poraguilas.es</a>. Contestamos en un mes como máximo, que es el plazo que marca la ley, pero intentaremos que sea mucho antes.</p>
+    <p><strong>Para lo demás:</strong> escribe a <a href="mailto:admin@por-aguilas.es">admin@por-aguilas.es</a>. Contestamos en un mes como máximo, que es el plazo que marca la ley, pero intentaremos que sea mucho antes.</p>
     <p style="margin-bottom:0">Si crees que no lo hemos hecho bien, puedes reclamar ante la <strong>Agencia Española de Protección de Datos</strong> (<a href="https://www.aepd.es" rel="noopener">www.aepd.es</a>, C/ Jorge Juan 6, 28001 Madrid). No hace falta que nos avises antes, aunque nos gustaría poder arreglarlo primero.</p>
   </div>
 

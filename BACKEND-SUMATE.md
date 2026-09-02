@@ -129,7 +129,7 @@ ante la AEPD. Hay que confirmarlo con quien lleve lo orgánico antes de publicar
 Variables en `.env.example`. Las obligatorias: `DATABASE_URL`, `ADMIN_TOKEN`,
 `SECRETO_HMAC`, `URL_BASE`, `BREVO_API_KEY`.
 
-**DNS de `poraguilas.es`**, sin esto los correos van a spam:
+**DNS de `por-aguilas.es`**, sin esto los correos van a spam:
 
 - SPF: `v=spf1 include:spf.brevo.com ~all`
 - DKIM: el registro que dé Brevo al verificar el dominio.
@@ -227,7 +227,7 @@ las cuentas de la candidatura:
 Nada de esto se decide escribiendo código.
 
 Mientras tanto, si alguien quiere aportar, el camino es escribir a
-`hola@poraguilas.es` y que se lo explique una persona.
+`admin@por-aguilas.es` y que se lo explique una persona.
 
 ---
 

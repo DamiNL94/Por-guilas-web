@@ -19,7 +19,7 @@ const ESTADO = revisarPuestaEnMarcha();
 const MENSAJE_NO_LISTO = {
   ok: false,
   mensaje:
-    "El formulario todavía no está activo. Escríbenos a hola@poraguilas.es y te apuntamos a mano.",
+    "El formulario todavía no está activo. Escríbenos a admin@por-aguilas.es y te apuntamos a mano.",
 };
 
 async function manejar(req, res) {

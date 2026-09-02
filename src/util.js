@@ -269,7 +269,6 @@ function ipDe(req) {
 const CAMPO_CONSENTIMIENTO = {
   info: "consiente_info",
   colaborar: "consiente_colaborar",
-  cesion: "consiente_cesion",
   edad: "mayor_edad",
 };
 

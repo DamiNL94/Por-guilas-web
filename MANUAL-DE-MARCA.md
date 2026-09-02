@@ -174,6 +174,6 @@ Estado actual: maqueta con contenidos de ejemplo y aviso visible de borrador.
 7. Conectar el formulario de «Súmate» a un servicio de listas o correo.
 8. Aviso legal, política de privacidad (RGPD/LOPDGDD, con responsable y base jurídica) y política de cookies.
 9. Contrastar el calendario electoral con el oficial de la Junta Electoral una vez convocadas las elecciones.
-10. Decidir dominio (`poraguilas.es` como primera opción) y hosting.
+10. Decidir dominio (`por-aguilas.es` como primera opción) y hosting.
 11. Verificar el dato de 21 concejales y las cifras del eje de vivienda con fuentes citables (CREM, INE, Ministerio de Vivienda).
 12. Comprobar que ninguna otra candidatura del municipio usa un verde parecido antes de cerrar la marca.

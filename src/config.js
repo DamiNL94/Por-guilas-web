@@ -15,7 +15,7 @@ const RAIZ = path.resolve(__dirname, "..");
 // privacidad publicada. Si no coinciden, el backend se niega a aceptar altas:
 // guardar un consentimiento que apunte a un texto distinto del que la persona
 // leyó no vale nada como prueba.
-const VERSION_POLITICA = "privacidad-2026-09-03";
+const VERSION_POLITICA = "privacidad-2026-09-05";
 
 // --- Literales de las casillas -----------------------------------------------
 //
@@ -28,17 +28,41 @@ const VERSION_POLITICA = "privacidad-2026-09-03";
 // agrupar "informarme y que me cedáis" en un solo "acepto". Y ninguna marcada
 // de salida: no existe `checked` ni en el HTML ni aquí.
 
+// AQUÍ NO HAY CASILLA DE CESIÓN, Y ES A PROPÓSITO
+//
+// La hubo hasta el 4 de septiembre de 2026: pedía permiso para comunicar los
+// datos al Partido Comunista de España, que es la única organización distinta
+// del responsable que hay en juego. Se retiró por decisión de la candidatura.
+//
+// La consecuencia, que es la que importa: **sin consentimiento no hay
+// comunicación**. La lista de Súmate no sale hacia ninguna organización de
+// partido, y eso ya no es una promesa de la copy sino el estado del sistema: no
+// existe la casilla, no existe el campo, no existe la columna y no existe el
+// destinatario en la política de privacidad.
+//
+// Si algún día hiciera falta, NO se puede recuperar retroactivamente: habría
+// que volver a preguntar a cada persona, con su casilla y su nueva versión de
+// la política. Quien vuelva a añadirla que sepa eso antes de escribirla.
 const CONSENTIMIENTOS = new Map([
   [
     "info",
     {
       obligatorio: true,
+      // El orden de esta frase importa, y no es un capricho de redacción.
+      //
+      // Lo que la persona está haciendo es apuntarse a Por Águilas, y eso es lo
+      // primero que se dice. Que quien custodia los datos y responde de ellos
+      // sea Izquierda Unida es un hecho jurídico que hay que declarar —el dato
+      // es de categoría especial y el consentimiento tiene que ser informado en
+      // el momento de marcar, no en un enlace— pero es la segunda frase, no el
+      // titular. La información es la misma; el énfasis, el que corresponde.
       texto:
-        "Consiento expresamente que Izquierda Unida trate mi nombre y mi correo " +
-        "electrónico —y con ellos mi afinidad política, que es un dato de categoría " +
-        "especial— con la finalidad de informarme sobre la candidatura Por Águilas. " +
-        "Puedo retirar este consentimiento cuando quiera desde el enlace de baja de " +
-        "cualquier correo. He leído la política de privacidad.",
+        "Consiento expresamente que se traten mi nombre y mi correo electrónico —y con " +
+        "ellos mi afinidad política, que es un dato de categoría especial— para " +
+        "informarme sobre la candidatura Por Águilas. Los custodia Izquierda Unida, que " +
+        "es quien responde legalmente de ellos. Puedo retirar este consentimiento cuando " +
+        "quiera desde el enlace de baja de cualquier correo. He leído la política de " +
+        "privacidad.",
     },
   ],
   [
@@ -51,21 +75,7 @@ const CONSENTIMIENTOS = new Map([
         "solo para eso.",
     },
   ],
-  [
-    "cesion",
-    {
-      obligatorio: false,
-      // Ojo con lo que pregunta esta casilla y con lo que NO pregunta. Pasar los
-      // datos de la asamblea de Águilas a la federación regional no es una
-      // cesión: es el mismo responsable moviéndolos por dentro, y pedir permiso
-      // para eso sería fingir una garantía que no existe. La única organización
-      // distinta es el PCE, y es lo único que se pregunta aquí.
-      texto:
-        "Consiento que mis datos se comuniquen al Partido Comunista de España, que " +
-        "impulsa la candidatura junto a Izquierda Unida y es una organización distinta. " +
-        "Si no marco esta casilla, mis datos no salen de Izquierda Unida.",
-    },
-  ],
+
   [
     "edad",
     {
@@ -108,20 +118,29 @@ const DECLARACIONES = new Map([
 // Avisos que la web tiene que enseñar sí o sí junto al formulario de donación.
 // Están aquí y no sueltos en el HTML porque son contenido legal: si cambian,
 // cambia la versión de la política.
+// Los tres avisos que se enseñan junto al formulario, y solo esos.
+//
+// Hubo un cartel con las siete reglas de la LO 8/2007. Se quitó el 2 de
+// septiembre de 2026 porque cuatro de las siete ya estaban dichas donde tocaba
+// —el límite en la pista del campo importe, la prohibición de personas
+// jurídicas y la de donaciones anónimas en las declaraciones obligatorias que
+// hay que marcar— y repetirlas convertía la página en un prospecto.
+//
+// Quedan las dos que no están en ningún otro sitio y que hay que saber ANTES de
+// transferir (el dinero no vuelve, y no se puede elegir a qué se dedica) y la
+// deducción, que no es una advertencia sino una razón para donar y va en
+// positivo junto al formulario.
+//
+// El resto de las reglas siguen escritas, en el aviso legal, que es donde se va
+// a buscar el detalle legal y no a mitad de un formulario.
 const AVISOS_DONACION = {
-  limite:
-    "Máximo 50.000 € por donante y año natural (art. 5.1.b LO 8/2007). El control del " +
-    "acumulado lo lleva la federación con todas las donaciones que reciba, no solo con " +
-    "las de Águilas.",
   noFinalista:
     "La donación no es finalista: no se puede destinar a una parte concreta de la " +
     "campaña ni a un eje del programa. Va al sostenimiento general de la actividad.",
   noRevocable:
     "La donación no es revocable. Una vez hecha la transferencia no hay devolución, " +
     "salvo que resulte ser una donación nula de las que la ley obliga a devolver.",
-  notificacion:
-    "Las donaciones superiores a 25.000 € se notifican al Tribunal de Cuentas dentro de " +
-    "los tres meses siguientes (art. 5.4 LO 8/2007).",
+
   deduccion:
     "Desgrava el 20 % en el IRPF sobre una base máxima de 600 € al año (art. 68.3 de la " +
     "Ley del IRPF). Para aplicarla necesitas el certificado que emite la formación: sin " +
@@ -229,7 +248,7 @@ const RESPONSABLE = {
   inscripcion:
     "Inscrita en el Registro de Partidos Políticos del Ministerio del Interior " +
     "el 2 de noviembre de 1992",
-  email: "hola@poraguilas.es",
+  email: "admin@por-aguilas.es",
 
   // Delegado de protección de datos de Izquierda Unida, publicado por la propia
   // organización en militancia.izquierdaunida.org/dpd/privacidad_2.html. Es uno
@@ -242,9 +261,6 @@ const RESPONSABLE = {
   federacionRegional: "Izquierda Unida Región de Murcia",
   asambleaLocal: "Izquierda Unida de Águilas",
 
-  // Organización distinta de la anterior. Cualquier dato que llegue aquí sí es
-  // una cesión y necesita el consentimiento de su propia casilla.
-  organizacionAliada: "Partido Comunista de España",
 };
 
 const esPendiente = (v) => /^\s*PENDIENTE/i.test(String(v || ""));
@@ -416,9 +432,9 @@ const CONFIG = {
   databaseUrl: env("DATABASE_URL"),
   adminToken: env("ADMIN_TOKEN"),
   brevoApiKey: env("BREVO_API_KEY"),
-  remitente: env("REMITENTE", "no-responder@poraguilas.es"),
+  remitente: env("REMITENTE", "no-responder@por-aguilas.es"),
   remitenteNombre: env("REMITENTE_NOMBRE", "Por Águilas"),
-  respuestaA: env("RESPUESTA_A", "hola@poraguilas.es"),
+  respuestaA: env("RESPUESTA_A", "admin@por-aguilas.es"),
   secretoHmac: env("SECRETO_HMAC"),
   // Permite arrancar en local sin Brevo: los correos se escriben en consola.
   correoEnConsola: env("CORREO_EN_CONSOLA") === "1",
@@ -616,6 +632,29 @@ function revisarPuestaEnMarcha() {
 
   if (!CONFIG.brevoApiKey && !CONFIG.correoEnConsola) {
     problemas.push("Falta BREVO_API_KEY (o CORREO_EN_CONSOLA=1 para desarrollo local).");
+  }
+
+  // El remitente NO puede ser una dirección de Gmail, Hotmail, Yahoo y compañía.
+  //
+  // Esos dominios publican una política DMARC que dice, en esencia, "solo yo
+  // envío en mi nombre". Si Brevo manda un correo poniendo como remitente una
+  // dirección @gmail.com, la firma no alinea con el dominio y el correo lo
+  // rechazan o lo mandan a spam los propios Gmail, Outlook y Yahoo, que es
+  // donde está prácticamente toda la lista. No es una recomendación de
+  // entregabilidad: es que los correos de confirmación no llegan, y sin
+  // confirmar no hay alta.
+  //
+  // La dirección de contacto sí puede ser de Gmail —a esa escribe la gente, no
+  // el servidor— y de hecho lo es. Lo que tiene que ir en un dominio propio y
+  // verificado con SPF, DKIM y DMARC es el REMITENTE.
+  const dominioRemitente = CONFIG.remitente.split("@")[1] || "";
+  const GRATUITOS = ["gmail.com", "googlemail.com", "hotmail.com", "outlook.com", "live.com", "yahoo.com", "yahoo.es", "icloud.com", "protonmail.com", "gmx.es"];
+  if (GRATUITOS.includes(dominioRemitente.toLowerCase())) {
+    problemas.push(
+      `REMITENTE no puede ser una dirección de ${dominioRemitente}: su política DMARC hará que ` +
+        "los correos de confirmación se rechacen o acaben en spam, y sin confirmar no hay alta. " +
+        "Tiene que ser una dirección de un dominio propio verificado en Brevo."
+    );
   }
   if (CONFIG.correoEnConsola) {
     avisos.push("CORREO_EN_CONSOLA=1: los correos se imprimen, no se envían. Solo para local.");

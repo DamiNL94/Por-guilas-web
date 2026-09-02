@@ -14,7 +14,7 @@ lo mismo en otro tono y para otro público.
 | Sede federal | Calle Villablanca, 53-55 · 28032 Madrid |
 | Establecimiento desde el que se opera | Calle Echegaray, 3, bajo A · Águilas (Murcia) |
 | Delegado de protección de datos | dpd@izquierdaunida.org · Calle Villablanca 53-55, 28032 Madrid |
-| Ámbito de este registro | La web de la candidatura Por Águilas: `poraguilas.es` |
+| Ámbito de este registro | La web de la candidatura Por Águilas: `por-aguilas.es` |
 | Versión | 1 · 2 de septiembre de 2026 |
 
 > **Alcance.** Este registro cubre solo los tratamientos de esta web. Izquierda Unida tendrá los
@@ -53,22 +53,35 @@ que es categoría especial del art. 9.1 RGPD. Todo este tratamiento se diseña a
 excepción para partidos políticos; la que existía en el art. 58 bis.1 LOREG fue anulada por la
 **STC 76/2019**.
 
-Se recoge en cuatro casillas separadas, ninguna premarcada y ninguna que agrupe dos finalidades:
+Se recoge en tres casillas separadas, ninguna premarcada y ninguna que agrupe dos finalidades:
 
 | Casilla | ¿Obligatoria? | Qué autoriza |
 |---|---|---|
-| `consiente_info` | Sí | El tratamiento y el envío de información. Sin ella no hay alta. |
+| `consiente_info` | Sí | El tratamiento y el envío de información. Identifica a Izquierda Unida como quien custodia los datos, en la propia casilla y no en un enlace: el dato es de categoría especial y el consentimiento tiene que ser informado en el momento de marcar. Sin ella no hay alta. |
 | `consiente_colaborar` | No | Que se le contacte para organizar la colaboración, y el tratamiento del teléfono. |
-| `consiente_cesion` | No | La comunicación de sus datos al Partido Comunista de España. |
 | `mayor_edad` | Sí | Declaración de mayoría de edad. |
+
+**Nota sobre la redacción.** Las dos casillas de consentimiento se redactan poniendo primero la
+candidatura, que es a lo que la persona se apunta, y después la entidad que responde. Es una
+decisión de énfasis, no de contenido: la identificación del responsable está completa y en la
+propia casilla. Hay una prueba
+automática que compara, palabra por palabra, lo que la casilla enseña en pantalla con el literal que
+se guarda como prueba; si divergen, falla.
 
 **Categorías de destinatarios.**
 
 | Quién | Qué recibe | Condición |
 |---|---|---|
-| Partido Comunista de España | Los datos del alta | **Solo si marca `consiente_cesion`.** Es la única cesión real: IU-RM e IU de Águilas son órganos del propio responsable. |
 | Brevo (Sendinblue SAS) — encargado | **Solo la dirección de correo y el enlace.** Ni nombre, ni zona, ni mensaje | Siempre, para poder enviar |
 | Railway Corp. — encargado | Alojamiento de la web y de la base de datos | Siempre |
+
+**No hay ninguna cesión.** Los dos de arriba son encargados del tratamiento, no cesionarios: tratan
+los datos siguiendo nuestras instrucciones y no para fines propios. Hasta el 4 de septiembre de 2026
+había una casilla voluntaria para ceder la ficha al Partido Comunista de España; se retiró, y con
+ella la columna de la base de datos y el destinatario. **Sin consentimiento no puede haber
+comunicación**, así que no existe ninguna vía por la que la lista de Súmate salga hacia otra
+organización. Recuperarla exigiría preguntar de nuevo, con casilla y versión nuevas: no se puede
+aplicar hacia atrás.
 
 **Transferencias internacionales.** Railway Corp. es estadounidense con servidores en la Unión
 Europea; la transferencia se ampara en las **cláusulas contractuales tipo** aprobadas por la

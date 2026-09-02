@@ -35,7 +35,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/json" id="pa-donaciones">{"regimen":"ordinario","marco":"LO 8/2007","titular":"Izquierda Unida Región de Murcia","iban":"ES11 2100 8315 1913 0016 0571","conceptoPrefijo":"DONACION AGUILAS","limiteAnual":50000,"umbralNotificacion":25000,"conceptoMaximoBanco":35,"importeMinimo":1,"diasFechaPrevista":90,"deduccion":{"porcentaje":20,"baseMaxima":600},"avisos":{"limite":"Máximo 50.000 € por donante y año natural (art. 5.1.b LO 8/2007). El control del acumulado lo lleva la federación con todas las donaciones que reciba, no solo con las de Águilas.","noFinalista":"La donación no es finalista: no se puede destinar a una parte concreta de la campaña ni a un eje del programa. Va al sostenimiento general de la actividad.","noRevocable":"La donación no es revocable. Una vez hecha la transferencia no hay devolución, salvo que resulte ser una donación nula de las que la ley obliga a devolver.","notificacion":"Las donaciones superiores a 25.000 € se notifican al Tribunal de Cuentas dentro de los tres meses siguientes (art. 5.4 LO 8/2007).","deduccion":"Desgrava el 20 % en el IRPF sobre una base máxima de 600 € al año (art. 68.3 de la Ley del IRPF). Para aplicarla necesitas el certificado que emite la formación: sin certificado no hay deducción."}}</script>
+<script type="application/json" id="pa-donaciones">{"regimen":"ordinario","marco":"LO 8/2007","titular":"Izquierda Unida Región de Murcia","iban":"ES11 2100 8315 1913 0016 0571","conceptoPrefijo":"DONACION AGUILAS","limiteAnual":50000,"umbralNotificacion":25000,"conceptoMaximoBanco":35,"importeMinimo":1,"diasFechaPrevista":90,"deduccion":{"porcentaje":20,"baseMaxima":600},"avisos":{"noFinalista":"La donación no es finalista: no se puede destinar a una parte concreta de la campaña ni a un eje del programa. Va al sostenimiento general de la actividad.","noRevocable":"La donación no es revocable. Una vez hecha la transferencia no hay devolución, salvo que resulte ser una donación nula de las que la ley obliga a devolver.","deduccion":"Desgrava el 20 % en el IRPF sobre una base máxima de 600 € al año (art. 68.3 de la Ley del IRPF). Para aplicarla necesitas el certificado que emite la formación: sin certificado no hay deducción."}}</script>
 <!-- metadatos:fin -->
 <!-- Tipografías auto-alojadas: cero peticiones al servidor de fuentes de
      Google y, por tanto, cero IP de visitantes entregadas a un tercero.
@@ -238,7 +238,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:clamp(18px,3vw,32px);margin-top:clamp(38px,5.5vw,58px);padding-top:clamp(20px,3vw,26px);border-top:2px solid rgba(255,255,255,.35)">
           <div style="display:flex;flex-direction:column;gap:6px">
-            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(32px,5vw,42px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums">{{ dias }}</span>
+            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(32px,5vw,42px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums" data-pa-dias="{{ fechaElectoralIso }}">{{ dias }}</span>
             <span style="font-size:13px;color:#BFE8D8;font-weight:600;line-height:1.35">días para las municipales</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:6px">
@@ -398,7 +398,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
         Quiénes somos
       </span>
       <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Una candidatura de Águilas, hecha en Águilas.</h2>
-      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Por Águilas es un proyecto municipalista de izquierdas. Nace del trabajo de Izquierda Unida y del Partido Comunista en el municipio y se abre a personas independientes del movimiento vecinal, sindical, feminista y ecologista que quieren gobernar este pueblo de otra manera.</p>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Por Águilas es un proyecto municipalista de izquierdas hecho en el pueblo y para el pueblo. Nace del trabajo de años en el municipio y se abre a personas independientes del movimiento vecinal, sindical, feminista y ecologista que quieren gobernar este pueblo de otra manera.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
       <div style="max-width:64ch">
@@ -469,16 +469,16 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
     <div role="group" aria-label="Filtrar por tema" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(26px,3.5vw,34px)">
       <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
         <sc-if value="{{ c.activo }}">
-          <button type="button" onClick="{{ c.pick }}" aria-pressed="true" style="font:800 12.5px/1 'Public Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:13px 16px;cursor:pointer;background:#0E7A5F;border:2px solid #0E7A5F;color:#fff;min-height:44px">{{ c.label }}</button>
+          <button type="button" onClick="{{ c.pick }}" data-pa-tema="{{ c.label }}" aria-pressed="true" style="font:800 12.5px/1 'Public Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:13px 16px;cursor:pointer;min-height:44px">{{ c.label }}</button>
         </sc-if>
         <sc-if value="{{ c.inactivo }}">
-          <button type="button" onClick="{{ c.pick }}" aria-pressed="false" style="font:800 12.5px/1 'Public Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:13px 16px;cursor:pointer;background:transparent;border:2px solid #D5D0CE;color:#403B3A;min-height:44px" style-hover="border-color:#141414;color:#141414">{{ c.label }}</button>
+          <button type="button" onClick="{{ c.pick }}" data-pa-tema="{{ c.label }}" aria-pressed="false" style="font:800 12.5px/1 'Public Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:13px 16px;cursor:pointer;min-height:44px" style-hover="border-color:#141414;color:#141414">{{ c.label }}</button>
         </sc-if>
       </sc-for>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(20px,2.5vw,28px)">
       <sc-for list="{{ notasFiltradas }}" as="n" hint-placeholder-count="5">
-        <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
+        <article data-pa-tema="{{ n.tema }}" style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
           <div style="aspect-ratio:16/10;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border-bottom:2px solid #141414;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center">
             <span style="font:600 11px/1.5 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>{{ n.tema }}</span>
           </div>
@@ -512,7 +512,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
     </div>
 
     <div style="background:#141414;color:#fff;padding:clamp(24px,3.5vw,36px);display:flex;align-items:center;gap:clamp(20px,3vw,32px);flex-wrap:wrap;border-left:14px solid #D9351F">
-      <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(46px,8vw,66px);line-height:.9;letter-spacing:-.05em;color:#3FCB9E;font-variant-numeric:tabular-nums">{{ dias }}</span>
+      <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(46px,8vw,66px);line-height:.9;letter-spacing:-.05em;color:#3FCB9E;font-variant-numeric:tabular-nums" data-pa-dias="{{ fechaElectoralIso }}">{{ dias }}</span>
       <p style="font-size:clamp(15.5px,1.7vw,16.5px);max-width:46ch;color:#C8D8DE;margin:0;line-height:1.55;text-wrap:pretty">días para la jornada electoral. La fecha prevista es el <strong style="color:#fff">domingo 23 de mayo de 2027</strong>, cuarto domingo de mayo, a confirmar en la convocatoria oficial.</p>
     </div>
 
@@ -634,7 +634,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
 
             <label class="pa-chk">
               <input type="checkbox" name="consiente_info" required>
-              <span>Consiento expresamente que <b>Izquierda Unida</b> trate mi nombre y mi correo —y con ellos mi afinidad política, que es un <b>dato de categoría especial</b>— para informarme sobre la candidatura Por Águilas. Puedo retirarlo cuando quiera. He leído la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a>. <b>Obligatorio.</b></span>
+              <span>Consiento expresamente que se traten mi nombre y mi correo electrónico —y con ellos mi afinidad política, que es un <b>dato de categoría especial</b>— para informarme sobre la candidatura <b>Por Águilas</b>. Los custodia <b>Izquierda Unida</b>, que es quien responde legalmente de ellos. Puedo retirar este consentimiento cuando quiera desde el enlace de baja de cualquier correo. He leído la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a>. <b>Obligatorio.</b></span>
             </label>
             <p class="pa-err" aria-live="polite">{{ errInfo }}</p>
 
@@ -652,10 +652,6 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
             </div>
             </sc-if>
 
-            <label class="pa-chk">
-              <input type="checkbox" name="consiente_cesion">
-              <span>Consiento que mis datos se comuniquen al <b>Partido Comunista de España</b>, que impulsa la candidatura junto a Izquierda Unida y es una organización distinta. Si no marco esta casilla, mis datos no salen de Izquierda Unida.</span>
-            </label>
 
             <label class="pa-chk">
               <input type="checkbox" name="mayor_edad" required>
@@ -709,8 +705,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
         <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16px,1.6vw,17.5px);line-height:1.6;text-wrap:pretty">Papeletas, carteles, el alquiler del local, el sonido de los actos y el material que se reparte en la calle: eso es todo lo que se paga, y de eso se rinden cuentas. Aquí no se cobra nada con tarjeta: la donación se hace por transferencia, desde tu banco y a tu nombre, porque la ley exige que se sepa quién dona.</p>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:clamp(26px,3.5vw,44px);align-items:start">
-
+      <div style="max-width:560px">
         <div style="border:2px solid #141414;background:#fff">
           <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Datos para la transferencia</div>
           <div style="padding:24px clamp(20px,3vw,26px) 28px;display:flex;flex-direction:column;gap:20px">
@@ -751,28 +746,18 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
           </div>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:2px">
-          <div style="border:2px solid #141414;background:#EFF4F1">
-            <div style="background:#141414;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Lo que dice la ley</div>
-            <div style="padding:24px clamp(20px,3vw,26px) 28px">
-              <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Solo personas físicas, en nombre propio y con fondos propios.</b> Las donaciones de empresas, asociaciones y cualquier persona jurídica están prohibidas y son nulas.</span></li>
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Nada de donaciones anónimas.</b> Sin nombre, apellidos y DNI en el concepto, el ingreso se devuelve.</span></li>
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoLimite }}</span></li>
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoNoFinalista }}</span></li>
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoNoRevocable }}</span></li>
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoNotificacion }}</span></li>
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoDeduccion }}</span></li>
-              </ul>
-              <p style="margin:20px 0 0;font-size:14px;line-height:1.55;color:#403B3A;border-left:5px solid #0E7A5F;padding:4px 0 4px 13px">Régimen <b style="color:#141414">{{ donRegimen }}</b>, marco {{ donMarco }}. Desde que se convoquen las elecciones cambia el régimen, y con él la cuenta y el límite. Se actualizará aquí el mismo día.</p>
-            </div>
-          </div>
-        </div>
+        <!-- Dos cosas que no están en ningún otro sitio de la página y que hay
+             que saber ANTES de transferir: que el dinero no vuelve, y que no se
+             puede elegir a qué se dedica. El resto de las reglas de la LO 8/2007
+             están donde les toca: las que afectan a quien dona, en las cinco
+             declaraciones del formulario; las demás, en el aviso legal. -->
+        <p style="margin:20px 0 0;font-size:14.5px;line-height:1.6;color:#403B3A;border-left:5px solid #D9351F;padding:4px 0 4px 14px">{{ avisoNoRevocable }} {{ avisoNoFinalista }}</p>
       </div>
 
       <div style="margin-top:clamp(30px,4vw,46px)">
         <h4 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(20px,2.2vw,24px);font-weight:700;letter-spacing:-.025em;margin:0 0 8px">Avísanos de la transferencia</h4>
-        <p style="margin:0 0 20px;color:#403B3A;font-size:15.5px;line-height:1.58;max-width:62ch">Este formulario <b style="color:#141414">no cobra nada</b> y no te pide ningún dato bancario: la transferencia la haces tú, desde tu banco. Sirve para que, cuando llegue el ingreso, sepamos de quién es y podamos emitirte el certificado de la deducción.</p>
+        <p style="margin:0 0 12px;color:#403B3A;font-size:15.5px;line-height:1.58;max-width:62ch">Este formulario <b style="color:#141414">no cobra nada</b> y no te pide ningún dato bancario: la transferencia la haces tú, desde tu banco. Sirve para que, cuando llegue el ingreso, sepamos de quién es y podamos emitirte el certificado.</p>
+        <p style="margin:0 0 20px;color:#403B3A;font-size:15px;line-height:1.58;max-width:62ch;border-left:5px solid #0E7A5F;padding:4px 0 4px 14px">{{ avisoDeduccion }}</p>
 
         <form onSubmit="{{ donEnviar }}" noValidate class="pa-f" style="max-width:620px">
           <div class="pa-fila">
@@ -879,7 +864,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
             <span style="display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9A9291;margin-top:5px">Municipales 2027</span>
           </span>
         </div>
-        <p style="font-size:15px;line-height:1.6;max-width:42ch;margin:0">Candidatura municipalista de izquierdas para Águilas. Impulsada por <strong style="color:#fff">Izquierda Unida</strong> y el <strong style="color:#fff">Partido Comunista</strong>, abierta a personas independientes.</p>
+        <p style="font-size:15px;line-height:1.6;max-width:42ch;margin:0">Candidatura municipalista de izquierdas para las elecciones de mayo de 2027 en Águilas. Abierta a personas independientes, se decide en asamblea y rinde cuentas. Quién la impulsa y con qué respaldo está en <a href="/quienes-somos" onClick="{{ irQuienes }}" style="color:#fff">Quiénes somos</a>.</p>
       </div>
       <div>
         <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Secciones</h4>
@@ -894,7 +879,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
         <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Contacto</h4>
         <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
           <li>Local de la candidatura · Águilas</li>
-          <li><a href="mailto:hola@poraguilas.es" style="color:#fff">hola@poraguilas.es</a></li>
+          <li><a href="mailto:admin@por-aguilas.es" style="color:#fff">admin@por-aguilas.es</a></li>
           <li style="color:#9A9291">Dirección y teléfono pendientes</li>
         </ul>
       </div>
@@ -1189,7 +1174,7 @@ function validarDonacionCliente(d) {
 // qué puede hacer la persona, sin jerga y sin exclamaciones. El de éxito del
 // alta no dice "gracias por unirte": dice que hay que ir al correo, que es lo
 // único que hace falta hacer ahora.
-const CORREO_EQUIPO = "hola@poraguilas.es";
+const CORREO_EQUIPO = "admin@por-aguilas.es";
 
 const MENSAJES_SUM = {
   reposo: "",
@@ -1482,11 +1467,16 @@ class Component extends DCLogic {
       abrirMenu: () => this.setState({ menu:true }),
       cerrarMenu: () => this.setState({ menu:false }),
       dias,
+      // La fecha en crudo viaja al HTML para que, en la web compilada, app.js
+      // pueda recalcular los días: el número se congela al compilar y al día
+      // siguiente ya está mal.
+      fechaElectoralIso: this.props.fechaElectoral || "2027-05-23",
       navItems: PAGS.map(p => ({
         label:p.label, href:RUTAS[p.id], activo:s.pag === p.id, inactivo:s.pag !== p.id,
         ir:enlace(p.id)
       })),
       irInicio:enlace("inicio"),
+      irQuienes:enlace("quienes"),
       irEjes:enlace("ejes"),
       irPrensa:enlace("prensa"),
       irAgenda:enlace("agenda"),
@@ -1535,13 +1525,12 @@ class Component extends DCLogic {
       donIban: don.iban,
       donPatron: don.conceptoPrefijo + " NOMBRE APELLIDOS DNI",
       donMaxBanco: don.conceptoMaximoBanco,
-      donRegimen: don.regimen,
-      donMarco: don.marco,
+
       donLimiteTexto: Number(don.limiteAnual).toLocaleString("es-ES"),
-      avisoLimite: don.avisos.limite || "",
+
       avisoNoFinalista: don.avisos.noFinalista || "",
       avisoNoRevocable: don.avisos.noRevocable || "",
-      avisoNotificacion: don.avisos.notificacion || "",
+
       avisoDeduccion: don.avisos.deduccion || "",
       hoyIso: iso(hoy),
       topeIso: iso(tope),

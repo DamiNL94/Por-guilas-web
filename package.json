@@ -6,9 +6,10 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node scripts/compilar.js && node server.js",
     "dev": "node server.js",
-    "test": "node test/prueba.js"
+    "test": "node scripts/compilar.js && node test/prueba.js",
+    "compilar": "node scripts/compilar.js"
   },
   "engines": {
     "node": ">=20"

@@ -142,9 +142,9 @@ async function guardarAlta(d, ip) {
       tokenConf = t.claro;
       const ins = await cli.query(
         `insert into altas (email, nombre, zona, como, mensaje, telefono,
-                            consiente_colaborar, consiente_cesion, estado,
+                            consiente_colaborar, estado,
                             token_conf_hash, token_conf_expira)
-         values ($1,$2,$3,$4,$5,$6,$7,$8,'pendiente',$9, now() + ($10 || ' hours')::interval)
+         values ($1,$2,$3,$4,$5,$6,$7,'pendiente',$8, now() + ($9 || ' hours')::interval)
          returning id`,
         [
           d.email,
@@ -154,7 +154,6 @@ async function guardarAlta(d, ip) {
           d.mensaje,
           d.telefono,
           d.consentimientos.colaborar,
-          d.consentimientos.cesion,
           t.hash,
           String(CONSERVACION.horasToken),
         ]
@@ -181,7 +180,6 @@ async function guardarAlta(d, ip) {
                 mensaje = coalesce($5, mensaje),
                 telefono = coalesce($6, telefono),
                 consiente_colaborar = $7,
-                consiente_cesion = $8,
                 actualizado = now()
           where id = $1`,
         [
@@ -192,7 +190,6 @@ async function guardarAlta(d, ip) {
           d.mensaje,
           d.telefono,
           d.consentimientos.colaborar,
-          d.consentimientos.cesion,
         ]
       );
 
@@ -310,7 +307,14 @@ async function baja(req, res, url) {
   // dirección del enlace, sin pasar por la página intermedia.
   const leido = await leerCuerpo(req);
   const token = leido.datos?.token || url.searchParams.get("token");
-  const unClic = /List-Unsubscribe=One-Click/i.test(String(leido.datos?.["List-Unsubscribe"] || ""));
+  // El cuerpo llega ya troceado en pares, así que aquí solo queda el VALOR:
+  // "One-Click". Buscar en él la cadena entera "List-Unsubscribe=One-Click"
+  // no encontraba nunca nada, y el clic acababa contestado con una redirección
+  // en vez de con el 2xx que el RFC pide. La clave se busca sin distinguir
+  // mayúsculas porque no todos los clientes de correo la escriben igual.
+  const datos = leido.datos || {};
+  const clave = Object.keys(datos).find((k) => k.toLowerCase() === "list-unsubscribe");
+  const unClic = clave !== undefined && /^one-click$/i.test(String(datos[clave]).trim());
 
   if (!tokenConForma(token)) {
     return unClic ? json(res, 400, { ok: false }) : redirigir(res, "/sumate/enlace-caducado");

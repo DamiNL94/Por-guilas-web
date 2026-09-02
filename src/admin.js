@@ -33,7 +33,7 @@ async function filas(url) {
 
   const r = await consulta(
     `select a.id, a.email, a.nombre, a.zona, a.como, a.mensaje, a.estado,
-            a.telefono, a.consiente_colaborar, a.consiente_cesion,
+            a.telefono, a.consiente_colaborar,
             a.creado, a.confirmado_en,
             c.momento       as consentimiento_momento,
             c.version_texto as consentimiento_version
@@ -71,7 +71,7 @@ async function listado(req, res, url) {
       telefono: f.telefono,
       // Sale al panel para que quien mande un correo sepa a quién puede
       // escribirle de qué, sin tener que abrir la tabla de consentimientos.
-      consiente: { colaborar: f.consiente_colaborar, cesion: f.consiente_cesion },
+      consiente: { colaborar: f.consiente_colaborar },
       estado: f.estado,
       creado: f.creado,
       confirmado: f.confirmado_en,
@@ -113,7 +113,6 @@ const CABECERAS = [
   "mensaje",
   "telefono",
   "consiente_colaborar",
-  "consiente_cesion",
   "alta",
   "confirmado",
   "consentimiento_momento",
@@ -137,7 +136,6 @@ async function csv(req, res, url) {
         f.mensaje || "",
         f.telefono || "",
         f.consiente_colaborar ? "sí" : "no",
-        f.consiente_cesion ? "sí" : "no",
         fecha(f.creado),
         fecha(f.confirmado_en),
         fecha(f.consentimiento_momento),

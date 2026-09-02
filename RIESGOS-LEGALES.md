@@ -63,7 +63,7 @@ cambia respecto a la preliminar, se dice y se explica por qué.
 | R9 | Publicar sin aviso legal completo (LSSI art. 10) | 2 | 1 | 2 | 🟩 VERDE | ↓ desde 8 · **sin huecos** |
 | R10 | Entidad responsable mal identificada | 4 | 1 | 4 | 🟩 VERDE | ↓ desde 16 🟥 · **cerrado con el Registro** |
 | R11 | Donación de quien tiene contrato con el sector público | 4 | 2 | 8 | 🟨 AMARILLO | nuevo |
-| R12 | `unsafe-eval` en la CSP por el runtime de la maqueta | 4 | 2 | 8 | 🟨 AMARILLO | nuevo |
+| R12 | `unsafe-eval` en la CSP por el runtime de la maqueta | 4 | 1 | 4 | 🟩 VERDE | ↓ desde 8 · **resuelto** |
 | R13 | Certificados fiscales prometidos y no emitidos | 2 | 3 | 6 | 🟨 AMARILLO | nuevo |
 
 **Ningún riesgo en rojo.** Quedan cuatro en naranja —R1, R2, R6 y R7— y los cuatro dependen de algo
@@ -158,12 +158,12 @@ tres cosas que reducen la probabilidad a 3:
 
 **Opciones de mitigación**
 
-| Opción | Coste | Efectividad |
-|---|---|---|
-| Concepto generado + botón de copiar | Hecho | Alta |
-| Aviso de truncado + versión corta | Hecho | Alta sobre el fallo más probable |
-| Comunicación previa guardada y consultable en el panel | Hecho | Alta |
-| ~~Protocolo escrito de devolución del ingreso no identificable~~ | Redactado | Alta: convierte el problema en trámite | ✅ `PROTOCOLO-INGRESOS.md` |
+| Opción | Coste | Efectividad | ¿Hecho? |
+|---|---|---|---|
+| Concepto generado + botón de copiar | Nulo | Alta | ✅ |
+| Aviso de truncado + versión corta | Nulo | Alta sobre el fallo más probable | ✅ |
+| Comunicación previa guardada y consultable en el panel | Nulo | Alta | ✅ |
+| Protocolo escrito de devolución del ingreso no identificable | Redactado | Alta: convierte el problema en trámite | ✅ `PROTOCOLO-INGRESOS.md` |
 | **Asignar a alguien la revisión semanal del extracto** | ~15 min/semana | **Alta, y es lo único que falta** | ⬜ **sin asignar** |
 | Pedir que se avise por correo tras transferir | Nulo | Baja: nadie lo hace | ❌ descartado |
 
@@ -174,7 +174,7 @@ humana. Con el protocolo de devolución escrito y aplicado, **8 🟨**.
 
 ---
 
-## R3 · Datos de opinión política sin consentimiento válido 🟧 10
+## R3 · Datos de opinión política sin consentimiento válido 🟨 5 · antes 🟧 10
 
 **La norma.** Art. 9.1 RGPD: la opinión política es categoría especial. La única base utilizable
 aquí es el **consentimiento explícito** del art. 9.2.a. Y el art. 7 exige poder demostrarlo.
@@ -188,9 +188,13 @@ aquí es el **consentimiento explícito** del art. 9.2.a. Y el art. 7 exige pode
   el formulario.
 
 **Factores atenuantes**
-- Tres casillas separadas —informar, colaborar, ceder a IU y al PCE— más la de mayoría de edad.
+- Dos casillas de consentimiento separadas —informar y colaborar— más la de mayoría de edad.
   Ninguna agrupa dos finalidades y **ninguna viene marcada**: el atributo HTML que las marcaría no
   aparece ni una vez en `index.html`, y hay una prueba automática que lo comprueba con un grep.
+- **Ya no hay ninguna cesión.** La casilla que permitía comunicar la ficha al Partido Comunista de
+  España se retiró el 4 de septiembre de 2026, con su columna y su destinatario. Sin consentimiento
+  no puede haber comunicación, así que no queda ninguna vía por la que la lista salga hacia otra
+  organización.
 - Doble opt-in: sin confirmar desde el propio correo no hay alta, y lo no confirmado se borra a los
   30 días automáticamente.
 - La prueba se guarda **por finalidad, no por envío**: una fila por casilla marcada, con la marca
@@ -204,13 +208,13 @@ aquí es el **consentimiento explícito** del art. 9.2.a. Y el art. 7 exige pode
 
 **Opciones de mitigación**
 
-| Opción | Coste | Efectividad |
-|---|---|---|
-| Casillas granulares sin premarcar | Hecho | Alta |
-| Prueba versionada por finalidad | Hecho | Alta |
-| Bloqueo de arranque por descuadre de versión | Hecho | Alta contra el fallo por descuido |
-| ~~Nombrar delegado de protección de datos~~ (art. 37 RGPD, art. 34 LOPDGDD) | Nulo | Media-alta | ✅ ya existía: `dpd@izquierdaunida.org` |
-| ~~Registro de actividades del tratamiento~~ (art. 30 RGPD) | Redactado | Media | ✅ `REGISTRO-TRATAMIENTOS.md`, tres fichas |
+| Opción | Coste | Efectividad | ¿Hecho? |
+|---|---|---|---|
+| Casillas granulares sin premarcar | Nulo | Alta | ✅ |
+| Prueba versionada por finalidad | Nulo | Alta | ✅ |
+| Bloqueo de arranque por descuadre de versión | Nulo | Alta contra el fallo por descuido | ✅ |
+| Nombrar delegado de protección de datos (art. 37 RGPD, art. 34 LOPDGDD) | Nulo | Media-alta | ✅ ya existía: `dpd@izquierdaunida.org` |
+| Registro de actividades del tratamiento (art. 30 RGPD) | Redactado | Media | ✅ `REGISTRO-TRATAMIENTOS.md`, tres fichas |
 
 **Riesgo residual.** **5 🟨**, y ya es el residual: las dos piezas formales que lo mantenían en 10
 están hechas. El delegado de protección de datos existía ya —`dpd@izquierdaunida.org`— y el registro
@@ -270,8 +274,7 @@ parecía.
 **Factores atenuantes**
 - El importe se valida en servidor contra el tope exacto, en céntimos enteros. Un céntimo por
   encima se rechaza (probado).
-- El aviso del límite es visible junto al formulario y dice explícitamente que el acumulado lo lleva
-  la federación.
+- El aviso del límite es visible en la pista del propio campo del importe, donde se escribe la cifra.
 - El panel del equipo muestra el acumulado por DNI y año y marca a quien pase de la mitad del tope,
   además de señalar cada donación por encima del umbral de notificación.
 - Realismo: en una candidatura municipal, una donación de 50.000 € sería extraordinaria.
@@ -314,10 +317,10 @@ aportante** (art. 129).
 
 **Opciones de mitigación**
 
-| Opción | Coste | Efectividad |
-|---|---|---|
-| Configuración centralizada + interruptor documentado | Hecho | Alta |
-| Cierre automático del formulario si el régimen nuevo está incompleto | Hecho | Alta |
+| Opción | Coste | Efectividad | ¿Hecho? |
+|---|---|---|---|
+| Configuración centralizada + interruptor documentado | Nulo | Alta | ✅ |
+| Cierre automático del formulario si el régimen nuevo está incompleto | Nulo | Alta | ✅ |
 | **Tarea con fecha en el calendario del equipo, disparada por la convocatoria** | Nulo | Alta | ⬜ |
 | Designar administrador electoral con antelación | Variable | Alta | ⬜ |
 
@@ -340,10 +343,11 @@ Aquí conviven dos cosas sensibles: una lista de afinidad política y una tabla 
   inservibles.
 - Un solo token de administración da acceso a toda la lista.
 - Los contadores del límite por IP viven en memoria y se reinician en cada despliegue.
-- El runtime de la maqueta obliga a `unsafe-eval` en la política de seguridad de contenidos
-  (ver R12).
 
 **Factores atenuantes**
+- La política de seguridad de contenidos ya **no admite `unsafe-eval`**. Era un agravante de este
+  riesgo hasta que se resolvió R12: lo que se publica son páginas compiladas y `script-src` es
+  `'self'` a secas.
 - Todo cifrado en tránsito, HSTS sobre HTTPS, y base de datos cifrada en reposo.
 - Los secretos van en variables de entorno; ninguno está en el repositorio, y hay una prueba
   automática que comprueba que el IBAN no aparece escrito a mano fuera de la configuración.
@@ -363,8 +367,8 @@ Aquí conviven dos cosas sensibles: una lista de afinidad política y una tabla 
 
 **Opciones de mitigación pendientes**
 
-| Opción | Coste | Efectividad |
-|---|---|---|
+| Opción | Coste | Efectividad | ¿Hecho? |
+|---|---|---|---|
 | **Contrato de encargado del tratamiento con Brevo y con Railway** (art. 28) | ~2 h | Obligatorio, no opcional | ⬜ |
 | Rotación del token de administración tras la campaña | Nulo | Media | ⬜ |
 | Copia de seguridad cifrada y probada de la tabla de donaciones | ~2 h | Alta: aquí borrar de más es incumplir | ⬜ |
@@ -382,24 +386,36 @@ Art. 21 LSSI. Baja de 9 a 6: hay doble opt-in real, enlace de baja en todos los 
 `List-Unsubscribe` (RFC 8058) para el botón del propio cliente de correo, y un techo global de 200
 correos/hora que impide convertir esto en un cañón de envíos. La baja borra de verdad.
 
-Lo que falta: que nadie del equipo exporte el CSV y lo pegue en el «Para» de un correo. Es
-organizativo. Pendiente: escribir la regla en el README del panel.
+**Un fallo que solo apareció al ejecutar el flujo completo contra una base de datos.** El botón de
+«cancelar suscripción» del cliente de correo hace un POST y espera un 2xx. El servidor borraba la
+fila —eso funcionaba— pero contestaba con una redirección, porque la comprobación de si la petición
+venía de ese botón buscaba la cadena `List-Unsubscribe=One-Click` dentro de un valor que ya solo
+contenía `One-Click`. Nunca daba positivo. Gmail y Outlook pueden tomar esa respuesta por un fallo y
+enseñarle a la persona que no se ha podido dar de baja, cuando sí se ha dado. Corregido, con prueba
+que lo cubre. Es el ejemplo de por qué esas pruebas no podían seguir sin ejecutarse.
+
+Lo que falta: que nadie del equipo exporte el CSV y lo pegue en el «Para» de un correo. La regla ya
+está escrita —apartado 7 de `README-DESPLIEGUE.md`, junto a las rutas del panel—, pero es
+organizativa: escribirla no la cumple. Por eso el residual se queda en 6 y no baja.
 
 ---
 
-## R9 · Publicar sin aviso legal completo 🟩 4
+## R9 · Publicar sin aviso legal completo 🟩 2 · antes 🟨 8
 
-Art. 10 LSSI. Baja de 8 a 4: las tres páginas legales existen, están enlazadas desde el pie de
+Art. 10 LSSI. Baja de 8 a 2: las tres páginas legales existen, están enlazadas desde el pie de
 todas las secciones, y hay una prueba automática que comprueba los tres enlaces.
 
 El bloqueo por huecos sin rellenar **está implementado y funcionando**: mientras la política
 contenga `PENDIENTE:`, el backend se niega a aceptar altas y responde con una dirección de correo.
-Cada página legal lleva además, al principio, la lista de lo que falta.
+Cada página legal lleva además, al principio, un bloque que dice de dónde sale cada dato.
 
-El **NIF ya está puesto y validado** (G78269206), y el arranque comprueba además que las páginas
-legales lo publican y que quien figura como responsable es la persona jurídica correcta. Siguen
-faltando el domicilio social, los datos de inscripción registral y el contacto del delegado de
-protección de datos. Eso es lo que mantiene el riesgo por encima de cero.
+**Ya no falta ningún dato.** El NIF (G78269206), el domicilio social, la sede federal, el
+establecimiento de Águilas, la inscripción registral y el contacto del delegado de protección de
+datos están publicados, y el arranque comprueba que las páginas legales los dicen y que quien
+figura como responsable es la persona jurídica correcta.
+
+Lo que mantiene el riesgo por encima de cero es lo único que ningún control ve: que alguien reescriba
+un texto legal a mano y lo desincronice de la configuración por un lado que no esté comprobado.
 
 ---
 
@@ -486,19 +502,55 @@ contratante municipal, que es público.
 
 ---
 
-## R12 · `unsafe-eval` en la política de seguridad de contenidos 🟨 8 · NUEVO
+## R12 · `unsafe-eval` en la política de seguridad de contenidos 🟩 4 · antes 🟨 8 · RESUELTO
 
-`index.html` está construido con el runtime de Claude Design, que compila su bloque de lógica con
-`new Function()`. Eso obliga a mantener `script-src 'unsafe-eval'`, lo que debilita la defensa
-contra XSS justo en la página que contiene los dos formularios.
+**Qué era.** `index.html` se pintaba en el navegador con el runtime de Claude Design, que compila su
+bloque de lógica con `new Function()`. Eso obligaba a mantener `script-src 'unsafe-eval'` justo en la
+página que contiene los dos formularios.
 
-**Atenuantes:** no se usa `unsafe-inline` —los dos scripts en línea van por hash calculado del HTML
-real, así que un script inyectado no se ejecuta—; `object-src` y `base-uri` a `'none'`;
-`form-action 'self'`, que impide redirigir el envío a un tercero; y las páginas legales, que no
-llevan runtime, se sirven con una política estrictamente más dura.
+**Por qué no había arreglo barato.** El runtime es, por diseño, un intérprete de código en cadena:
+lee el `<script type="text/x-dc">`, lo pasa por `new Function()` y de ahí saca la clase. No expone
+ninguna API para entregarle una clase ya construida, así que no había forma de conservarlo sin la
+directiva. O se quitaba de la página publicada, o `unsafe-eval` se quedaba.
 
-**Mitigación pendiente:** compilar la maqueta a HTML/JS estático antes de publicar en dominio
-propio y quitar `unsafe-eval`. Coste: medio. Efectividad: alta. Riesgo residual: 4 🟩.
+**Qué se hizo.** `scripts/compilar.js` compila `index.html` a seis páginas estáticas, una por ruta,
+más una hoja de estilos y un `app.js` sin dependencias. La evaluación sigue existiendo, pero **en el
+build**: se evalúa nuestro propio fichero, recién leído del repositorio, y el resultado es HTML que
+ya no necesita evaluar nada. La política pasa a **`script-src 'self'` sin excepciones**.
+
+| | Antes | Ahora |
+|---|---|---|
+| Política de seguridad | `'self' 'unsafe-eval'` + hashes | `'self'` |
+| JavaScript que se descarga | 210 KB (React + runtime) | 13 KB (`app.js`) |
+| Sin JavaScript | Plantilla con `{{ }}` sin resolver | La página entera |
+| Navegación | Estado interno con `history.pushState` | Enlaces de verdad |
+
+**Lo que se ganó de paso, y no es menor.** Hasta ahora el cuerpo de la página lo montaba el
+navegador: quien no ejecutara JavaScript, o cualquier rastreador que no renderice, recibía la
+plantilla en crudo. Ahora recibe el HTML pintado. El servidor ya inyectaba los metadatos por ese
+mismo motivo —los rastreadores de WhatsApp y Telegram no renderizan—, así que era una incoherencia
+que el cuerpo siguiera dependiendo del cliente.
+
+**El riesgo nuevo que introduce, y cómo se cierra.** Un build puede quedarse viejo: alguien edita
+`index.html`, no compila, y lo que se publica sigue siendo lo anterior sin que nadie lo note. Se
+cierra por los dos lados: el build guarda la huella del `index.html` con el que se hizo, el arranque
+del servidor avisa si no coincide, y hay una prueba que falla.
+
+**Qué impide que vuelva**
+
+| Control | Qué hace |
+|---|---|
+| Prueba sobre las páginas publicadas | Falla si alguna vuelve a cargar el runtime, el mapa del CDN o lógica sin compilar |
+| Prueba sobre la CSP | Falla si `unsafe-eval` reaparece en `script-src` |
+| Prueba sobre `app.js` | Falla si evalúa código o si depende de algo externo |
+| Prueba de frescura | Falla si la compilación no cuadra con `index.html` |
+| `index.html` y `support.js` privados | El servidor no los publica: servirlos reabriría el agujero |
+| Aviso en el arranque | Si alguna página vuelve a cargar el runtime, se dice por consola y **no** se abre la política |
+
+**Riesgo residual.** 4 × 1 = **4 🟩**.
+
+**Quién lo vigila.** El banco de pruebas. Lo único que pide una persona es acordarse de ejecutar
+`node scripts/compilar.js` después de tocar `index.html`, y de eso avisan el arranque y las pruebas.
 
 ---
 

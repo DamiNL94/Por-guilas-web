@@ -85,6 +85,11 @@ const TIPOS = {
 // servidor, configuración, documentación interna, ficheros de diseño) queda
 // fuera aunque exista en el repositorio.
 const FICHEROS_PRIVADOS = new Set([
+  // index.html deja de publicarse: es la FUENTE que el equipo edita, no lo que
+  // se sirve. Lo que se sirve es su compilación, en publico/. Si se publicara,
+  // volvería a hacer falta 'unsafe-eval' para pintarla.
+  "index.html",
+  "support.js",
   "server.js",
   "package.json",
   "package-lock.json",
@@ -129,6 +134,13 @@ async function comoFichero(abs) {
     const st = await fsp.stat(abs);
     if (st.isDirectory()) {
       const idx = path.join(abs, "index.html");
+      // El índice de un directorio pasa el MISMO filtro de privacidad que
+      // cualquier otra petición. Sin esto, pedir "/" servía el index.html de la
+      // raíz aunque estuviera declarado privado: la comprobación se hacía sobre
+      // la ruta pedida, no sobre el fichero al que se acababa resolviendo. Era
+      // la puerta trasera por la que la plantilla sin compilar seguía saliendo
+      // a Internet, con su runtime y su necesidad de 'unsafe-eval'.
+      if (esPrivado(path.relative(ROOT, idx))) return null;
       const stIdx = await fsp.stat(idx).catch(() => null);
       return stIdx?.isFile() ? { file: idx, stat: stIdx } : null;
     }
@@ -148,6 +160,13 @@ function cacheHeader(file) {
   // también de nombre. React sí puede subir de versión, así que un día.
   if (rel.startsWith("fonts/")) return "public, max-age=31536000, immutable";
   if (rel.startsWith("vendor/")) return "public, max-age=86400";
+
+  // app.js y la hoja compilada cambian en cada despliegue y no llevan hash en
+  // el nombre. Con una hora de caché, un arreglo tarda una hora en llegar a
+  // quien ya haya visitado la web: se revalidan siempre. Cuestan poco y son
+  // exactamente lo que se querría poder corregir deprisa.
+  if (rel === "app.js" || rel.startsWith("publico/")) return "no-cache";
+
   return "public, max-age=3600, must-revalidate";
 }
 
@@ -163,6 +182,17 @@ function cacheHeader(file) {
 // Cualquier otra ruta da 404 de verdad. Antes se devolvía la portada con un
 // 200 para todo, y eso son "soft 404": Google indexa /cualquier-cosa como si
 // fuera una página buena y acaba con decenas de URLs duplicadas de la portada.
+// Qué fichero de publico/ sirve cada ruta. Lo genera scripts/compilar.js y se
+// lee de su manifiesto, para que no haya que mantener la tabla dos veces.
+const PAGINAS_COMPILADAS = (() => {
+  try {
+    const manifiesto = JSON.parse(fs.readFileSync(path.join(ROOT, "publico", "build.json"), "utf8"));
+    return manifiesto.rutas || {};
+  } catch {
+    return {};
+  }
+})();
+
 const RUTAS_SPA = new Set([
   "/",
   "/quienes-somos",
@@ -295,7 +325,7 @@ function jsonLd(origen) {
     logo: origen + "/logo/por-aguilas-logotipo.svg",
     image: origen + OG_IMAGEN,
     description: META["/"].desc,
-    email: "hola@poraguilas.es",
+    email: "admin@por-aguilas.es",
     areaServed: {
       "@type": "AdministrativeArea",
       name: "Águilas",
@@ -309,7 +339,7 @@ function jsonLd(origen) {
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "información general",
-      email: "hola@poraguilas.es",
+      email: "admin@por-aguilas.es",
       availableLanguage: ["es"],
     },
   };
@@ -447,10 +477,12 @@ function responderTexto(res, metodo, cuerpoTexto, tipo) {
 // ningún tercero al que haga falta abrir la puerta. Las excepciones son estas,
 // y cada una está aquí por un motivo concreto del runtime de Claude Design:
 //
-//   script-src 'unsafe-eval'   support.js compila el bloque <script data-dc-script>
-//                              con new Function(). Sin esto la web no arranca.
-//                              No hay forma de quitarlo sin dejar de usar el
-//                              runtime; es su mecanismo de ejecución.
+//   (ya no hay 'unsafe-eval')  Lo hubo mientras la web se pintaba en el
+//                              navegador con el runtime de Claude Design, que
+//                              compila su lógica con new Function(). Desde que
+//                              lo que se publica es HTML compilado por
+//                              scripts/compilar.js, no queda nada que evaluar y
+//                              la política puede decir script-src 'self'.
 //   script-src 'sha256-...'    en lugar de 'unsafe-inline' para los dos <script>
 //                              en línea de index.html (el mapa __resources y el
 //                              centinela de dependencias externas). Se calculan
@@ -505,12 +537,20 @@ async function csp(file) {
     const guardado = cspCache.get(file);
     if (guardado && guardado.mtimeMs === st.mtimeMs) return guardado.valor;
     const html = await fsp.readFile(file, "utf8");
-    // Solo las páginas que montan el runtime de Claude Design necesitan eval.
-    // Las páginas sueltas (aviso legal, privacidad, gracias...) no, y así se
-    // llevan una política estrictamente más dura sin esfuerzo.
-    const conRuntime = html.includes("support.js");
+    // Ya no hay ninguna página que necesite 'unsafe-eval'. Lo que se publica es
+    // HTML compilado (publico/, generado por scripts/compilar.js) más app.js,
+    // que es JavaScript normal servido desde el propio sitio. Nada evalúa nada.
+    //
+    // Si alguna página vuelve a cargar el runtime, la política deja de cuadrar
+    // y se avisa en vez de reabrir el agujero en silencio: es exactamente el
+    // riesgo R12 y no debe volver por la puerta de atrás.
+    if (html.includes("support.js")) {
+      console.error(
+        "[csp] " + file + " carga support.js, que necesita 'unsafe-eval'. NO se abre la " +
+          "política: la página se servirá rota. Compílala con scripts/compilar.js."
+      );
+    }
     const fuentes = ["'self'"];
-    if (conRuntime) fuentes.push("'unsafe-eval'");
     for (const h of hashesDeScriptsEnLinea(html)) fuentes.push(h);
     const valor = [...CSP_BASE, "script-src " + fuentes.join(" ")].join("; ");
     cspCache.set(file, { mtimeMs: st.mtimeMs, valor });
@@ -519,7 +559,7 @@ async function csp(file) {
     // Si el hasheo falla preferimos una política más floja a una web en blanco,
     // pero que quede constancia en los logs de Railway.
     console.error("[csp] no se han podido calcular los hashes en línea:", err.message);
-    return [...CSP_BASE, "script-src 'self' 'unsafe-eval' 'unsafe-inline'"].join("; ");
+    return [...CSP_BASE, "script-src 'self'"].join("; ");
   }
 }
 
@@ -595,10 +635,13 @@ const servidor = http.createServer(async (req, res) => {
     destino = await comoFichero(abs + ".html");
   }
 
-  // Fallback: las rutas de página se pintan en cliente, así que se sirve el
-  // index. Solo para las rutas dadas de alta: el resto tiene que dar 404.
+  // Las rutas de página se sirven ya pintadas desde publico/, que genera
+  // scripts/compilar.js a partir de index.html. Ya no se manda una plantilla
+  // para que la monte el navegador: llega el HTML entero, sin runtime y sin
+  // nada que evaluar. Ese es el cambio que permite quitar 'unsafe-eval'.
   if (!destino && RUTAS_SPA.has(ruta)) {
-    destino = await comoFichero(path.join(ROOT, "index.html"));
+    const pagina = PAGINAS_COMPILADAS[ruta];
+    if (pagina) destino = await comoFichero(path.join(ROOT, "publico", pagina + ".html"));
   }
 
   if (!destino) {
@@ -669,9 +712,43 @@ const servidor = http.createServer(async (req, res) => {
 // ejemplo, porque se olvidó añadirlos al commit), el navegador se encuentra
 // con un 404 en React y la web se queda en blanco sin ninguna pista. Mejor
 // que grite aquí, en los logs de Railway.
+// La compilación tiene que estar al día. Si alguien edita index.html y no
+// vuelve a compilar, lo que se publica sigue siendo lo anterior: un fallo
+// silencioso donde el equipo cree haber cambiado la web y no ha cambiado nada.
+// Se compara la huella del index con la que guardó el build.
+(function revisarCompilacion() {
+  let manifiesto;
+  try {
+    manifiesto = JSON.parse(fs.readFileSync(path.join(ROOT, "publico", "build.json"), "utf8"));
+  } catch {
+    console.error(
+      "\n[ARRANQUE] No hay compilación en publico/. La web no se puede servir.\n" +
+        "  Ejecuta:  node scripts/compilar.js\n"
+    );
+    return;
+  }
+  try {
+    const actual = crypto
+      .createHash("sha256")
+      .update(fs.readFileSync(path.join(ROOT, "index.html"), "utf8"), "utf8")
+      .digest("hex");
+    if (actual !== manifiesto.huellaIndex) {
+      console.warn(
+        "\n[ARRANQUE] index.html ha cambiado desde la última compilación.\n" +
+          "  Lo que se está sirviendo es la versión ANTERIOR.\n" +
+          "  Ejecuta:  node scripts/compilar.js\n"
+      );
+    }
+  } catch {
+    console.warn("[ARRANQUE] no se ha podido comprobar si la compilación está al día.");
+  }
+})();
+
 const IMPRESCINDIBLES = [
-  "vendor/react.production.min.js",
-  "vendor/react-dom.production.min.js",
+  "publico/inicio.html",
+  "publico/sumate.html",
+  "publico/estilos.css",
+  "app.js",
   "fonts/familjen-grotesk-latin.woff2",
   "fonts/familjen-grotesk-latin-ext.woff2",
   "fonts/public-sans-latin.woff2",
@@ -682,8 +759,8 @@ if (faltan.length) {
   console.error(
     "\n[ARRANQUE] Faltan ficheros auto-alojados:\n  - " +
       faltan.join("\n  - ") +
-      "\n  index.html los referencia (window.__resources y las reglas @font-face)." +
-      "\n  Sin ellos React da 404 y la web se queda EN BLANCO. Añádelos al repositorio.\n"
+      "\n  publico/ lo genera scripts/compilar.js; las tipografías van en fonts/." +
+      "\n  Sin ellos la web no se sirve o se sirve sin tipografías.\n"
   );
 }
 

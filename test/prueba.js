@@ -77,7 +77,10 @@ async function prueba(nombre, fn) {
   } catch (err) {
     fallos++;
     console.log(`  FALLA ${nombre}`);
-    console.log(`        ${err.message.split("\n")[0]}`);
+    // El mensaje entero, no solo la primera línea: en las comparaciones de
+    // node los valores van en la tercera, y sin ellos hay que ir a averiguar
+    // a mano qué esperaba la prueba.
+    for (const linea of err.message.split("\n")) if (linea.trim()) console.log(`        ${linea}`);
   }
 }
 
@@ -99,8 +102,13 @@ function arrancarServidor() {
 async function pedir(ruta, opciones = {}) {
   const res = await fetch(base + ruta, { redirect: "manual", ...opciones });
   const tipo = res.headers.get("content-type") || "";
-  const cuerpo = tipo.includes("json") ? await res.json() : await res.text();
-  return { estado: res.status, cabeceras: res.headers, cuerpo };
+  // El cuerpo se guarda también en crudo. `res.text()` decodifica siguiendo la
+  // norma WHATWG, que se come el BOM inicial: con él no hay manera de
+  // comprobar que el CSV lo lleva, aunque el servidor lo mande.
+  const crudo = Buffer.from(await res.arrayBuffer());
+  const texto = crudo.toString("utf8");
+  const cuerpo = tipo.includes("json") ? JSON.parse(texto || "null") : texto;
+  return { estado: res.status, cabeceras: res.headers, cuerpo, crudo };
 }
 
 const enviarAlta = (datos, extra = {}) =>
@@ -160,6 +168,14 @@ const DONACION_VALIDA = {
 async function main() {
   await arrancarServidor();
 
+  // Las tablas, antes de la primera prueba que las toque. Estaban creándose
+  // más abajo, ya dentro del bloque del flujo completo, y eso hacía que el
+  // banco diera un resultado distinto la primera vez que se ejecutaba contra
+  // una base limpia —dos altas devolviendo 500 porque aún no existía dónde
+  // guardar— y otro a partir de la segunda, con las tablas ya hechas. Una
+  // base recién creada es justo el caso de un despliegue nuevo.
+  if (CON_BD) await require("../src/db.js").migrar();
+
   console.log("\nValidación y saneado");
   await prueba("recorta espacios y normaliza el correo", () => {
     const { datos } = util.validarAlta({ ...VALIDO, nombre: "  Ana   López ", email: " ANA@X.ES " });
@@ -175,17 +191,16 @@ async function main() {
     assert.ok(errores.consiente_info, "sin la casilla de información no puede haber alta");
     assert.ok(errores.mayor_edad, "sin declarar mayoría de edad tampoco");
   });
-  await prueba("los tres consentimientos van por separado y ninguno arrastra a otro", () => {
+  await prueba("los consentimientos van por separado y ninguno arrastra a otro", () => {
     const base = { ...VALIDO, consiente_info: true, mayor_edad: true };
     const solo = util.validarAlta(base);
     assert.equal(Object.keys(solo.errores).length, 0);
     assert.equal(solo.datos.consentimientos.info, true);
     assert.equal(solo.datos.consentimientos.colaborar, false, "colaborar no se marca solo");
-    assert.equal(solo.datos.consentimientos.cesion, false, "la cesión no se marca sola");
 
-    const cede = util.validarAlta({ ...base, consiente_cesion: true });
-    assert.equal(cede.datos.consentimientos.cesion, true);
-    assert.equal(cede.datos.consentimientos.colaborar, false, "marcar cesión no marca colaborar");
+    const colabora = util.validarAlta({ ...base, consiente_colaborar: true });
+    assert.equal(colabora.datos.consentimientos.colaborar, true);
+    assert.equal(colabora.datos.consentimientos.info, true, "marcar colaborar no toca el obligatorio");
   });
   await prueba("el teléfono solo se guarda si se ha pedido colaborar", () => {
     const base = { ...VALIDO, consiente_info: true, mayor_edad: true, telefono: "600 11 22 33" };
@@ -496,22 +511,103 @@ async function main() {
       );
     }
   });
-  await prueba("la casilla de cesión pregunta solo por el PCE", () => {
-    // Es la corrección de fondo: pedir permiso para comunicar los datos a
-    // Izquierda Unida no era una cesión —es el propio responsable— y además
-    // tapaba la única comunicación que sí lo es.
-    const texto = CONSENTIMIENTOS.get("cesion").texto;
-    assert.ok(texto.includes(RESPONSABLE.organizacionAliada), "no nombra al PCE");
-    assert.ok(
-      !/comuniquen a Izquierda Unida\b/i.test(texto),
-      "sigue pidiendo permiso para comunicar los datos al propio responsable"
-    );
-    // Y el HTML tiene que decir lo mismo que el literal que se guarda de prueba.
+  await prueba("no existe ninguna casilla de cesión ni ningún destinatario tercero", () => {
+    // Se retiró el 2 de septiembre de 2026. Sin consentimiento no puede haber
+    // comunicación, así que lo que esta prueba vigila es que nadie la
+    // reintroduzca a medias: una casilla sin literal guardado, o peor, un campo
+    // que se guarde sin haber preguntado nada.
+    assert.ok(!CONSENTIMIENTOS.has("cesion"), "ha vuelto a aparecer el consentimiento de cesión");
+    assert.ok(!util.CAMPO_CONSENTIMIENTO.cesion, "ha vuelto a aparecer el campo de cesión");
+
     const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
-    assert.ok(
-      html.includes("Partido Comunista de España</b>, que impulsa la candidatura junto a Izquierda Unida"),
-      "la casilla del formulario no coincide con el literal guardado"
+    assert.ok(!html.includes("consiente_cesion"), "la casilla ha vuelto a index.html");
+
+    // Y aunque alguien la mande a mano, no se guarda en ningún sitio.
+    const { datos } = util.validarAlta({ ...VALIDO, consiente_info: true, mayor_edad: true, consiente_cesion: true });
+    assert.equal(datos.consentimientos.cesion, undefined, "no puede colarse un consentimiento que no se pregunta");
+  });
+
+  console.log("\nCompilación de la web");
+  await prueba("la compilación está al día con index.html", () => {
+    // Si alguien edita la plantilla y no vuelve a compilar, lo que se publica
+    // sigue siendo lo anterior: el equipo cree haber cambiado la web y no ha
+    // cambiado nada. Es el fallo silencioso que este build puede introducir, y
+    // por eso se comprueba aquí y también al arrancar el servidor.
+    const manifiesto = JSON.parse(
+      fs.readFileSync(path.join(RAIZ, "publico", "build.json"), "utf8")
     );
+    const actual = require("node:crypto")
+      .createHash("sha256")
+      .update(fs.readFileSync(path.join(RAIZ, "index.html"), "utf8"), "utf8")
+      .digest("hex");
+    assert.equal(
+      actual,
+      manifiesto.huellaIndex,
+      "index.html ha cambiado: ejecuta node scripts/compilar.js"
+    );
+  });
+
+  await prueba("ninguna página publicada necesita evaluar código", () => {
+    // Es el riesgo R12 convertido en prueba. Lo que se publica no puede volver
+    // a cargar el runtime, porque cargarlo obligaría a reabrir 'unsafe-eval'.
+    for (const f of fs.readdirSync(path.join(RAIZ, "publico"))) {
+      if (!f.endsWith(".html")) continue;
+      const t = fs.readFileSync(path.join(RAIZ, "publico", f), "utf8");
+      assert.ok(!t.includes("support.js"), `publico/${f} carga el runtime`);
+      assert.ok(!t.includes("__resources"), `publico/${f} carga el mapa del CDN`);
+      assert.ok(!t.includes("data-dc-script"), `publico/${f} lleva lógica sin compilar`);
+      assert.ok(!/\{\{/.test(t), `publico/${f} tiene interpolaciones sin resolver`);
+      assert.ok(t.includes('<script src="/app.js">'), `publico/${f} no carga app.js`);
+    }
+  });
+
+  await prueba("la política de seguridad ya no abre la puerta a eval", () => {
+    const s = fs.readFileSync(path.join(RAIZ, "server.js"), "utf8");
+    // Se mira que no quede la directiva, no la palabra: los comentarios que
+    // explican por qué se quitó sí la nombran, y deben poder hacerlo.
+    assert.ok(
+      !/["'`][^"'`]*\bscript-src\b[^"'`]*unsafe-eval/.test(s),
+      "la CSP vuelve a incluir 'unsafe-eval'"
+    );
+    assert.ok(
+      !/fuentes\.push\(\s*["']'unsafe-eval'["']\s*\)/.test(s),
+      "algo vuelve a añadir 'unsafe-eval' a script-src"
+    );
+  });
+
+  await prueba("index.html no se publica: lo que se sirve es su compilación", () => {
+    // index.html es la fuente que edita el equipo. Si volviera a servirse,
+    // volvería a hacer falta eval para pintarla.
+    const s = fs.readFileSync(path.join(RAIZ, "server.js"), "utf8");
+    assert.match(s, /FICHEROS_PRIVADOS[\s\S]{0,400}"index\.html"/, "index.html ya no es privado");
+    assert.match(s, /FICHEROS_PRIVADOS[\s\S]{0,400}"support\.js"/, "support.js ya no es privado");
+  });
+
+  await prueba("las seis rutas tienen su página compilada", () => {
+    const manifiesto = JSON.parse(
+      fs.readFileSync(path.join(RAIZ, "publico", "build.json"), "utf8")
+    );
+    for (const [ruta, pag] of Object.entries(manifiesto.rutas)) {
+      const f = path.join(RAIZ, "publico", pag + ".html");
+      assert.ok(fs.existsSync(f), `falta la página de ${ruta}`);
+      const t = fs.readFileSync(f, "utf8");
+      assert.ok(t.includes("<main"), `${pag}.html no tiene contenido`);
+    }
+  });
+
+  await prueba("app.js no depende de nada externo ni evalúa código", () => {
+    // Se quitan los comentarios antes de mirar: la cabecera del fichero explica
+    // que antes se compilaba con new Function() y esa frase no puede hacer
+    // fallar la prueba que comprueba que ya no se hace.
+    const t = fs
+      .readFileSync(path.join(RAIZ, "app.js"), "utf8")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^\s*\/\/.*$/gm, "");
+
+    for (const patron of ["http://", "https://", "import ", "require("]) {
+      assert.ok(!t.includes(patron), `app.js usa ${patron}`);
+    }
+    assert.ok(!/\bnew Function\b|\beval\s*\(/.test(t), "app.js evalúa código");
   });
 
   console.log("\nRevisión estática de la web publicada");
@@ -601,7 +697,7 @@ async function main() {
     // datos recogemos". Si alguien añade un campo y olvida la política, falla.
     const DECLARADOS = new Set([
       "nombre", "email", "zona", "como", "mensaje", "telefono",
-      "consiente_info", "consiente_colaborar", "consiente_cesion", "mayor_edad",
+      "consiente_info", "consiente_colaborar", "mayor_edad",
       "apellidos", "dni", "importe", "fecha_prevista",
       "declara_fisica", "declara_sin_contrato", "declara_no_extranjero",
       "acepta_privacidad", "declara_mayor_edad",
@@ -624,6 +720,38 @@ async function main() {
     }
     for (const [clave, texto] of DECLARACIONES) {
       assert.ok(texto && texto.length > 20, `el literal de ${clave} está vacío`);
+    }
+  });
+  await prueba("lo que la casilla enseña es exactamente lo que se guarda como prueba", () => {
+    // Es la comprobación de fondo de todo el consentimiento: de nada sirve
+    // guardar un literal impecable si en pantalla ponía otra cosa. Se comparan
+    // los dos textos con las etiquetas quitadas, así que cambiar un negrita no
+    // rompe nada pero cambiar lo que la frase dice, sí.
+    const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
+    const limpio = (s) => s.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+
+    for (const [clave, def] of CONSENTIMIENTOS) {
+      const campo = util.CAMPO_CONSENTIMIENTO[clave];
+      // Sin expresiones regulares a propósito: se busca el atributo y se
+      // recorta el <span> que viene detrás. Es más largo de leer, pero no
+      // depende de escapes que cualquier herramienta que toque el fichero
+      // pueda comerse. Es el mismo motivo por el que util.js construye sus
+      // expresiones con new RegExp y escapes ASCII.
+      const iCampo = html.indexOf(`name="${campo}"`);
+      assert.ok(iCampo !== -1, `no encuentro la casilla ${campo} en index.html`);
+      const iAbre = html.indexOf("<span>", iCampo);
+      const iCierra = html.indexOf("</span>", iAbre);
+      assert.ok(iAbre !== -1 && iCierra !== -1, `la casilla ${campo} no tiene texto`);
+
+      // La página añade al final un "Obligatorio." que el literal guardado no
+      // lleva: es una indicación de interfaz, no parte de lo que se consiente.
+      let enPagina = limpio(html.slice(iAbre + 6, iCierra));
+      if (enPagina.endsWith("Obligatorio.")) enPagina = enPagina.slice(0, -12).trim();
+      assert.equal(
+        enPagina,
+        limpio(def.texto),
+        `la casilla ${campo} no dice lo mismo que su literal en config.js`
+      );
     }
   });
   await prueba("las tres páginas legales se enlazan desde el pie", () => {
@@ -751,11 +879,23 @@ async function main() {
       assert.equal(f.rows[0].estado, "pendiente");
       assert.ok(f.rows[0].token_baja_hash, "falta el hash del token de baja");
       idAna = f.rows[0].id;
-      const c = await db.consulta("select version_texto, ip from consentimientos where alta_id=$1", [
-        idAna,
-      ]);
-      assert.equal(c.rowCount, 1);
-      assert.equal(c.rows[0].version_texto, "privacidad-2026-09-01");
+      const c = await db.consulta(
+        "select finalidad, version_texto, ip from consentimientos where alta_id=$1 order by finalidad",
+        [idAna]
+      );
+      // Una fila por casilla marcada, que es lo que permite responder «pruebe
+      // que consintió esto» y no solo «pruebe que aceptó». El alta de prueba
+      // marca la de información y la de mayoría de edad; la de colaborar se
+      // queda sin marcar y por eso no deja fila. Se comprueban las finalidades
+      // y no cuántas hay: un número suelto no dice cuál falta.
+      assert.deepEqual(
+        c.rows.map((f) => f.finalidad),
+        ["edad", "info"]
+      );
+      // Contra la configuración, no contra un literal: escrito a mano, esto
+      // envejece en cuanto alguien sube la versión de la política, que es
+      // exactamente lo que hay que hacer al tocar una casilla.
+      assert.equal(c.rows[0].version_texto, VERSION_POLITICA);
       assert.ok(c.rows[0].ip, "no se guardó la IP como prueba");
     });
 
@@ -917,7 +1057,8 @@ async function main() {
       assert.ok(j.cuerpo.total >= 1);
       const c = await pedir("/api/admin/altas.csv?estado=todos", { headers: cab });
       assert.equal(c.estado, 200);
-      assert.ok(c.cuerpo.startsWith("﻿"), "falta el BOM para Excel");
+      // Sobre los bytes: es lo que Excel va a leer del fichero descargado.
+      assert.deepEqual([...c.crudo.subarray(0, 3)], [0xef, 0xbb, 0xbf], "falta el BOM para Excel");
       assert.ok(c.cuerpo.includes(";"), "el separador debe ser punto y coma");
       assert.match(c.cabeceras.get("content-disposition") || "", /attachment/);
     });

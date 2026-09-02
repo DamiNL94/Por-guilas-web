@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E7A5F">
+<link rel="icon" href="/logo/por-aguilas-isotipo.svg" type="image/svg+xml">
+
+<!-- ==========================================================================
+     TODO LO QUE HAY ENTRE ESTOS DOS MARCADORES LO SUSTITUYE EL SERVIDOR.
+     server.js reemplaza el bloque entero por los metadatos de la ruta pedida
+     (título, descripción, canonical, og:*, twitter:*, JSON-LD y la tabla de
+     rutas para el cliente), con las URL absolutas del dominio real desde el
+     que se está sirviendo.
+
+     ¿Por qué en el servidor y no en JavaScript? Porque los rastreadores de
+     WhatsApp, Telegram, Twitter y Facebook NO ejecutan JavaScript: leen el
+     HTML tal como sale del servidor. Una og:title puesta desde el runtime no
+     la ve nadie.
+
+     Lo que hay escrito aquí abajo son los valores de la portada, y solo se ven
+     si se abre este fichero sin servidor. Para editarlos de verdad hay que ir
+     a la tabla META de server.js.
+     ========================================================================== -->
+<!-- metadatos:inicio -->
+<title>Por Águilas · Candidatura municipalista de izquierdas · Municipales 2027</title>
+<meta name="description" content="Candidatura municipalista de izquierdas para las elecciones municipales de 2027 en Águilas. Vivienda, servicios públicos, litoral y democracia municipal.">
+<link rel="canonical" href="/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Por Águilas">
+<meta property="og:title" content="Por Águilas · Municipales 2027">
+<meta property="og:description" content="Candidatura municipalista de izquierdas para Águilas. Vivienda, servicios públicos, litoral y democracia municipal.">
+<meta property="og:image" content="/og/por-aguilas-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/json" id="pa-donaciones">{"regimen":"ordinario","marco":"LO 8/2007","titular":"Izquierda Unida Región de Murcia","iban":"ES11 2100 8315 1913 0016 0571","conceptoPrefijo":"DONACION AGUILAS","limiteAnual":50000,"umbralNotificacion":25000,"conceptoMaximoBanco":35,"importeMinimo":1,"diasFechaPrevista":90,"deduccion":{"porcentaje":20,"baseMaxima":600},"avisos":{"noFinalista":"La donación no es finalista: no se puede destinar a una parte concreta de la campaña ni a un eje del programa. Va al sostenimiento general de la actividad.","noRevocable":"La donación no es revocable. Una vez hecha la transferencia no hay devolución, salvo que resulte ser una donación nula de las que la ley obliga a devolver.","deduccion":"Desgrava el 20 % en el IRPF sobre una base máxima de 600 € al año (art. 68.3 de la Ley del IRPF). Para aplicarla necesitas el certificado que emite la formación: sin certificado no hay deducción."}}</script>
+<!-- metadatos:fin -->
+<!-- Tipografías auto-alojadas: cero peticiones al servidor de fuentes de
+     Google y, por tanto, cero IP de visitantes entregadas a un tercero.
+     Ficheros y licencia en fonts/. El nombre de ese servidor no se escribe
+     aquí a propósito: el punto 8 de la lista de validación comprueba con un
+     grep que no aparece ningún dominio de terceros en este fichero, y un
+     comentario que lo mencione haría fallar la comprobación sin motivo. -->
+<link rel="preload" href="/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/familjen-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Familjen Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/familjen-grotesk-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Familjen Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/familjen-grotesk-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/public-sans-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/public-sans-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+</style>
+<link rel="stylesheet" href="/publico/estilos.css">
+</head>
+<body>
+<div style="background:#141414;color:#fff;font-size:13px;font-weight:600;line-height:1.45;display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px clamp(20px,5vw,44px);text-align:center">
+  <span style="max-width:70ch">Borrador de trabajo · los textos, notas de prensa y fechas son de ejemplo y hay que sustituirlos antes de publicar.</span>
+  <button type="button" data-pa-click="cerrarAviso" style="font:inherit;font-weight:800;background:none;color:inherit;border:1.5px solid currentColor;padding:3px 13px;cursor:pointer;flex:none">Entendido</button>
+</div>
+
+
+<header style="position:sticky;top:0;z-index:60;background:#fff;border-bottom:2px solid #141414">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px);display:flex;align-items:center;gap:clamp(12px,3vw,28px);min-height:76px">
+    <a href="/" data-pa-click="irInicio" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#141414;margin-right:auto;min-width:0">
+      <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:46px;height:46px;display:block;flex:none">
+      <span style="min-width:0">
+        <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.6vw,23px);letter-spacing:-.035em;line-height:1;display:block;white-space:nowrap"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
+        <span style="display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#6F6867;margin-top:5px;white-space:nowrap">Municipales 2027</span>
+      </span>
+    </a>
+
+    
+    <nav class="pa-solo-escritorio" aria-label="Principal" style="display:flex;gap:2px;align-items:center">
+      
+        
+        
+          <a class="pa-g0" href="/" data-pa-click="it.ir" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#141414;text-decoration:none;padding:11px 13px">Inicio</a>
+        
+      
+        
+          <a href="/quienes-somos" data-pa-click="it.ir" aria-current="page" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:700;color:#141414;text-decoration:none;padding:11px 13px;box-shadow:inset 0 -4px 0 #0E7A5F">Quiénes somos</a>
+        
+        
+      
+        
+        
+          <a class="pa-g1" href="/programa" data-pa-click="it.ir" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#141414;text-decoration:none;padding:11px 13px">Programa</a>
+        
+      
+        
+        
+          <a class="pa-g2" href="/prensa" data-pa-click="it.ir" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#141414;text-decoration:none;padding:11px 13px">Prensa</a>
+        
+      
+        
+        
+          <a class="pa-g3" href="/agenda" data-pa-click="it.ir" style="font-family:'Public Sans',sans-serif;font-size:14.5px;font-weight:600;color:#141414;text-decoration:none;padding:11px 13px">Agenda</a>
+        
+      
+      <a class="pa-g4" href="/sumate" data-pa-click="irSumate" style="font-family:'Public Sans',sans-serif;font-weight:800;font-size:14.5px;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;padding:13px 22px;margin-left:12px;display:inline-flex;align-items:center">Súmate</a>
+    </nav>
+    
+
+    
+    <button class="pa-solo-movil" type="button" data-pa-click="abrirMenu" aria-expanded="false" style="display:flex;align-items:center;gap:9px;background:none;border:2px solid #141414;padding:11px 15px;cursor:pointer;color:#141414;font-family:'Public Sans',sans-serif;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;min-height:46px;flex:none">
+      <span style="display:flex;flex-direction:column;gap:4px"><span style="display:block;width:17px;height:2px;background:#141414"></span><span style="display:block;width:17px;height:2px;background:#141414"></span><span style="display:block;width:17px;height:2px;background:#141414"></span></span>
+      Menú
+    </button>
+    
+  </div>
+</header>
+
+<template data-pa-if="menuAbierto">
+<div role="dialog" aria-label="Menú" style="position:fixed;inset:0;z-index:90;background:#fff;display:flex;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:12px;padding:0 clamp(20px,5vw,44px);min-height:76px;border-bottom:2px solid #141414;flex:none">
+    <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:42px;height:42px;display:block">
+    <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-.035em;margin-right:auto"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#0E7A5F;font-weight:700">Águilas</b></span>
+    <button type="button" data-pa-click="cerrarMenu" aria-label="Cerrar menú" style="background:none;border:2px solid #141414;color:#141414;font:800 13px/1 'Public Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:14px 16px;cursor:pointer;min-height:46px">Cerrar</button>
+  </div>
+  <nav aria-label="Principal" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:8px clamp(20px,5vw,44px) 28px">
+    
+      
+      
+        <a href="/" data-pa-click="it.ir" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">Inicio</a>
+      
+    
+      
+        <a href="/quienes-somos" data-pa-click="it.ir" aria-current="page" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;box-shadow:inset 5px 0 0 #0E7A5F;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">Quiénes somos</a>
+      
+      
+    
+      
+      
+        <a href="/programa" data-pa-click="it.ir" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">Programa</a>
+      
+    
+      
+      
+        <a href="/prensa" data-pa-click="it.ir" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">Prensa</a>
+      
+    
+      
+      
+        <a href="/agenda" data-pa-click="it.ir" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">Agenda</a>
+      
+    
+    <a href="/sumate" data-pa-click="irSumate" style="margin-top:24px;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;font:800 16px/1 'Public Sans',sans-serif;padding:20px 22px;min-height:56px;display:flex;align-items:center;justify-content:center">Súmate a la candidatura</a>
+  </nav>
+</div>
+</template>
+
+<main>
+
+
+
+
+<div style="padding:clamp(46px,6vw,74px) 0 clamp(52px,7vw,86px)">
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="max-width:62ch;margin-bottom:clamp(32px,4.5vw,46px)">
+      <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+        Quiénes somos
+      </span>
+      <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Una candidatura de Águilas, hecha en Águilas.</h2>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Por Águilas es un proyecto municipalista de izquierdas hecho en el pueblo y para el pueblo. Nace del trabajo de años en el municipio y se abre a personas independientes del movimiento vecinal, sindical, feminista y ecologista que quieren gobernar este pueblo de otra manera.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
+      <div style="max-width:64ch">
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:23px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px">Por qué una marca propia</h3>
+        <p style="margin:0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Porque lo que se decide en mayo de 2027 no es un debate de siglas: es si en Águilas se puede alquilar un piso, si el centro de salud atiende en agosto y en febrero, y si la costa la ordena el pleno o la ordena quien compra. Por Águilas es el nombre bajo el que llevamos ese debate a la calle.</p>
+        <p style="margin:16px 0 0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Detrás no hay ningún misterio: la impulsan <strong>Izquierda Unida</strong> y el <strong>Partido Comunista</strong>, y lo decimos con todas las letras aquí y en cada acto. Lo que hacemos es poner por delante el asunto —Águilas— y no el membrete. Quien quiera saber de dónde venimos lo tiene escrito en esta página; quien quiera sumarse no necesita carné para hacerlo.</p>
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:23px;font-weight:700;letter-spacing:-.025em;margin:36px 0 10px">Cómo tomamos las decisiones</h3>
+        <p style="margin:0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Asamblea abierta mensual, cuentas publicadas y candidatura elaborada con participación de las personas inscritas en el proyecto. Los cargos electos se comprometen por escrito a limitación salarial, publicación de agenda y rendición de cuentas semestral ante la asamblea.</p>
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:23px;font-weight:700;letter-spacing:-.025em;margin:36px 0 10px">Con quién contamos</h3>
+        <p style="margin:0;color:#141414;font-size:17px;line-height:1.62;text-wrap:pretty">Con el tejido asociativo del municipio: asociaciones de vecinos de las barriadas y las diputaciones, colectivo pesquero y agrario, AMPAs, plataformas por la sanidad pública, entidades ecologistas del litoral y el sindicalismo de clase. La candidatura no sustituye a nadie: acompaña y traslada al pleno lo que ya se pelea en la calle.</p>
+      </div>
+      <div>
+        <div style="aspect-ratio:3/4;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border:2px solid #D5D0CE;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
+          <span style="font:600 11.5px/1.7 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>grupo de la candidatura<br>en la calle, luz natural</span>
+        </div>
+        <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:22px 0 0;line-height:1.55">Pendiente de completar: nombres del equipo, trayectoria de la persona candidata a la Alcaldía y enlace a los estatutos internos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+</main>
+
+<footer style="background:#141414;color:#D5D0CE;padding:clamp(44px,6vw,64px) 0 30px;border-top:8px solid #0E7A5F;position:relative">
+  <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:3px;background:#6B2D5C"></div>
+  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:clamp(28px,4vw,48px)">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <img src="logo/por-aguilas-isotipo.svg" alt="" style="width:46px;height:46px;display:block;flex:none">
+          <span>
+            <span style="font-family:'Familjen Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.035em;line-height:1;display:block;color:#fff"><i style="font-style:normal;color:#D9351F">Por</i> <b style="color:#3FCB9E;font-weight:700">Águilas</b></span>
+            <span style="display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9A9291;margin-top:5px">Municipales 2027</span>
+          </span>
+        </div>
+        <p style="font-size:15px;line-height:1.6;max-width:42ch;margin:0">Candidatura municipalista de izquierdas para las elecciones de mayo de 2027 en Águilas. Abierta a personas independientes, se decide en asamblea y rinde cuentas. Quién la impulsa y con qué respaldo está en <a href="/quienes-somos" data-pa-click="irQuienes" style="color:#fff">Quiénes somos</a>.</p>
+      </div>
+      <div>
+        <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Secciones</h4>
+        <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
+          
+            <li><a href="/" data-pa-click="it.ir" style="color:#fff">Inicio</a></li>
+          
+            <li><a href="/quienes-somos" data-pa-click="it.ir" style="color:#fff">Quiénes somos</a></li>
+          
+            <li><a href="/programa" data-pa-click="it.ir" style="color:#fff">Programa</a></li>
+          
+            <li><a href="/prensa" data-pa-click="it.ir" style="color:#fff">Prensa</a></li>
+          
+            <li><a href="/agenda" data-pa-click="it.ir" style="color:#fff">Agenda</a></li>
+          
+          <li><a href="/sumate" data-pa-click="irSumate" style="color:#fff">Súmate</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Contacto</h4>
+        <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
+          <li>Local de la candidatura · Águilas</li>
+          <li><a href="mailto:admin@por-aguilas.es" style="color:#fff">admin@por-aguilas.es</a></li>
+          <li style="color:#9A9291">Dirección y teléfono pendientes</li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.18);margin-top:clamp(30px,4vw,42px);padding-top:20px;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;font-size:13px;color:#9A9291">
+      <span>© 2026 Por Águilas · Borrador de trabajo</span>
+      <span style="display:flex;gap:18px;flex-wrap:wrap">
+        <a href="/legal/aviso-legal" style="color:#D5D0CE">Aviso legal</a>
+        <a href="/legal/privacidad" style="color:#D5D0CE">Privacidad</a>
+        <a href="/legal/cookies" style="color:#D5D0CE">Cookies</a>
+      </span>
+    </div>
+  </div>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

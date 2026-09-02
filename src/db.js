@@ -162,7 +162,12 @@ create index if not exists don_dni_ix    on donaciones (dni, creado);
 const MIGRACIONES = `
 alter table altas add column if not exists telefono           text;
 alter table altas add column if not exists consiente_colaborar boolean not null default false;
-alter table altas add column if not exists consiente_cesion    boolean not null default false;
+
+-- La casilla de cesión al PCE se retiró el 2 de septiembre de 2026. Se borra la
+-- columna, no se deja vacía: mientras exista, alguien puede volver a escribir
+-- en ella sin que haya un consentimiento detrás que la sostenga. Sin columna no
+-- hay dónde guardar una cesión que ya no se pregunta.
+alter table altas drop column if exists consiente_cesion;
 
 -- Una fila de consentimiento por finalidad marcada, no una por envío: es lo que
 -- permite demostrar ante la AEPD que el permiso para ceder a IU y al PCE se dio

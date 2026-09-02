@@ -8,8 +8,17 @@ npm install && npm test
 ```
 
 ```bash
-node server.js
+node scripts/compilar.js && node server.js
 ```
+
+> **Lo que se publica no es `index.html`.** El equipo lo sigue editando —es la fuente, con su editor
+> visual— pero lo que sale a Internet son las seis páginas de `publico/`, que genera
+> `scripts/compilar.js`. Así no hace falta ningún runtime en el navegador, la política de seguridad
+> puede decir `script-src 'self'` a secas, y quien no ejecute JavaScript recibe la página entera en
+> vez de una plantilla sin resolver.
+>
+> **Después de tocar `index.html` hay que volver a compilar.** Si se olvida, el arranque avisa y
+> `npm test` falla: el build guarda la huella del index con el que se hizo.
 
 ---
 
@@ -28,9 +37,9 @@ Punto de partida: `cp .env.example .env`.
 | `SECRETO_HMAC` | ✅ | Del que se derivan los enlaces de baja. Mínimo 32 caracteres. |
 | `URL_BASE` | ✅ | Dirección pública del sitio, sin barra final. Base de los enlaces de los correos. |
 | `BREVO_API_KEY` | ✅ (o consola) | Clave de la API de Brevo para el correo transaccional. |
-| `REMITENTE` | | Dirección del dominio verificado. Por defecto `no-responder@poraguilas.es`. |
+| `REMITENTE` | | Dirección **de un dominio propio verificado**. Por defecto `no-responder@por-aguilas.es`. **No puede ser de Gmail, Outlook ni similar**: su política DMARC haría que los correos de confirmación se rechacen o acaben en spam, y sin confirmar no hay alta. El arranque lo rechaza. |
 | `REMITENTE_NOMBRE` | | Por defecto `Por Águilas`. |
-| `RESPUESTA_A` | | Buzón que lee alguien de verdad. Por defecto `hola@poraguilas.es`. |
+| `RESPUESTA_A` | | Buzón que lee alguien de verdad. Por defecto `admin@por-aguilas.es`. |
 | `CORREO_EN_CONSOLA` | | `1` imprime los correos en vez de enviarlos. **Solo local.** |
 | `FECHA_PURGA_TOTAL` | | Borrado total de la lista. Por defecto `2027-11-30`. |
 | `RUTA_LEGAL` | | Solo para pruebas. Apunta a una carpeta con copias de las páginas legales. No relaja ningún control. |
@@ -53,7 +62,7 @@ El backend se autoevalúa al arrancar y **no acepta ni un dato** si algo falta. 
 y en un endpoint sin secretos:
 
 ```bash
-curl -s https://poraguilas.es/api/salud
+curl -s https://por-aguilas.es/api/salud
 ```
 
 Devuelve `200` con `altasAbiertas: true` cuando todo está listo, o `503` con la lista exacta de lo
@@ -73,6 +82,7 @@ Lo que comprueba al arrancar:
   dígitos del CCC español).
 - Que el régimen activo no tiene huecos sin rellenar.
 - Que el bloque `pa-donaciones` de `index.html` coincide con `config.donaciones`.
+- Que el `REMITENTE` no es una dirección de Gmail, Outlook o similar.
 - Que están las tres variables obligatorias y que los secretos tienen longitud suficiente.
 
 ---
@@ -96,7 +106,9 @@ despliegue:
 | Establecimiento en Águilas | Calle Echegaray, 3, bajo A · Águilas (Murcia) |
 | Inscripción | Registro de Partidos Políticos, 2 de noviembre de 1992 |
 | Delegado de protección de datos | `dpd@izquierdaunida.org` |
-| Versión de la política | `privacidad-2026-09-03` |
+| Versión de la política | `privacidad-2026-09-05` |
+| Correo de contacto | `admin@por-aguilas.es` |
+| Dominio | `por-aguilas.es` — **con guion**. El código lo asumía sin él hasta el 2 de septiembre de 2026 |
 
 > **Las dos direcciones de Madrid no coinciden, y es a propósito.** La del Registro consta desde la
 > inscripción de 1992; la de Villablanca es donde está hoy la organización y la que ella misma
@@ -115,7 +127,7 @@ detector sigue vivo.
 | 1 | **Contrato de encargado del tratamiento (art. 28 RGPD) con Brevo** (Sendinblue SAS, Francia) | Protección de datos |
 | 2 | **Contrato de encargado del tratamiento (art. 28 RGPD) con Railway** (EE. UU., servidores en la UE, cláusulas contractuales tipo) | Protección de datos |
 | 3 | Verificar el dominio en Brevo con SPF, DKIM y DMARC en el DNS | Web |
-| 4 | Confirmar que `hola@poraguilas.es` existe y que lo lee alguien | Secretaría |
+| 4 | Confirmar que `admin@por-aguilas.es` existe y que lo lee alguien | Secretaría |
 | 5 | **Asignar quién revisa cada ingreso contra el extracto**, semanalmente. El procedimiento está escrito en `PROTOCOLO-INGRESOS.md`; falta el nombre (riesgos R1, R2 y R11) | Tesorería |
 | 6 | Confirmar si la cuenta es de uso exclusivo de donaciones y está comunicada al Tribunal de Cuentas (art. 8 LO 8/2007) | Federación |
 | 7 | Meter en el calendario la conmutación a régimen electoral (apartado 6) | Web |
@@ -128,10 +140,26 @@ detector sigue vivo.
 | `REGISTRO-TRATAMIENTOS.md` | Registro de actividades del art. 30 RGPD, con una ficha por tratamiento: lista de Súmate, comunicaciones de donación y atención de derechos. Cerró la última pieza formal de R3, que baja de 10 🟧 a 5 🟨. **No se publica**: es interno, para enseñarlo si lo pide la AEPD. |
 | `PROTOCOLO-INGRESOS.md` | Qué mirar cada semana en el extracto, qué devolver y en qué plazo. Cierra el protocolo de devolución de R1 y R2. Falta asignarle una persona. |
 
+### 3.2.ter Qué se enseña de las reglas de financiación, y dónde
+
+La sección de donaciones tenía un cartel con las siete reglas de la LO 8/2007. Se quitó el 2 de
+septiembre de 2026: cuatro estaban dichas dos veces y la página parecía un prospecto. Los tres
+avisos que el encargo pedía **siguen visibles**, cada uno donde sirve:
+
+| Aviso | Dónde está ahora |
+|---|---|
+| Límite de 50.000 €/año | Pista del campo «importe», donde se escribe la cifra |
+| No finalista **ni revocable** | Justo debajo de los datos de la cuenta, antes de transferir |
+| Deducción del 20 % hasta 600 € | Junto al formulario, en positivo: es una razón para donar, no una advertencia |
+
+Lo demás —personas jurídicas, anónimas, contratos con el sector público, gobiernos extranjeros,
+notificación al Tribunal de Cuentas— vive en dos sitios mejores: las que afectan a quien dona son
+**las cinco declaraciones que hay que marcar**, y el detalle completo está en el **aviso legal**,
+que es donde se busca. Si alguien vuelve a añadir un cartel, que sepa que esto ya se decidió.
+
 ### 3.3. Recomendable antes de publicar
 
-- Compilar la maqueta a HTML/JS estático y quitar `unsafe-eval` de la política de seguridad de
-  contenidos (riesgo R12).
+
 - Sustituir las notas de prensa y los eventos de ejemplo, y quitar la barra de «borrador de
   trabajo».
 - Copia de seguridad cifrada y **probada** de la tabla `donaciones`: es la única que no se puede
@@ -153,7 +181,25 @@ Hay **una sola persona jurídica** detrás de todo esto:
 | Candidatura | Por Águilas — **sin inscribir todavía**, sin personalidad jurídica. Por eso el titular de la web es IU. |
 | Federación regional | Izquierda Unida Región de Murcia — **órgano**, mismo NIF |
 | Asamblea local | Izquierda Unida de Águilas — **órgano**, mismo NIF |
-| Organización distinta | Partido Comunista de España — sí es un tercero |
+| Partido Comunista de España | Impulsa la candidatura, pero **no recibe ningún dato**: la casilla que lo permitía se retiró |
+
+### Cómo se nombra a IU y al PCE de cara al público
+
+La regla, decidida el 2 de septiembre de 2026: **la candidatura por delante, las siglas solo donde
+la ley las exige.** Quien entra en la web se está acercando a Por Águilas, no a un partido, y el
+texto tiene que reflejar eso.
+
+| Dónde | Qué se hace | Por qué |
+|---|---|---|
+| Portada, pie, entradilla de Súmate | **Sin siglas.** El pie remite a «Quiénes somos» | Es copy, no obligación |
+| «Quiénes somos» → «Por qué una marca propia» | **Se dice con todas las letras** | La sección existe para explicar la relación. Quitarlo ahí sería lo único que un adversario podría capturar como ocultación, y hace más daño que la vinculación que evita |
+| Casilla `consiente_info` | Se nombra a Izquierda Unida, **en segundo lugar** tras la candidatura | Art. 13.1.a RGPD: el dato es de categoría especial y el consentimiento tiene que ser informado en el momento de marcar, no en un enlace |
+| Casilla de cesión al PCE | **Retirada el 4 de septiembre de 2026** | Sin consentimiento no hay comunicación. Ya no existe ninguna vía por la que la lista salga hacia otra organización: ni la casilla, ni la columna, ni el destinatario en la política. Recuperarla exigiría preguntar de nuevo a cada persona |
+| Titular junto al IBAN | Izquierda Unida Región de Murcia | Es lo que el donante ve en su banco. Si no coincide, el ingreso no se puede casar (riesgo R2) |
+| Aviso legal y política de privacidad | Identificación completa | Arts. 10 LSSI y 13.1.a RGPD |
+
+Si alguien quiere ir más allá, el límite está en las cuatro últimas filas: son lo estrictamente
+legal y quitarlas no es desvincular, es incumplir.
 
 Vive en `RESPONSABLE`, dentro de `src/config.js`, y de ahí salen el aviso legal, la política de
 privacidad y los literales de las casillas de consentimiento. El arranque comprueba que las páginas
@@ -163,9 +209,10 @@ Dos cosas que conviene no volver a mezclar:
 
 1. **La asamblea local y la federación regional no responden de nada.** Son órganos. Si alguien
    vuelve a ponerlas en la casilla «Responsable» de una página legal, el arranque lo rechaza.
-2. **Mover datos entre órganos no es una cesión.** Solo lo es lo que sale hacia el PCE, y por eso es
-   lo único que pregunta esa casilla. Hay una prueba automática que falla si vuelve a pedirse
-   permiso para comunicar los datos al propio responsable.
+2. **Ya no hay ninguna cesión.** Mover datos entre órganos de Izquierda Unida no lo es —es el mismo
+   responsable— y la única que sí lo era, la comunicación al PCE, se retiró el 4 de septiembre de
+   2026 junto con su casilla y su columna. Hay una prueba automática que falla si alguien
+   reintroduce la casilla, el campo o un consentimiento que se guarde sin haberse preguntado.
 
 Si cambia cualquiera de estos datos hay que **subir la versión de la política** (`VERSION_POLITICA`)
 y actualizar el `<meta name="pa-version-politica">` de `legal/privacidad.html`. Si no coinciden, el
@@ -242,7 +289,7 @@ Protegido con `ADMIN_TOKEN` en la cabecera. No aparece en la web, ni en ninguna 
 repositorio: una lista de afinidad política no puede quedar a un enlace de distancia.
 
 ```bash
-curl -s -H "Authorization: Bearer $ADMIN_TOKEN" https://poraguilas.es/api/admin/altas
+curl -s -H "Authorization: Bearer $ADMIN_TOKEN" https://por-aguilas.es/api/admin/altas
 ```
 
 | Ruta | Qué da |
@@ -317,6 +364,9 @@ detrás una norma, no una preferencia.
   rechaza por construcción.
 - **Sin donaciones finalistas.** No hay selector de destino, ni «dona para vivienda», ni barra de
   progreso de «llevamos X de Y». Art. 5.1.d LO 8/2007.
+- **Sin carteles de reglas legales en la página pública.** El detalle va al aviso legal y las reglas
+  que afectan a quien dona van en las casillas que hay que marcar. En la página quedan los tres
+  avisos que hacen falta antes de transferir, y ni uno más.
 - **Sin prometer devoluciones.** Las donaciones son irrevocables y la copy no puede sugerir lo
   contrario.
 - **Sin donación recurrente.**
@@ -342,12 +392,27 @@ Con `CORREO_EN_CONSOLA=1` se recorre el alta entera —incluido el enlace de con
 imprime por consola— sin cuenta de Brevo ni dominio verificado.
 
 Sin Postgres a mano, el sitio y los dos formularios se pueden abrir igual: la validación, la
-trampa, el control de origen y el límite por IP funcionan, y el guardado devuelve error. Para el
-flujo completo hace falta una base de datos de verdad:
+trampa, el control de origen y el límite por IP funcionan, y el guardado devuelve error. Así pasan
+64 de las 78 pruebas y las otras 14 se saltan, diciéndolo.
+
+Para el flujo completo hace falta una base de datos de verdad. La más cómoda es un contenedor que
+no deje nada detrás: los datos van en memoria y el contenedor se borra solo al pararlo.
 
 ```bash
-DATABASE_URL=postgres://usuario:clave@localhost:5432/poraguilas_pruebas npm test
+docker run -d --rm --name poraguilas-pruebas -e POSTGRES_USER=pruebas -e POSTGRES_PASSWORD=pruebas -e POSTGRES_DB=poraguilas_pruebas -p 55432:5432 --tmpfs /var/lib/postgresql/data postgres:17-alpine
 ```
+
+```bash
+DATABASE_URL="postgres://pruebas:pruebas@127.0.0.1:55432/poraguilas_pruebas?sslmode=disable" npm test
+```
+
+```bash
+docker stop poraguilas-pruebas
+```
+
+> **El `?sslmode=disable` no es opcional en local.** Fuera de él, `src/db.js` exige TLS, que es lo
+> correcto contra Railway pero imposible contra un Postgres de andar por casa: sin ese parámetro el
+> banco de pruebas se cae entero con «the server does not support SSL connections».
 
 Esa base se usa de verdad: crea las tablas y las vacía al terminar. **No apuntar nunca a la de
 producción.**
