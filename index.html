@@ -156,6 +156,149 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
    oculta al lector de pantalla: quien rellene esto no es una persona. */
 .pa-trampa{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 </style>
+<style>
+/* --- Sección Programa -------------------------------------------------------
+   El resto de la web va con estilos en línea, nodo a nodo. El programa no:
+   son cuatro ejes, noventa y una medidas de eje, quince titulares y dos tablas.
+   Repetir la misma declaración noventa veces es la forma más segura de que una
+   acabe distinta de las demás, y además la impresión necesita poder decir
+   «todos los ejes empiezan en página nueva» en una sola regla.
+
+   Todos los valores salen del manual de marca; ninguno introduce un color
+   nuevo. Contrastes comprobados sobre blanco: negro #141414 18,4:1 ·
+   verde #0E7A5F 5,3:1 · verde oscuro #0A5C47 7,7:1 · gris #403B3A 11,0:1 ·
+   bermellón #D9351F 4,7:1. Blanco sobre verde #0E7A5F, 5,3:1. Todos por
+   encima del 4,5:1 que exige la AA.
+
+   El bermellón aparece solo en las cuñas y en la línea de «borrador»: es lo
+   urgente. Los números de las quince medidas van en verde oscuro a propósito,
+   porque quince cifras rojas seguidas dejan de señalar nada. */
+
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.pa-pg{padding:clamp(40px,5vw,64px) 0 clamp(52px,7vw,86px)}
+.pa-pg-ancho{max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)}
+
+/* La cuña. Un triángulo hecho con bordes: sin fichero, sin petición y sin
+   texto que un lector de pantalla pueda leer quince veces seguidas. En el
+   marcado va siempre con aria-hidden. */
+.pa-cuna{display:inline-block;width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none}
+.pa-cuna-s{border-left-width:8px;border-top-width:5px;border-bottom-width:5px}
+
+.pa-pg-cab{max-width:64ch;border-bottom:2px solid #141414;padding-bottom:clamp(26px,3.4vw,36px);margin-bottom:clamp(26px,3.4vw,36px)}
+.pa-pg-ceja{display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px}
+.pa-pg-h1{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(34px,6vw,64px);font-weight:700;letter-spacing:-.035em;line-height:1;margin:0;color:#141414;text-wrap:balance}
+.pa-pg-lema{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(20px,2.6vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:14px 0 0;color:#0E7A5F}
+.pa-pg-meta{margin:18px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#403B3A;line-height:1.5}
+.pa-pg-meta+.pa-pg-meta{margin-top:4px}
+.pa-pg-version{margin:16px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#D9351F}
+.pa-pg-nota{margin:14px 0 0;font-size:14.5px;line-height:1.6;color:#403B3A;max-width:72ch;text-wrap:pretty}
+
+/* Índice de la página. Es la navegación entre ejes que pide el manual: anclas
+   de verdad, no pestañas de JavaScript, para que el botón atrás siga sirviendo
+   y para que el enlace se pueda compartir. */
+.pa-idx{border:2px solid #141414;padding:20px clamp(16px,2.2vw,24px);margin-bottom:clamp(34px,4.4vw,52px)}
+.pa-idx-t{margin:0 0 13px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#403B3A}
+.pa-idx-l{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 10px}
+.pa-idx-a{display:inline-flex;align-items:center;min-height:42px;padding:9px 14px;border:2px solid #D5D0CE;color:#0A5C47;text-decoration:none;font:700 14px/1.25 'Public Sans',sans-serif}
+.pa-idx-a:hover{border-color:#0E7A5F;color:#141414}
+
+.pa-bloque{border-top:2px solid #141414;padding:clamp(34px,4.4vw,54px) 0;scroll-margin-top:clamp(84px,12vw,104px)}
+.pa-bloque-alt{background:#EFF4F1;padding-left:clamp(18px,2.4vw,30px);padding-right:clamp(18px,2.4vw,30px)}
+.pa-bloque-ceja{display:flex;align-items:center;gap:11px;margin:0 0 14px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F}
+
+.pa-h2{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(27px,4vw,42px);font-weight:700;letter-spacing:-.03em;line-height:1.04;margin:0;color:#0E7A5F;text-wrap:balance}
+.pa-h3{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(19px,2.2vw,24px);font-weight:700;letter-spacing:-.025em;line-height:1.12;margin:clamp(28px,3.4vw,38px) 0 14px;color:#0A5C47}
+.pa-p{margin:0 0 14px;font-size:17px;line-height:1.65;color:#141414;max-width:68ch;text-wrap:pretty}
+.pa-p:last-child{margin-bottom:0}
+.pa-p-entrada{margin-top:16px;font-size:clamp(16.5px,1.7vw,18.5px)}
+
+/* Bloque A · Las quince. Filete duro entre medida y medida, número a la
+   izquierda y el desarrollo debajo del titular. */
+.pa-med{margin:clamp(26px,3.4vw,36px) 0 0;padding:0;list-style:none;display:flex;flex-direction:column}
+.pa-med-i{display:flex;gap:clamp(14px,2vw,22px);align-items:flex-start;border-top:2px solid #141414;padding:clamp(16px,2vw,22px) 0}
+.pa-med-i:last-child{border-bottom:2px solid #141414}
+.pa-med-n{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:700;letter-spacing:-.03em;line-height:1;color:#0A5C47;flex:none;min-width:2.4ch}
+.pa-med-c{display:block;min-width:0}
+.pa-med-t{display:block;font-size:clamp(17px,1.8vw,19.5px);line-height:1.35;font-weight:800;color:#141414;text-wrap:pretty}
+.pa-med-d{display:block;margin-top:8px;font-size:16.5px;line-height:1.6;color:#141414;max-width:68ch;text-wrap:pretty}
+
+/* Bloque B · Los ejes. Cada uno empieza en página nueva al imprimir. */
+.pa-eje{border-top:2px solid #141414;padding:clamp(38px,5vw,60px) 0 clamp(12px,1.6vw,20px);scroll-margin-top:clamp(84px,12vw,104px)}
+.pa-eje-n{display:flex;align-items:center;gap:11px;margin:0 0 12px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F}
+.pa-eje-lema{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(19px,2.4vw,27px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:12px 0 0;color:#141414;text-wrap:balance}
+.pa-prob{margin:clamp(24px,3vw,32px) 0 0;border-left:5px solid #0E7A5F;padding:2px 0 2px clamp(16px,2vw,22px)}
+.pa-prob-t{margin:0 0 10px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0A5C47}
+.pa-lista{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:13px}
+.pa-lista-i{display:flex;gap:13px;align-items:flex-start}
+.pa-lista-i .pa-cuna{margin-top:8px}
+.pa-lista-x{font-size:16.5px;line-height:1.62;color:#141414;max-width:66ch;text-wrap:pretty}
+
+/* Bloques C y D · Las dos tablas. No son <table> por una razón concreta: el
+   analizador de plantillas del navegador saca fuera de la tabla cualquier
+   etiqueta que no sea de tabla, y sc-for lo es. Con roles ARIA el lector de
+   pantalla la anuncia igual como tabla, y además se puede reordenar en móvil
+   sin perder la semántica, que es lo que pasa al cambiarle el display a una
+   tabla de verdad. En pantalla estrecha cada fila se convierte en una lista de
+   pares etiqueta-valor: nunca en un scroll horizontal. */
+.pa-tb{margin:clamp(24px,3vw,34px) 0 0;border:2px solid #141414;background:#fff}
+.pa-tb-r{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1.7fr);border-top:1px solid #D5D0CE}
+.pa-tb-cab{background:#141414;border-top:0}
+.pa-tb-h{padding:13px clamp(12px,1.4vw,18px);font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#fff;line-height:1.35}
+.pa-tb-c{padding:clamp(13px,1.6vw,18px) clamp(12px,1.4vw,18px);font-size:16px;line-height:1.55;color:#141414;text-wrap:pretty}
+.pa-tb-c+.pa-tb-c{border-left:1px solid #D5D0CE}
+.pa-tb-c1{font-weight:700}
+@media (max-width:759px){
+  .pa-tb-r{display:block;border-top:2px solid #141414}
+  .pa-tb-cab{display:none}
+  .pa-tb-cab+.pa-tb-r{border-top:0}
+  .pa-tb-c{display:block;padding:12px clamp(12px,3vw,16px)}
+  .pa-tb-c+.pa-tb-c{border-left:0;border-top:1px solid #D5D0CE}
+  .pa-tb-c::before{content:attr(data-col);display:block;margin-bottom:5px;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#0A5C47}
+}
+
+/* Bloque E · Las fuentes. Plegable, pero abierto de salida: quien llega aquí
+   viene a comprobar una cifra, no a buscar el botón. */
+.pa-det{margin:clamp(22px,2.8vw,30px) 0 0;border:2px solid #141414}
+.pa-det-s{cursor:pointer;padding:15px clamp(15px,2vw,20px);font:800 12.5px/1.35 'Public Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#0A5C47;background:#EFF4F1}
+.pa-det[open] .pa-det-s{border-bottom:2px solid #141414}
+.pa-fuentes{margin:0;padding:18px clamp(16px,2vw,22px) 20px clamp(36px,4.5vw,48px);display:flex;flex-direction:column;gap:11px}
+.pa-fuentes-i{font-size:15.5px;line-height:1.6;color:#141414;max-width:74ch;text-wrap:pretty}
+
+.pa-desc{border-top:2px solid #141414;margin-top:clamp(34px,4.4vw,52px);padding-top:clamp(30px,4vw,44px)}
+.pa-h2-p{margin-bottom:14px}
+.pa-desc-p{margin:22px 0 0}
+.pa-desc-a{display:inline-flex;align-items:center;min-height:54px;padding:17px 26px;background:#0E7A5F;border:2px solid #0E7A5F;color:#fff;text-decoration:none;font:800 15px/1 'Public Sans',sans-serif}
+.pa-desc-a:hover{background:#0A5C47;border-color:#0A5C47;color:#fff}
+
+/* Impresión. La página entera en A4, sin menús, sin fondos y con un eje por
+   página. Quien quiera el programa en papel se lo lleva desde el navegador,
+   sin pedirle a nadie un PDF. */
+@media print{
+  header,footer,.pa-idx,.pa-desc{display:none!important}
+  body{font-size:10.5pt;color:#000;background:#fff}
+  .pa-pg{padding:0}
+  .pa-pg-ancho{max-width:none;padding:0}
+  .pa-pg-h1{font-size:26pt}
+  .pa-h2{font-size:17pt}
+  .pa-h3{font-size:12.5pt}
+  .pa-p,.pa-med-d,.pa-lista-x,.pa-tb-c{font-size:10.5pt;line-height:1.45;max-width:none}
+  .pa-fuentes-i{font-size:9.5pt;line-height:1.4;max-width:none}
+  .pa-h2,.pa-h3,.pa-pg-lema,.pa-eje-n,.pa-eje-lema,.pa-bloque-ceja,.pa-pg-ceja,.pa-prob-t,.pa-med-n,.pa-pg-version{color:#000!important}
+  .pa-bloque-alt{background:#fff!important;padding-left:0;padding-right:0}
+  .pa-tb-cab{background:#fff!important;border-bottom:1pt solid #000}
+  .pa-tb-h{color:#000!important}
+  .pa-tb,.pa-det,.pa-med-i,.pa-bloque,.pa-eje,.pa-pg-cab{border-color:#000}
+  .pa-cuna{border-left-color:#000}
+  .pa-prob{border-left-color:#000}
+  .pa-det-s{display:none}
+  .pa-eje{break-before:page;page-break-before:always}
+  .pa-h2,.pa-h3,.pa-eje-n,.pa-bloque-ceja{break-after:avoid;page-break-after:avoid}
+  .pa-med-i,.pa-lista-i,.pa-tb-r,.pa-fuentes-i,.pa-prob{break-inside:avoid;page-break-inside:avoid}
+  a[href]{color:#000;text-decoration:none}
+}
+</style>
 </helmet>
 
 <sc-if value="{{ aviso }}" hint-placeholder-val="{{ true }}">
@@ -213,6 +356,10 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
       <sc-if value="{{ it.inactivo }}">
         <a href="{{ it.href }}" onClick="{{ it.ir }}" style="display:flex;align-items:center;border-bottom:1px solid #D5D0CE;color:#141414;text-decoration:none;font:700 22px/1.1 'Familjen Grotesk',sans-serif;letter-spacing:-.03em;padding:22px 14px;min-height:56px">{{ it.label }}</a>
       </sc-if>
+    </sc-for>
+    <p style="margin:20px 14px 4px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#403B3A">Los cuatro ejes</p>
+    <sc-for list="{{ ejesCorto }}" as="e" hint-placeholder-count="4">
+      <a href="{{ e.ancla }}" style="display:flex;align-items:center;gap:11px;border-bottom:1px solid #D5D0CE;color:#0A5C47;text-decoration:none;font:700 16px/1.3 'Public Sans',sans-serif;padding:15px 14px;min-height:48px"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none" aria-hidden="true"></span>Eje {{ e.n }} · {{ e.tema }}</a>
     </sc-for>
     <a href="/sumate" onClick="{{ irSumate }}" style="margin-top:24px;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;font:800 16px/1 'Public Sans',sans-serif;padding:20px 22px;min-height:56px;display:flex;align-items:center;justify-content:center">Súmate a la candidatura</a>
   </nav>
@@ -278,7 +425,7 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:clamp(28px,5vw,56px);align-items:center;margin-bottom:clamp(34px,5vw,48px)">
         <div style="max-width:60ch">
           <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-            <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+            <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none" aria-hidden="true"></span>
             Por dónde empezamos
           </span>
           <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro cosas, dichas claras.</h2>
@@ -293,14 +440,32 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
         <sc-for list="{{ ejesCorto }}" as="e" hint-placeholder-count="4">
           <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
             <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:59px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;line-height:1.3">{{ e.cap }}</div>
-            <div style="padding:24px clamp(20px,3vw,26px) 28px">
-              <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,24px);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin:0 0 11px">{{ e.t }}</h3>
-              <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">{{ e.d }}</p>
+            <div style="padding:24px clamp(20px,3vw,26px) 28px;display:flex;flex-direction:column;flex:1">
+              <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,24px);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin:0 0 18px;text-wrap:balance">{{ e.lema }}</h3>
+              <p style="margin:auto 0 0"><a href="{{ e.ancla }}" style="font:800 13.5px/1 'Public Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#0A5C47;text-decoration:none;border-bottom:2px solid #0E7A5F;padding-bottom:3px" style-hover="color:#141414;border-color:#141414">Ver el eje {{ e.n }}</a></p>
             </div>
           </article>
         </sc-for>
       </div>
       <p style="margin:clamp(26px,4vw,34px) 0 0"><a href="/programa" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;text-decoration:none;border:2px solid #141414;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#141414;color:#fff">Ver las propuestas concretas</a></p>
+
+      <div style="margin-top:clamp(44px,5.5vw,64px);border-top:2px solid #141414;padding-top:clamp(28px,3.5vw,38px)">
+        <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none" aria-hidden="true"></span>
+          Las 15 medidas
+        </span>
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(23px,2.8vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:0;text-wrap:balance">Quince medidas para empezar</h3>
+        <p style="margin:14px 0 0;color:#403B3A;font-size:clamp(16px,1.5vw,17.5px);line-height:1.6;max-width:56ch;text-wrap:pretty">Las quince que definen el mandato. Si en cuatro años solo se hubieran hecho estas, habría merecido la pena.</p>
+        <ol style="margin:24px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:0;max-width:76ch">
+          <sc-for list="{{ medidasHome }}" as="m" hint-placeholder-count="5">
+            <li style="display:flex;gap:14px;align-items:baseline;border-top:1px solid #D5D0CE;padding:13px 0">
+              <span style="font:800 12.5px/1.3 'Public Sans',sans-serif;letter-spacing:.06em;color:#0A5C47;flex:none;min-width:22px" aria-hidden="true">{{ m.n }}</span>
+              <span style="font-size:16.5px;line-height:1.5;color:#141414;font-weight:600;text-wrap:pretty">{{ m.t }}</span>
+            </li>
+          </sc-for>
+        </ol>
+        <p style="margin:26px 0 0"><a href="/programa#medidas" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#0A5C47;border-color:#0A5C47">Ver las quince</a></p>
+      </div>
     </div>
   </div>
 
@@ -351,9 +516,9 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
           <p style="margin:16px 0 0;color:#403B3A;font-size:clamp(16.5px,1.6vw,18px);line-height:1.6;max-width:50ch;text-wrap:pretty">Cada propuesta se puede llevar a un pleno, se puede presupuestar y se puede auditar. El documento se ampliará con las aportaciones de la asamblea abierta y de las mesas sectoriales.</p>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
             <a href="/programa" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#0A5C47;border-color:#0A5C47">Leer el programa</a>
-            <a href="/programa" onClick="{{ pdfPendiente }}" style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;gap:9px;text-decoration:none" style-hover="background:#141414;color:#fff">Descargar en PDF</a>
+            <a href="{{ descargaHref }}" download style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;gap:9px;text-decoration:none" style-hover="background:#141414;color:#fff">Descargar el programa</a>
           </div>
-          <p style="margin:16px 0 0;font-size:14px;color:#6F6867;border-left:5px solid #D9351F;padding:2px 0 2px 14px;max-width:44ch">Pendiente: el PDF del programa se publicará cuando cierren las mesas sectoriales.</p>
+          <p style="margin:16px 0 0;font-size:14px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;max-width:46ch">El documento que se descarga es un borrador de trabajo. Mientras lo sea, lo que manda es esta web.</p>
         </div>
       </div>
     </div>
@@ -422,35 +587,132 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
 </sc-if>
 
 <sc-if value="{{ esEjes }}">
-<div style="padding:clamp(46px,6vw,74px) 0 clamp(52px,7vw,86px)">
-  <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)">
-    <div style="max-width:62ch;margin-bottom:clamp(32px,4.5vw,46px)">
-      <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
-        <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
-        Programa
-      </span>
-      <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Cuatro ejes, propuestas comprobables.</h2>
-      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Cada propuesta se puede llevar a un pleno, se puede presupuestar y se puede auditar. El documento se ampliará con las aportaciones de la asamblea abierta y de las mesas sectoriales.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:2px">
-      <sc-for list="{{ ejesFull }}" as="e" hint-placeholder-count="4">
-        <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
-          <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:59px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;line-height:1.3">{{ e.cap }}</div>
-          <div style="padding:24px clamp(20px,3vw,26px) 28px">
-            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,24px);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin:0 0 11px">{{ e.t }}</h3>
-            <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">{{ e.d }}</p>
-            <ul style="margin:20px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px">
-              <sc-for list="{{ e.props }}" as="p" hint-placeholder-count="5">
-                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.55">
-                  <span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span>
-                  <span style="text-wrap:pretty">{{ p.txt }}</span>
-                </li>
-              </sc-for>
-            </ul>
+<div class="pa-pg">
+  <div class="pa-pg-ancho">
+
+    <header class="pa-pg-cab">
+      <span class="pa-pg-ceja"><span class="pa-cuna" aria-hidden="true"></span>Programa</span>
+      <h1 class="pa-pg-h1">{{ programa.titulo }}</h1>
+      <p class="pa-pg-lema">{{ programa.lema }}</p>
+      <p class="pa-pg-meta">{{ programa.candidatura }}</p>
+      <p class="pa-pg-meta">{{ programa.eleccion }}</p>
+      <p class="pa-pg-version">{{ programa.version }}</p>
+      <p class="pa-pg-nota">{{ programa.nota }}</p>
+    </header>
+
+    <nav class="pa-idx" aria-label="Secciones del programa">
+      <p class="pa-idx-t">En esta página</p>
+      <ul class="pa-idx-l">
+        <li><a class="pa-idx-a" href="#medidas">Quince medidas para empezar</a></li>
+        <sc-for list="{{ ejesIdx }}" as="x" hint-placeholder-count="4">
+          <li><a class="pa-idx-a" href="{{ x.ancla }}">Eje {{ x.n }} · {{ x.tema }}</a></li>
+        </sc-for>
+        <li><a class="pa-idx-a" href="#competencias">Qué no decide el Ayuntamiento</a></li>
+        <li><a class="pa-idx-a" href="#indicadores">Cómo comprobar si cumplimos</a></li>
+        <li><a class="pa-idx-a" href="#fuentes">Fuentes</a></li>
+      </ul>
+    </nav>
+
+    <section class="pa-bloque" id="medidas" aria-labelledby="medidas-t">
+      <p class="pa-bloque-ceja"><span class="pa-cuna" aria-hidden="true"></span>Lo esencial</p>
+      <h2 class="pa-h2" id="medidas-t">Quince medidas para empezar</h2>
+      <p class="pa-p pa-p-entrada">Las quince que definen el mandato. Si en cuatro años solo se hubieran hecho estas, habría merecido la pena.</p>
+      <ol class="pa-med">
+        <sc-for list="{{ medidas }}" as="m" hint-placeholder-count="15">
+          <li class="pa-med-i">
+            <span class="pa-med-n" aria-hidden="true">{{ m.n }}</span>
+            <span class="pa-med-c">
+              <span class="pa-med-t">{{ m.t }}</span>
+              <span class="pa-med-d">{{ m.d }}</span>
+            </span>
+          </li>
+        </sc-for>
+      </ol>
+    </section>
+
+    <sc-for list="{{ ejesFull }}" as="e" hint-placeholder-count="4">
+      <section class="pa-eje" id="{{ e.id }}" aria-labelledby="{{ e.idTit }}">
+        <p class="pa-eje-n"><span class="pa-cuna" aria-hidden="true"></span>Eje {{ e.n }}</p>
+        <h2 class="pa-h2" id="{{ e.idTit }}">{{ e.tema }}</h2>
+        <p class="pa-eje-lema">{{ e.lema }}</p>
+        <div class="pa-prob">
+          <p class="pa-prob-t">El problema</p>
+          <sc-for list="{{ e.problema }}" as="q" hint-placeholder-count="3">
+            <p class="pa-p">{{ q.txt }}</p>
+          </sc-for>
+        </div>
+        <sc-for list="{{ e.grupos }}" as="g" hint-placeholder-count="4">
+          <h3 class="pa-h3">{{ g.t }}</h3>
+          <ul class="pa-lista">
+            <sc-for list="{{ g.p }}" as="m" hint-placeholder-count="6">
+              <li class="pa-lista-i"><span class="pa-cuna pa-cuna-s" aria-hidden="true"></span><span class="pa-lista-x">{{ m.txt }}</span></li>
+            </sc-for>
+          </ul>
+        </sc-for>
+      </section>
+    </sc-for>
+
+    <section class="pa-bloque pa-bloque-alt" id="competencias" aria-labelledby="competencias-t">
+      <p class="pa-bloque-ceja"><span class="pa-cuna" aria-hidden="true"></span>Honestidad competencial</p>
+      <h2 class="pa-h2" id="competencias-t">Lo que no depende del Ayuntamiento</h2>
+      <p class="pa-p pa-p-entrada">{{ competenciasIntro }}</p>
+      <div class="pa-tb pa-tb-3" role="table" aria-label="Lo que no depende del Ayuntamiento">
+        <div class="pa-tb-r pa-tb-cab" role="row">
+          <span class="pa-tb-h" role="columnheader">Asunto</span>
+          <span class="pa-tb-h" role="columnheader">Quién decide</span>
+          <span class="pa-tb-h" role="columnheader">Qué hará el Ayuntamiento</span>
+        </div>
+        <sc-for list="{{ competencias }}" as="c" hint-placeholder-count="7">
+          <div class="pa-tb-r" role="row">
+            <span class="pa-tb-c pa-tb-c1" role="cell" data-col="Asunto">{{ c.a }}</span>
+            <span class="pa-tb-c" role="cell" data-col="Quién decide">{{ c.q }}</span>
+            <span class="pa-tb-c" role="cell" data-col="Qué hará el Ayuntamiento">{{ c.h }}</span>
           </div>
-        </article>
-      </sc-for>
-    </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="pa-bloque" id="indicadores" aria-labelledby="indicadores-t">
+      <p class="pa-bloque-ceja"><span class="pa-cuna" aria-hidden="true"></span>Rendición de cuentas</p>
+      <h2 class="pa-h2" id="indicadores-t">Cómo comprobar si cumplimos</h2>
+      <p class="pa-p pa-p-entrada">{{ indicadoresIntro }}</p>
+      <div class="pa-tb pa-tb-3" role="table" aria-label="Cómo comprobar si cumplimos">
+        <div class="pa-tb-r pa-tb-cab" role="row">
+          <span class="pa-tb-h" role="columnheader">Indicador</span>
+          <span class="pa-tb-h" role="columnheader">Punto de partida</span>
+          <span class="pa-tb-h" role="columnheader">Objetivo del mandato</span>
+        </div>
+        <sc-for list="{{ indicadores }}" as="d" hint-placeholder-count="8">
+          <div class="pa-tb-r" role="row">
+            <span class="pa-tb-c pa-tb-c1" role="cell" data-col="Indicador">{{ d.i }}</span>
+            <span class="pa-tb-c" role="cell" data-col="Punto de partida">{{ d.p }}</span>
+            <span class="pa-tb-c" role="cell" data-col="Objetivo del mandato">{{ d.o }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="pa-bloque" id="fuentes" aria-labelledby="fuentes-t">
+      <p class="pa-bloque-ceja"><span class="pa-cuna" aria-hidden="true"></span>De dónde salen las cifras</p>
+      <h2 class="pa-h2" id="fuentes-t">Fuentes</h2>
+      <p class="pa-p pa-p-entrada">{{ fuentesNota }}</p>
+      <details class="pa-det" open>
+        <summary class="pa-det-s">Las once fuentes, una por una</summary>
+        <ol class="pa-fuentes">
+          <sc-for list="{{ fuentes }}" as="f" hint-placeholder-count="11">
+            <li class="pa-fuentes-i">{{ f.txt }}</li>
+          </sc-for>
+        </ol>
+      </details>
+    </section>
+
+    <section class="pa-desc" aria-labelledby="descarga-t">
+      <h2 class="pa-h2 pa-h2-p" id="descarga-t">Descargar el programa</h2>
+      <p class="pa-p">El documento de trabajo completo, tal cual se edita. Mientras sea un borrador, lo que manda es esta página.</p>
+      <p class="pa-desc-p"><a class="pa-desc-a" href="{{ descargaHref }}" download>Descargar el programa</a></p>
+      <p class="pa-pg-nota">{{ descargaNombre }}</p>
+    </section>
+
   </div>
 </div>
 </sc-if>
@@ -901,40 +1163,294 @@ const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov"
 const MESES_L = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 const fechaLarga = iso => { const d = new Date(iso+"T00:00:00"); return d.getDate()+" de "+MESES_L[d.getMonth()]+" de "+d.getFullYear(); };
 
-const EJES = [
-  { n:"01", tema:"Vivienda y coste de vida",
-    t:"Que vivir aquí no sea un lujo de temporada",
-    d:"Un municipio costero donde el alquiler de temporada expulsa a quien vive los doce meses tiene un problema de vivienda, no de turismo. El Ayuntamiento tiene competencias reales y hay que usarlas.",
-    p:["Censo municipal público de vivienda vacía y de vivienda de uso turístico, actualizado cada semestre.",
-       "Regulación de las licencias de vivienda turística por zonas, empezando por el casco y el frente marítimo.",
-       "Recargo del IBI a la vivienda vacía de grandes tenedores, con la recaudación finalista a alquiler asequible.",
-       "Oficina municipal de vivienda: mediación en desahucios, gestión de ayudas y bolsa de alquiler para jóvenes y mayores.",
-       "Suelo municipal destinado a promoción pública en alquiler, nunca a venta."]},
-  { n:"02", tema:"Servicios públicos y cuidados",
-    t:"Sanidad, educación y cuidados que no cierran en invierno",
-    d:"Los servicios se dimensionan para el pico de agosto o para el mínimo de febrero, y en los dos casos falla alguien. Defender lo público desde el Ayuntamiento es exigir a quien tiene la competencia y no soltar la presión.",
-    p:["Exigencia permanente al Servicio Murciano de Salud por la apertura completa, y con todos los servicios comprometidos, de los recursos sanitarios del municipio.",
-       "Refuerzo de urgencias y de pediatría dimensionado a la población real, estacionalidad incluida.",
-       "Plan municipal de cuidados: ampliación de horarios de escuela infantil y de ayuda a domicilio.",
-       "Comedores escolares y actividades de verano con precios por renta, no por orden de solicitud.",
-       "Transporte público interno que conecte diputaciones y pedanías con el centro y con el hospital de referencia."]},
-  { n:"03", tema:"Modelo de pueblo: litoral, agua y trabajo",
-    t:"Litoral, agua y urbanismo decididos por el pueblo",
-    d:"Águilas vive del mar, del campo y de quien viene. Ninguna de las tres cosas aguanta si se sigue construyendo sobre la costa y regando sin saber con qué agua.",
-    p:["Moratoria de nuevos desarrollos urbanísticos en primera línea mientras no haya un plan de costa aprobado con participación vecinal.",
-       "Protección efectiva de las calas y del entorno de Cuatro Calas frente a la presión constructiva y al tráfico rodado.",
-       "Auditoría pública del ciclo del agua: quién consume, quién paga y en qué estado está la red.",
-       "Apoyo a la flota pesquera artesanal y a la comercialización directa del producto local.",
-       "Plan de empleo digno vinculado a rehabilitación de vivienda y eficiencia energética, con cláusulas sociales en toda la contratación municipal."]},
-  { n:"04", tema:"Democracia municipal",
-    t:"Un ayuntamiento que se pueda mirar por dentro",
-    d:"La transparencia no es publicar un PDF ilegible en una pestaña escondida. Es que cualquier vecina pueda saber en cinco minutos en qué se gasta su dinero y quién decidió gastarlo.",
-    p:["Portal de contratación con todos los contratos menores publicados en formato abierto y buscable.",
-       "Presupuestos participativos vinculantes con un porcentaje mínimo garantizado del presupuesto de inversiones.",
-       "Plenos en horario compatible con la jornada laboral y retransmitidos, con acta accesible en 72 horas.",
-       "Consejos sectoriales con capacidad real de dictamen en urbanismo, servicios sociales y medio ambiente.",
-       "Código ético para los cargos de la candidatura: limitación salarial, agenda pública e incompatibilidades declaradas."]}
+// --- Programa municipal 2027 -------------------------------------------------
+//
+// Texto literal del documento «Programa Por Águilas 2027», borrador de trabajo,
+// versión 1, septiembre de 2026. No se resume ni se reescribe aquí: si hay que
+// cambiar una medida se cambia en el documento y se vuelve a volcar entera.
+//
+// Cada cifra que aparece en un diagnóstico tiene su fuente en FUENTES, y ese
+// bloque se publica al final de la página. Si se toca una cifra hay que tocar
+// también su fuente: es la única forma de que la página siga siendo
+// comprobable dentro de un año.
+
+const PROGRAMA = {
+  titulo: "Programa municipal 2027",
+  lema: "Águilas se vive todo el año.",
+  candidatura: "Candidatura de unidad de la izquierda · IU + PCE",
+  eleccion: "Elecciones municipales de Águilas · 23 de mayo de 2027",
+  version: "Borrador de trabajo · versión 1 · septiembre de 2026",
+  nota: "Documento interno de la candidatura. Las cifras llevan fuente al final. Antes de publicarlo hay que actualizar los datos que caduquen y sustituir los plazos aproximados por fechas cerradas."
+};
+
+// Bloque A · Las quince que definen el mandato.
+const MEDIDAS = [
+  { n:"01", t:"Empresa municipal de vivienda.",
+    d:"Con suelo público ya disponible y un primer parque de 100 viviendas en alquiler asequible durante el mandato. Titularidad pública permanente: ni una se vende." },
+  { n:"02", t:"Censo público de vivienda vacía y recargo del IBI a grandes tenedores.",
+    d:"Hasta el máximo que permite la ley —que llega al 150 % para quien acumula viviendas vacías—, con la recaudación afectada por ordenanza a alquiler asequible. Censo publicado y actualizado cada año." },
+  { n:"03", t:"Registro municipal de viviendas de uso turístico, con techo por barrio.",
+    d:"Un máximo de plazas turísticas por cada cien viviendas en cada zona. Donde ya se supere, licencia denegada. Inspección real, no formulario." },
+  { n:"04", t:"Calendario público y por escrito del CIAR.",
+    d:"Qué servicio abre, en qué fecha y con cuánta plantilla. Y mientras no estén, transporte sanitario gratuito a Lorca para toda consulta derivada." },
+  { n:"05", t:"Radiología en urgencias 24 horas y centro de salud Águilas Sur abierto los sábados.",
+    d:"Es lo que tienen los municipios de nuestro tamaño en la Región. Aquí no." },
+  { n:"06", t:"Auditoría pública del ciclo del agua.",
+    d:"Rendimiento de la red, pérdidas, tarifa, inversión comprometida y ejecutada. Publicada antes de renovar ninguna concesión, no después." },
+  { n:"07", t:"Moratoria en primera línea de costa.",
+    d:"Ningún desarrollo nuevo en primera línea hasta que haya un plan del litoral participado y aprobado en pleno." },
+  { n:"08", t:"Plan municipal de energía.",
+    d:"Fotovoltaica en todas las cubiertas municipales, empezando por colegios y polideportivo, y una comunidad energética por barrio con reserva de participaciones para hogares vulnerables." },
+  { n:"09", t:"Escuela infantil pública de 0 a 3 años, gratuita y con horario real.",
+    d:"Adaptada a la jornada agrícola y hostelera, que empieza antes de las ocho y no acaba a las tres." },
+  { n:"10", t:"Plan de desestacionalización con objetivo medible.",
+    d:"Que la ocupación entre octubre y mayo suba diez puntos en el mandato. Ecoturismo, patrimonio minero y ferroviario, deporte y congresos. Publicando el dato cada trimestre." },
+  { n:"11", t:"Cláusulas sociales obligatorias en toda la contratación municipal.",
+    d:"Convenio del sector, estabilidad en plantilla, límite a la subcontratación en cadena y pérdida del contrato al incumplirlas." },
+  { n:"12", t:"Presupuestos participativos vinculantes sobre el 25 % de la inversión.",
+    d:"Vinculantes de verdad: lo que se vota se ejecuta, y la ejecución se publica cada trimestre con nombre de obra y euros gastados." },
+  { n:"13", t:"Todos los contratos menores publicados y buscables.",
+    d:"En un portal que funcione, con proveedor, importe y objeto. Plenos por la tarde y retransmitidos." },
+  { n:"14", t:"Reclamación con fecha del cercanías Murcia-Lorca-Águilas.",
+    d:"Por escrito, con plazo y con recurso si no hay respuesta. La ubicación de la estación se decide en consulta a los vecinos, no en un despacho." },
+  { n:"15", t:"Oficina única de vivienda, suministros y ayudas.",
+    d:"Un solo mostrador para alquiler, pobreza energética, dependencia y ayudas de urgencia, con cita en menos de 72 horas y respuesta en menos de quince días." }
 ];
+
+// Bloque B · Los cuatro ejes. `id` es el ancla: /programa#eje-01. Si cambia,
+// cambian también los enlaces de la portada y del menú del móvil.
+const EJES = [
+  { n:"01", id:"eje-01", tema:"Vivienda y coste de vida",
+    lema:"Que se pueda quedar quien quiera quedarse.",
+    problema:[
+      "En Águilas no falta vivienda: falta vivienda para quien vive aquí en febrero. El parque crece, pero crece hacia la costa y hacia la temporada. El metro cuadrado sube un 8,8 % en un año y un 15,2 % en Calabardina-Cope, mientras el salario de la hostelería y del campo se queda donde estaba.",
+      "El resultado se ve sin estadística: gente joven que se va a Lorca, familias que encadenan alquileres de nueve meses porque en verano el piso vale el triple, y trabajadores de temporada durmiendo en condiciones que nadie inspecciona.",
+      "El enemigo no es el vecino que alquila un apartamento para llegar a fin de mes. Es un modelo que trata la vivienda como negocio de temporada y deja el resto del año sin cubrir."
+    ],
+    grupos:[
+      { t:"Qué haremos", p:[
+        "Crear la empresa municipal de vivienda, con patrimonio municipal de suelo aportado desde el primer presupuesto y un objetivo de 100 viviendas de alquiler asequible en el mandato, de titularidad pública permanente.",
+        "Elaborar y publicar el censo de vivienda vacía del municipio, cruzando padrón, consumos de agua y luz y datos catastrales, con la metodología publicada.",
+        "Aplicar el recargo en el IBI a la vivienda desocupada hasta el máximo que permite la Ley 12/2023: 50 % de base, ampliable al 100 % a partir de tres años vacía y al 150 % cuando el titular acumula varias viviendas desocupadas en el municipio. La recaudación, afectada por ordenanza a la política de alquiler asequible.",
+        "Crear el registro municipal de viviendas de uso turístico y fijar un techo de plazas por cada cien viviendas en cada barrio y pedanía. Donde se supere, no se conceden nuevas. Inspección con personal propio y régimen sancionador que se aplique.",
+        "Poner en marcha la bolsa municipal de alquiler asequible: el Ayuntamiento avala la renta y cubre el seguro de impago al propietario que alquile todo el año por debajo del precio de referencia.",
+        "Reservar el 30 % de toda promoción nueva a vivienda protegida en alquiler, y no recalificar suelo sin esa reserva.",
+        "Crear la oficina única de vivienda, suministros y ayudas, con cita en menos de 72 horas, servicio antidesahucios y mediación con la propiedad y con la banca.",
+        "Ordenanza de suministros básicos: prohibición de corte de agua a familias en situación de vulnerabilidad acreditada por servicios sociales, bono social municipal automático para pensiones por debajo del salario mínimo y auditoría del recibo del agua.",
+        "Plan de alojamiento para trabajadores de temporada, negociado con empresas agrícolas y hosteleras, con estándares mínimos publicados e inspección municipal.",
+        "Rehabilitar el parque construido antes de gastar en suelo nuevo: ayudas municipales a la rehabilitación energética y a la eliminación de barreras en los barrios del casco y en los cabezos, priorizando bloques sin ascensor."
+      ]}
+    ]},
+
+  { n:"02", id:"eje-02", tema:"Servicios públicos y cuidados",
+    lema:"Aquí no sobra nadie.",
+    problema:[
+      "Somos casi 38.000 personas en invierno y muchas más en verano, con servicios dimensionados para el pueblo que éramos hace veinte años. El CIAR abrirá a finales de 2026, pero según la información disponible lo hará con salud mental, urgencias y atención a desplazados: servicios que ya funcionan aquí. Sin laboratorio, sin hospitalización de corta estancia, sin cirugía menor ambulatoria y con la radiología sin garantizar. Mientras tanto, el gasto en pruebas de imagen concertadas con la privada ha crecido cerca de un 50 % en cinco años.",
+      "Con la educación, los cuidados, la cultura y el deporte pasa lo mismo: existen, pero cierran fuera de temporada, no llegan a las pedanías y dependen de que la familia pueda pagar o llevar en coche.",
+      "Este eje se juzga con una sola pregunta: ¿está abierto en febrero y llega al barrio?"
+    ],
+    grupos:[
+      { t:"Sanidad", p:[
+        "Exigir por escrito, con registro de entrada y plazo de respuesta, el calendario de apertura del CIAR servicio a servicio, con la plantilla de cada uno. Publicarlo íntegro, respondan lo que respondan.",
+        "Reclamar laboratorio, cirugía menor ambulatoria, hospitalización de corta estancia y radiología en el CIAR: sin eso no es un centro de alta resolución, es una mudanza.",
+        "Radiología en las urgencias del centro de salud Águilas Norte las 24 horas, incluidos festivos.",
+        "Apertura del centro de salud Águilas Sur los sábados por la mañana, como en el resto de la Región.",
+        "Convertir la Casa del Mar en centro de especialidades mientras el CIAR no esté completo, con las consultas más derivadas al menos una vez por semana.",
+        "Transporte sanitario gratuito a Lorca para consultas derivadas, financiado por el Ayuntamiento mientras el servicio no esté aquí, y reclamado a la Comunidad.",
+        "Consejo de Salud de Águilas con profesionales, pacientes y las dos administraciones, que se reúna con orden del día público y acta publicada.",
+        "Mapa de vulnerabilidad en salud por barrios y pedanías, con datos separados por sexo, y un plan anual con presupuesto para los barrios peor situados."
+      ]},
+      { t:"Educación e infancia", p:[
+        "Escuela infantil pública de 0 a 3 años gratuita, con plazas suficientes y horario adaptado a la jornada agrícola y hostelera.",
+        "Ampliar el equipo municipal de absentismo escolar hasta poder hacer seguimiento caso a caso, con visita a los centros y a las familias, y publicar la cifra de absentismo cada curso.",
+        "Comedor escolar abierto todo el año, incluidos periodos no lectivos, con producto de kilómetro cero y sin que ningún niño quede fuera por impago.",
+        "Reclamar y acompañar con suelo y locales la ampliación de la formación profesional en lo que aquí da trabajo: náutico-pesquera, agroalimentaria, energías renovables, mantenimiento hotelero y sociosanitaria.",
+        "Ayudas de transporte para quien estudia fuera, con cuantía publicada y baremo objetivo.",
+        "Instalaciones deportivas de los colegios abiertas al barrio fuera del horario escolar, con conserjería pagada por el Ayuntamiento."
+      ]},
+      { t:"Servicios sociales, mayores y dependencia", p:[
+        "Ordenanza de ayudas de urgencia con baremo público, plazo máximo de quince días y silencio positivo.",
+        "Ampliar la ayuda a domicilio y la teleasistencia hasta cubrir toda la lista de espera municipal, y publicar esa lista cada trimestre.",
+        "Centro de día y respiro familiar para personas con demencia, en convenio con las entidades que ya trabajan aquí.",
+        "Garantía municipal de alimentación: economato social, comedor y cocina en un mismo espacio, gestionado con Cáritas, Cruz Roja y las entidades del municipio, sin colas a la vista de nadie.",
+        "Plan de barrio para las zonas con peores indicadores, con presupuesto finalista y evaluación anual publicada."
+      ]},
+      { t:"Igualdad y vida libre de violencia", p:[
+        "Casa de acogida para mujeres víctimas de violencia machista en el municipio, o plaza concertada garantizada y accesible en menos de 24 horas.",
+        "Reforzar el Centro de Información y Asesoramiento de la Mujer con atención psicológica y jurídica estable, no por campañas.",
+        "Plan de igualdad del propio Ayuntamiento, auditado y publicado, y formación obligatoria a toda la plantilla municipal, policía local incluida.",
+        "Atención específica a las mujeres del campo y a las trabajadoras migrantes, con el asesoramiento laboral conveniado con los sindicatos."
+      ]},
+      { t:"Juventud", p:[
+        "Consejo de la Juventud constituido en los seis primeros meses de mandato, con presupuesto propio y voz en el pleno.",
+        "Local de ensayo y grabación de gestión juvenil, con horario nocturno y de fin de semana.",
+        "Programación de ocio alternativo todo el año, decidida por quienes la usan, no programada desde la concejalía.",
+        "Prioridad juvenil en el alquiler asequible municipal: reserva de un tercio del parque para menores de 35 años."
+      ]},
+      { t:"Cultura y deporte, todo el año", p:[
+        "Centro de artes escénicas y espacio sociocultural autogestionado por las asociaciones, con calendario propio de octubre a mayo.",
+        "Programación cultural y deportiva descentralizada: cada barrio y cada pedanía con actividad estable fuera de verano.",
+        "Biblioteca municipal con horario ampliado, tarde y sábado, y fondo pensado también para quien estudia una oposición o una carrera a distancia.",
+        "Recuperación de patrimonio con uso: refugios de la guerra, Plaza del Caño, El Hornillo y patrimonio minero, cada uno con un uso concreto y un mantenimiento presupuestado.",
+        "Carnaval hacia la autogestión, con las peñas decidiendo el reparto en un consejo con reglas escritas, y apoyo material estable en lugar de subvención discrecional.",
+        "Escuelas deportivas municipales con cuota proporcional a la renta y transporte desde las pedanías."
+      ]}
+    ]},
+
+  { n:"03", id:"eje-03", tema:"Modelo de pueblo: litoral, agua, trabajo y movilidad",
+    lema:"Un pueblo, no un escaparate.",
+    problema:[
+      "Águilas tiene lo que casi ningún municipio del Mediterráneo conserva: costa sin construir. Cabo Cope, las Cuatro Calas, el Cabezo. Eso no es paisaje: es la única ventaja competitiva que no se puede copiar, y es lo primero que se pierde si se decide mal una vez.",
+      "El agua manda sobre todo lo demás. La desaladora está llamada a ampliarse antes de 2027 y sus paradas de mantenimiento ya condicionan el riego. Sin saber cuánta agua hay, cuánta se pierde en la red y cuánto cuesta, cualquier plan de crecimiento es un papel.",
+      "Y el trabajo: el paro ha bajado, pero sigue concentrado en hostelería, comercio y ocupaciones elementales. El objetivo del mandato no es crear empleo de cualquier tipo, sino que el que hay dure más meses y pague mejor."
+    ],
+    grupos:[
+      { t:"Litoral y urbanismo", p:[
+        "Moratoria de nuevos desarrollos en primera línea de costa hasta aprobar un plan del litoral participado, con la superficie recalificada de los últimos veinte años publicada como punto de partida.",
+        "Revisión del planeamiento general con participación real: exposición pública con sesiones en barrios y pedanías, y respuesta razonada y publicada a cada alegación.",
+        "Reserva marina en Cabo Cope, solicitada formalmente y con el expediente hecho desde el Ayuntamiento, no solo pedida en un pleno.",
+        "Plan director de la Isla del Fraile compatible con la excavación arqueológica, sin uso turístico masivo mientras dure.",
+        "Ni un solo nuevo campo de golf ni desarrollo residencial que dependa de recursos hídricos no garantizados por escrito."
+      ]},
+      { t:"Agua", p:[
+        "Auditoría pública del ciclo integral del agua y de la concesión actual: rendimiento de la red, pérdidas, tarifa, inversión comprometida y ejecutada. Publicada antes de renovar nada.",
+        "Plan de reducción de pérdidas en la red con objetivo anual y sectorización, empezando por los tramos con más fugas.",
+        "Reutilización de aguas depuradas para riego de zonas verdes y baldeo, con el porcentaje reutilizado publicado cada año.",
+        "Posición pública del Ayuntamiento en la ampliación de la desaladora: qué caudal se destina a abastecimiento urbano, cuál a riego y quién paga la energía.",
+        "Democratización de las comunidades de regantes y transparencia en la asignación de caudales, con la información municipal disponible publicada."
+      ]},
+      { t:"Energía", p:[
+        "Plan municipal de energía con objetivo de autosuficiencia: fotovoltaica en todas las cubiertas municipales, empezando por colegios y polideportivo.",
+        "Una comunidad energética por barrio, con reserva de participaciones gratuitas para hogares en pobreza energética.",
+        "Auditoría del alumbrado público y sustitución con criterio de ahorro y de contaminación lumínica, especialmente en costa y pedanías.",
+        "Fotovoltaica para el bombeo y la desalación, exigida a quien opere las instalaciones."
+      ]},
+      { t:"Trabajo, turismo, campo y mar", p:[
+        "Plan de desestacionalización con objetivo medible: diez puntos más de ocupación entre octubre y mayo en el mandato, publicando el dato cada trimestre.",
+        "Turismo de naturaleza, patrimonio minero y ferroviario, senderismo homologado y buceo como oferta de temporada baja, con producto empaquetado y comercializado, no solo folletos.",
+        "Cláusulas sociales obligatorias en toda la contratación municipal: convenio del sector, estabilidad, límite a la subcontratación en cadena y pérdida del contrato al incumplirlas.",
+        "Oficina municipal de empleo y economía social, con acompañamiento a cooperativas de trabajo y prioridad a los sectores que aquí faltan: transformación agroalimentaria y pesquera, mantenimiento de renovables, cuidados.",
+        "Naves municipales en el polígono en alquiler con opción de compra para pequeñas empresas y cooperativas nuevas, con condiciones ligadas a empleo estable y ahorro energético.",
+        "Apoyo a la agricultura sostenible y a la recuperación de cultivos tradicionales, con oficina municipal que tramite la certificación ecológica y con compra pública de proximidad en comedores y centros municipales.",
+        "Defensa de la pesca artesanal: apoyo a la reserva marina, transformación de producto en tierra, y estudio del uso de la flota en limpieza del litoral durante las paradas.",
+        "Plan de comercio de proximidad: peatonalización acordada con los comerciantes, mercadillo mensual de producto local y artesanía, y compromiso de pago municipal a proveedores en menos de 30 días."
+      ]},
+      { t:"Movilidad", p:[
+        "Reclamación formal, con plazo y con recurso, de la reapertura del cercanías Murcia-Lorca-Águilas, y comparecencia anual del Ayuntamiento explicando en qué punto está.",
+        "La ubicación de la estación se decide con consulta a los vecinos y con estudio de accesibilidad publicado antes de la consulta.",
+        "Transporte urbano municipal con frecuencia real entre el casco, los barrios altos y las pedanías, con servicio a demanda donde no salga una línea fija.",
+        "Red de carril bici continua y segura entre el casco urbano, las playas y los campings, no tramos sueltos.",
+        "Accesibilidad: plan de eliminación de barreras con calendario por barrios, empezando por las pedanías turísticas y los itinerarios a centros de salud y colegios."
+      ]}
+    ]},
+
+  { n:"04", id:"eje-04", tema:"Democracia municipal",
+    lema:"Enséñame las cuentas.",
+    problema:[
+      "La preocupación por el Gobierno y los partidos marca récord en las encuestas, y no se arregla con más discursos sobre participación. Se arregla enseñando el dinero.",
+      "En 2023 proponíamos crear doce consejos sectoriales. Eran demasiados y todos consultivos: un consejo que no decide sobre presupuesto es una reunión. Aquí proponemos menos órganos y más capacidad de decidir, y una regla sencilla para todo lo demás: lo que hace el Ayuntamiento con el dinero público se publica sin que nadie lo pida.",
+      "El adversario aquí es la opacidad, no las personas."
+    ],
+    grupos:[
+      { t:"Transparencia", p:[
+        "Todos los contratos menores publicados y buscables: proveedor, importe, objeto y fecha, actualizado cada mes.",
+        "Publicación de la ejecución presupuestaria trimestral en formato abierto y en una página que se entienda sin ser economista.",
+        "Agenda pública del alcalde o alcaldesa y de los concejales con dedicación, con reuniones con empresas y entidades registradas.",
+        "Registro de intereses y patrimonio de los cargos electos, publicado y actualizado al inicio y al final del mandato.",
+        "Protocolo de honradez firmado por todo el grupo municipal: ni el cargo ni personas o empresas vinculadas pueden tener concesiones del Ayuntamiento durante el mandato ni en los cinco años siguientes. Y pacto antitransfuguismo firmado en la sesión constitutiva."
+      ]},
+      { t:"Participación que decide", p:[
+        "Presupuestos participativos vinculantes sobre el 25 % de la inversión anual, con voto abierto a partir de los 16 años y ejecución publicada cada trimestre.",
+        "Cuatro consejos, no doce: Consejo de Salud, Consejo de Ciudad y Litoral, Consejo de Servicios Sociales y Consejo de la Juventud. Con presupuesto asignado, orden del día público y acta publicada.",
+        "Plenos en horario de tarde, retransmitidos y con turno de intervención vecinal garantizado por reglamento.",
+        "Consulta popular municipal regulada por reglamento, con umbral de firmas alcanzable, para decisiones de calado: litoral, agua, grandes concesiones.",
+        "Juntas de pedanía con presupuesto propio y alcaldes pedáneos elegidos por los vecinos."
+      ]},
+      { t:"Hacienda municipal", p:[
+        "Fiscalidad progresiva en lo que el Ayuntamiento puede decidir: recargo del IBI a vivienda vacía de grandes tenedores, bonificaciones a vivienda habitual, rehabilitación y autoconsumo, y tasas reducidas para rentas bajas.",
+        "Las multas corrigen conductas, no financian el presupuesto: publicación anual de lo recaudado por sanciones y de en qué se ha gastado.",
+        "Plan de inversiones plurianual publicado con fechas y prioridades razonadas, para que las obras no dependan de la ocurrencia del año.",
+        "Supresión de tasas por expedición de certificados y compulsas.",
+        "0,7 % del presupuesto a cooperación, gestionado con las entidades locales y con las cuentas publicadas."
+      ]},
+      { t:"Administración, personal y convivencia", p:[
+        "Relación de puestos de trabajo negociada y publicada, provisión por concurso y fin de la designación a dedo en puestos técnicos.",
+        "Plan de reducción de plazos: compromiso público de respuesta máxima por trámite, publicando cada trimestre cuánto se tarda de verdad.",
+        "Policía de barrio y de pedanías, con presencia a pie y refuerzo de plantilla dimensionado a la población de verano.",
+        "Servicio de atención al migrante reforzado y conveniado con los sindicatos para el asesoramiento laboral, y control municipal del cumplimiento de la normativa laboral en las contratas.",
+        "Protocolo municipal contra los discursos de odio: ninguna subvención, espacio ni cesión municipal a quien los promueva, con criterios escritos y revisables.",
+        "Ordenanza de bienestar animal con colonias felinas controladas, esterilización sistemática y apoyo estable a la protectora."
+      ]}
+    ]}
+];
+
+// Bloque C · Honestidad competencial. Va a tamaño normal y en su sitio: no es
+// letra pequeña, es la parte del programa que dice quién decide cada cosa.
+const COMPETENCIAS = {
+  intro: "Prometer lo que no se puede cumplir es la forma más rápida de que no te crean la próxima vez. Estas son las cosas que la gente nos va a pedir y que no decide el Ayuntamiento. Van en el programa igual, pero diciendo quién decide y qué haremos nosotros.",
+  filas: [
+    { a:"CIAR, especialidades, listas de espera, plantillas sanitarias",
+      q:"Comunidad Autónoma (Servicio Murciano de Salud)",
+      h:"Reclamación por escrito con plazo, Consejo de Salud con acta pública, publicación de todas las respuestas y transporte sanitario gratuito a Lorca mientras falte el servicio." },
+    { a:"Cercanías Murcia-Lorca-Águilas y ubicación de la estación",
+      q:"Ministerio de Transportes, Adif y Renfe; Comunidad Autónoma",
+      h:"Reclamación formal con plazo y recurso, alianza con Lorca y otros municipios, consulta vecinal sobre la estación y comparecencia anual del estado del asunto." },
+    { a:"Ampliación de la desaladora y reparto de caudales",
+      q:"Ministerio para la Transición Ecológica y Confederación Hidrográfica",
+      h:"Posición pública del pleno, auditoría municipal del ciclo del agua y exigencia de que se publique el destino de cada caudal." },
+    { a:"Oferta de formación profesional en los institutos",
+      q:"Consejería de Educación",
+      h:"Solicitud formal por ciclos concretos, cesión de suelo y locales, y convenios de prácticas con empresas del municipio." },
+    { a:"Inspección de trabajo y convenios del campo y la hostelería",
+      q:"Administración General del Estado y sindicatos",
+      h:"Cláusulas sociales en lo municipal, comunicación de irregularidades detectadas en contratas y convenio con los sindicatos para asesoramiento." },
+    { a:"Ley de vivienda, índices de precios y zonas tensionadas",
+      q:"Estado y Comunidad Autónoma",
+      h:"Solicitar la declaración de zona tensionada con el expediente hecho desde el Ayuntamiento y aplicar todo lo que sí es municipal: IBI, censo, registro turístico y parque público." },
+    { a:"Juzgado de primera instancia y comisaría",
+      q:"Ministerio de Justicia y Ministerio del Interior",
+      h:"Solicitud motivada con datos de población y estacionalidad, y seguimiento anual publicado." }
+  ]
+};
+
+// Bloque D · Los ocho números que se publican cada año.
+const INDICADORES = {
+  intro: "Un programa sin forma de comprobarlo es un folleto. Estos son los ocho números que publicaremos cada año, con el dato de partida y el objetivo del mandato. Si no se mueven, no habremos cumplido.",
+  filas: [
+    { i:"Viviendas de alquiler asequible de titularidad municipal", p:"0", o:"100" },
+    { i:"Viviendas vacías censadas y publicadas", p:"Sin censo", o:"Censo publicado y actualizado cada año" },
+    { i:"Plazas turísticas por cada 100 viviendas, por barrio", p:"Sin registro municipal", o:"Registro publicado y techo aprobado por ordenanza" },
+    { i:"Servicios efectivamente abiertos en el CIAR", p:"Por confirmar a su apertura", o:"Todos los comprometidos, con plantilla publicada" },
+    { i:"Ocupación turística de octubre a mayo", p:"A fijar con el dato del primer año", o:"+10 puntos" },
+    { i:"Pérdidas en la red de agua", p:"A publicar en la auditoría", o:"Reducción anual con objetivo escrito" },
+    { i:"Porcentaje de la inversión decidido en presupuestos participativos", p:"0 %", o:"25 %, con ejecución publicada cada trimestre" },
+    { i:"Contratos menores publicados", p:"Parcial", o:"100 %, buscables y actualizados cada mes" }
+  ]
+};
+
+// Bloque E · Las once fuentes. Cada cifra del texto sale de una de estas.
+const FUENTES = {
+  nota: "Todas consultadas en septiembre de 2026. Antes de publicar el programa hay que volver a comprobarlas y actualizar las que hayan cambiado.",
+  lista: [
+    "CIS, barómetro de mayo de 2026: la vivienda alcanza el récord de menciones como primer problema de España; crisis económica 20,7 %, inmigración 18,9 %, sanidad 17,8 %. Recogido en idealista/news, 29 de mayo de 2026.",
+    "CIS, barómetro de abril de 2026: la vivienda, primer problema para el 41,3 %. Nota del propio CIS.",
+    "idealista, informe de precio de vivienda en venta en Águilas, julio de 2026: 1.649 €/m², +8,8 % interanual; Calabardina-Cope +15,2 %; El Hornillo 2.563 €/m²; Centro 1.346 €/m².",
+    "Consejo de la Juventud de España, Observatorio de Emancipación: el alquiler consume el 98,7 % del salario joven y solo el 15,2 % de la juventud está emancipada.",
+    "CREM (Centro Regional de Estadística de Murcia), datos municipales de Águilas: paro registrado de julio de 2026, 1.741 personas, con 584 en servicios de restauración, personales, protección y vendedores y 422 en ocupaciones elementales; máximos de más de 2.800 en 2020-2021.",
+    "CREM e INE, cifras oficiales de población: Águilas pasa de 25.551 habitantes en 1993 a 37.811 en 2025; densidad de 150,2 habitantes por km².",
+    "Nota de IU sobre el CIAR de Águilas, febrero de 2026, recogida en murcia.com: el centro incluirá salud mental, urgencias y atención a desplazados, sin laboratorio, hospitalización de corta estancia ni cirugía menor ambulatoria, con la radiología sin garantizar; el gasto en pruebas de imagen concertadas ha crecido cerca de un 50 % en cinco años.",
+    "Informaciones de junio y julio de 2026 sobre la apertura del CIAR a finales de 2026 (murciahoy, noticiaslorca, COPE).",
+    "Ley 12/2023, de 24 de mayo, por el derecho a la vivienda: modificación del artículo 72.4 del texto refundido de la Ley Reguladora de las Haciendas Locales, que permite el recargo del IBI a la vivienda desocupada hasta el 150 %.",
+    "Murcia Plaza y ORM, abril de 2026: la vuelta del cercanías a Lorca se retrasa hasta el otoño de 2027. La7tv, agosto de 2026: debate sobre la ubicación de la estación de Águilas.",
+    "iAgua: el MITECO impulsará la ampliación de las desaladoras de Águilas y Torrevieja antes de 2027. COPE, mayo de 2026: el mantenimiento de la desaladora paraliza el suministro a los regantes."
+  ]
+};
+
+// El documento de trabajo, tal cual se descarga desde la sección Programa.
+const DESCARGA = {
+  href: "/descargas/programa-por-aguilas-2027.docx",
+  nombre: "Programa Por Águilas 2027 · borrador de trabajo"
+};
 
 const NOTAS = [
   { f:"2026-08-25", tema:"Vivienda", t:"Por Águilas registra una moción para crear el censo municipal de vivienda vacía",
@@ -1437,10 +1953,17 @@ class Component extends DCLogic {
     const fecha = new Date((this.props.fechaElectoral || "2027-05-23") + "T09:00:00");
     const dias = Math.max(0, Math.ceil((fecha - new Date())/86400000)).toLocaleString("es-ES");
 
-    const mapEje = (e, conLista) => ({
+    // Un eje, en los dos formatos que usa la web: la tarjeta corta de la
+    // portada y el desarrollo entero de la sección Programa. El texto no se
+    // toca aquí, sale tal cual de EJES.
+    const mapEje = (e) => ({
+      n: e.n, id: e.id, idTit: e.id + "-t",
       cap: "Eje " + e.n + " · " + e.tema,
-      t: e.t, d: e.d,
-      props: conLista ? e.p.map(x => ({ txt:x })) : []
+      tema: e.tema,
+      lema: e.lema,
+      ancla: RUTAS.ejes + "#" + e.id,
+      problema: e.problema.map(x => ({ txt:x })),
+      grupos: e.grupos.map(g => ({ t:g.t, p:g.p.map(x => ({ txt:x })) }))
     });
     const mapNota = n => ({ tema:n.tema, fecha:fechaLarga(n.f), t:n.t, r:n.r });
     const mapEvento = e => { const d = new Date(e.f+"T00:00:00");
@@ -1481,12 +2004,22 @@ class Component extends DCLogic {
       irPrensa:enlace("prensa"),
       irAgenda:enlace("agenda"),
       irSumate:enlace("sumate"),
-      // El PDF del programa todavía no existe: de momento lleva al programa web.
-      pdfPendiente:enlace("ejes"),
       esInicio:s.pag === "inicio", esQuienes:s.pag === "quienes", esEjes:s.pag === "ejes",
       esPrensa:s.pag === "prensa", esAgenda:s.pag === "agenda", esSumate:s.pag === "sumate",
-      ejesCorto: EJES.map(e => mapEje(e, false)),
-      ejesFull: EJES.map(e => mapEje(e, true)),
+      ejesCorto: EJES.map(mapEje),
+      ejesFull: EJES.map(mapEje),
+      ejesIdx: EJES.map(e => ({ n:e.n, tema:e.tema, ancla:"#" + e.id })),
+      programa: PROGRAMA,
+      medidas: MEDIDAS,
+      medidasHome: MEDIDAS.slice(0, 5),
+      competenciasIntro: COMPETENCIAS.intro,
+      competencias: COMPETENCIAS.filas,
+      indicadoresIntro: INDICADORES.intro,
+      indicadores: INDICADORES.filas,
+      fuentesNota: FUENTES.nota,
+      fuentes: FUENTES.lista.map(x => ({ txt:x })),
+      descargaHref: DESCARGA.href,
+      descargaNombre: DESCARGA.nombre,
       notasHome: NOTAS.slice(0,3).map(mapNota),
       notasFiltradas: sel.map(mapNota),
       sinNotas: sel.length === 0,

@@ -64,17 +64,165 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
 .pa-trampa{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 </span>
 
+/* --- Sección Programa -------------------------------------------------------
+   El resto de la web va con estilos en línea, nodo a nodo. El programa no:
+   son cuatro ejes, noventa y una medidas de eje, quince titulares y dos tablas.
+   Repetir la misma declaración noventa veces es la forma más segura de que una
+   acabe distinta de las demás, y además la impresión necesita poder decir
+   «todos los ejes empiezan en página nueva» en una sola regla.
+
+   Todos los valores salen del manual de marca; ninguno introduce un color
+   nuevo. Contrastes comprobados sobre blanco: negro #141414 18,4:1 ·
+   verde #0E7A5F 5,3:1 · verde oscuro #0A5C47 7,7:1 · gris #403B3A 11,0:1 ·
+   bermellón #D9351F 4,7:1. Blanco sobre verde #0E7A5F, 5,3:1. Todos por
+   encima del 4,5:1 que exige la AA.
+
+   El bermellón aparece solo en las cuñas y en la línea de «borrador»: es lo
+   urgente. Los números de las quince medidas van en verde oscuro a propósito,
+   porque quince cifras rojas seguidas dejan de señalar nada. */
+
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.pa-pg{padding:clamp(40px,5vw,64px) 0 clamp(52px,7vw,86px)}
+.pa-pg-ancho{max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,44px)}
+
+/* La cuña. Un triángulo hecho con bordes: sin fichero, sin petición y sin
+   texto que un lector de pantalla pueda leer quince veces seguidas. En el
+   marcado va siempre con aria-hidden. */
+.pa-cuna{display:inline-block;width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none}
+.pa-cuna-s{border-left-width:8px;border-top-width:5px;border-bottom-width:5px}
+
+.pa-pg-cab{max-width:64ch;border-bottom:2px solid #141414;padding-bottom:clamp(26px,3.4vw,36px);margin-bottom:clamp(26px,3.4vw,36px)}
+.pa-pg-ceja{display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px}
+.pa-pg-h1{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(34px,6vw,64px);font-weight:700;letter-spacing:-.035em;line-height:1;margin:0;color:#141414;text-wrap:balance}
+.pa-pg-lema{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(20px,2.6vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:14px 0 0;color:#0E7A5F}
+.pa-pg-meta{margin:18px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#403B3A;line-height:1.5}
+.pa-pg-meta+.pa-pg-meta{margin-top:4px}
+.pa-pg-version{margin:16px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#D9351F}
+.pa-pg-nota{margin:14px 0 0;font-size:14.5px;line-height:1.6;color:#403B3A;max-width:72ch;text-wrap:pretty}
+
+/* Índice de la página. Es la navegación entre ejes que pide el manual: anclas
+   de verdad, no pestañas de JavaScript, para que el botón atrás siga sirviendo
+   y para que el enlace se pueda compartir. */
+.pa-idx{border:2px solid #141414;padding:20px clamp(16px,2.2vw,24px);margin-bottom:clamp(34px,4.4vw,52px)}
+.pa-idx-t{margin:0 0 13px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#403B3A}
+.pa-idx-l{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 10px}
+.pa-idx-a{display:inline-flex;align-items:center;min-height:42px;padding:9px 14px;border:2px solid #D5D0CE;color:#0A5C47;text-decoration:none;font:700 14px/1.25 'Public Sans',sans-serif}
+.pa-idx-a:hover{border-color:#0E7A5F;color:#141414}
+
+.pa-bloque{border-top:2px solid #141414;padding:clamp(34px,4.4vw,54px) 0;scroll-margin-top:clamp(84px,12vw,104px)}
+.pa-bloque-alt{background:#EFF4F1;padding-left:clamp(18px,2.4vw,30px);padding-right:clamp(18px,2.4vw,30px)}
+.pa-bloque-ceja{display:flex;align-items:center;gap:11px;margin:0 0 14px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F}
+
+.pa-h2{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(27px,4vw,42px);font-weight:700;letter-spacing:-.03em;line-height:1.04;margin:0;color:#0E7A5F;text-wrap:balance}
+.pa-h3{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(19px,2.2vw,24px);font-weight:700;letter-spacing:-.025em;line-height:1.12;margin:clamp(28px,3.4vw,38px) 0 14px;color:#0A5C47}
+.pa-p{margin:0 0 14px;font-size:17px;line-height:1.65;color:#141414;max-width:68ch;text-wrap:pretty}
+.pa-p:last-child{margin-bottom:0}
+.pa-p-entrada{margin-top:16px;font-size:clamp(16.5px,1.7vw,18.5px)}
+
+/* Bloque A · Las quince. Filete duro entre medida y medida, número a la
+   izquierda y el desarrollo debajo del titular. */
+.pa-med{margin:clamp(26px,3.4vw,36px) 0 0;padding:0;list-style:none;display:flex;flex-direction:column}
+.pa-med-i{display:flex;gap:clamp(14px,2vw,22px);align-items:flex-start;border-top:2px solid #141414;padding:clamp(16px,2vw,22px) 0}
+.pa-med-i:last-child{border-bottom:2px solid #141414}
+.pa-med-n{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:700;letter-spacing:-.03em;line-height:1;color:#0A5C47;flex:none;min-width:2.4ch}
+.pa-med-c{display:block;min-width:0}
+.pa-med-t{display:block;font-size:clamp(17px,1.8vw,19.5px);line-height:1.35;font-weight:800;color:#141414;text-wrap:pretty}
+.pa-med-d{display:block;margin-top:8px;font-size:16.5px;line-height:1.6;color:#141414;max-width:68ch;text-wrap:pretty}
+
+/* Bloque B · Los ejes. Cada uno empieza en página nueva al imprimir. */
+.pa-eje{border-top:2px solid #141414;padding:clamp(38px,5vw,60px) 0 clamp(12px,1.6vw,20px);scroll-margin-top:clamp(84px,12vw,104px)}
+.pa-eje-n{display:flex;align-items:center;gap:11px;margin:0 0 12px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F}
+.pa-eje-lema{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(19px,2.4vw,27px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:12px 0 0;color:#141414;text-wrap:balance}
+.pa-prob{margin:clamp(24px,3vw,32px) 0 0;border-left:5px solid #0E7A5F;padding:2px 0 2px clamp(16px,2vw,22px)}
+.pa-prob-t{margin:0 0 10px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0A5C47}
+.pa-lista{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:13px}
+.pa-lista-i{display:flex;gap:13px;align-items:flex-start}
+.pa-lista-i .pa-cuna{margin-top:8px}
+.pa-lista-x{font-size:16.5px;line-height:1.62;color:#141414;max-width:66ch;text-wrap:pretty}
+
+/* Bloques C y D · Las dos tablas. No son <table> por una razón concreta: el
+   analizador de plantillas del navegador saca fuera de la tabla cualquier
+   etiqueta que no sea de tabla, y sc-for lo es. Con roles ARIA el lector de
+   pantalla la anuncia igual como tabla, y además se puede reordenar en móvil
+   sin perder la semántica, que es lo que pasa al cambiarle el display a una
+   tabla de verdad. En pantalla estrecha cada fila se convierte en una lista de
+   pares etiqueta-valor: nunca en un scroll horizontal. */
+.pa-tb{margin:clamp(24px,3vw,34px) 0 0;border:2px solid #141414;background:#fff}
+.pa-tb-r{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1.7fr);border-top:1px solid #D5D0CE}
+.pa-tb-cab{background:#141414;border-top:0}
+.pa-tb-h{padding:13px clamp(12px,1.4vw,18px);font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#fff;line-height:1.35}
+.pa-tb-c{padding:clamp(13px,1.6vw,18px) clamp(12px,1.4vw,18px);font-size:16px;line-height:1.55;color:#141414;text-wrap:pretty}
+.pa-tb-c+.pa-tb-c{border-left:1px solid #D5D0CE}
+.pa-tb-c1{font-weight:700}
+@media (max-width:759px){
+  .pa-tb-r{display:block;border-top:2px solid #141414}
+  .pa-tb-cab{display:none}
+  .pa-tb-cab+.pa-tb-r{border-top:0}
+  .pa-tb-c{display:block;padding:12px clamp(12px,3vw,16px)}
+  .pa-tb-c+.pa-tb-c{border-left:0;border-top:1px solid #D5D0CE}
+  .pa-tb-c::before{content:attr(data-col);display:block;margin-bottom:5px;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#0A5C47}
+}
+
+/* Bloque E · Las fuentes. Plegable, pero abierto de salida: quien llega aquí
+   viene a comprobar una cifra, no a buscar el botón. */
+.pa-det{margin:clamp(22px,2.8vw,30px) 0 0;border:2px solid #141414}
+.pa-det-s{cursor:pointer;padding:15px clamp(15px,2vw,20px);font:800 12.5px/1.35 'Public Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#0A5C47;background:#EFF4F1}
+.pa-det[open] .pa-det-s{border-bottom:2px solid #141414}
+.pa-fuentes{margin:0;padding:18px clamp(16px,2vw,22px) 20px clamp(36px,4.5vw,48px);display:flex;flex-direction:column;gap:11px}
+.pa-fuentes-i{font-size:15.5px;line-height:1.6;color:#141414;max-width:74ch;text-wrap:pretty}
+
+.pa-desc{border-top:2px solid #141414;margin-top:clamp(34px,4.4vw,52px);padding-top:clamp(30px,4vw,44px)}
+.pa-h2-p{margin-bottom:14px}
+.pa-desc-p{margin:22px 0 0}
+.pa-desc-a{display:inline-flex;align-items:center;min-height:54px;padding:17px 26px;background:#0E7A5F;border:2px solid #0E7A5F;color:#fff;text-decoration:none;font:800 15px/1 'Public Sans',sans-serif}
+.pa-desc-a:hover{background:#0A5C47;border-color:#0A5C47;color:#fff}
+
+/* Impresión. La página entera en A4, sin menús, sin fondos y con un eje por
+   página. Quien quiera el programa en papel se lo lleva desde el navegador,
+   sin pedirle a nadie un PDF. */
+@media print{
+  header,footer,.pa-idx,.pa-desc{display:none!important}
+  body{font-size:10.5pt;color:#000;background:#fff}
+  .pa-pg{padding:0}
+  .pa-pg-ancho{max-width:none;padding:0}
+  .pa-pg-h1{font-size:26pt}
+  .pa-h2{font-size:17pt}
+  .pa-h3{font-size:12.5pt}
+  .pa-p,.pa-med-d,.pa-lista-x,.pa-tb-c{font-size:10.5pt;line-height:1.45;max-width:none}
+  .pa-fuentes-i{font-size:9.5pt;line-height:1.4;max-width:none}
+  .pa-h2,.pa-h3,.pa-pg-lema,.pa-eje-n,.pa-eje-lema,.pa-bloque-ceja,.pa-pg-ceja,.pa-prob-t,.pa-med-n,.pa-pg-version{color:#000!important}
+  .pa-bloque-alt{background:#fff!important;padding-left:0;padding-right:0}
+  .pa-tb-cab{background:#fff!important;border-bottom:1pt solid #000}
+  .pa-tb-h{color:#000!important}
+  .pa-tb,.pa-det,.pa-med-i,.pa-bloque,.pa-eje,.pa-pg-cab{border-color:#000}
+  .pa-cuna{border-left-color:#000}
+  .pa-prob{border-left-color:#000}
+  .pa-det-s{display:none}
+  .pa-eje{break-before:page;page-break-before:always}
+  .pa-h2,.pa-h3,.pa-eje-n,.pa-bloque-ceja{break-after:avoid;page-break-after:avoid}
+  .pa-med-i,.pa-lista-i,.pa-tb-r,.pa-fuentes-i,.pa-prob{break-inside:avoid;page-break-inside:avoid}
+  a[href]{color:#000;text-decoration:none}
+}
+</table>
+
 /* Reglas de style-hover y style-focus de la plantilla. */
 .pa-g0:hover{color:#0A5C47}
 .pa-g1:hover{color:#0A5C47}
 .pa-g2:hover{color:#0A5C47}
 .pa-g3:hover{color:#0A5C47}
 .pa-g4:hover{background:#0A5C47;border-color:#0A5C47}
-.pa-g5:hover{background:#141414;color:#fff}
-.pa-g6:hover{background:#141414;color:#fff}
-.pa-g7:hover{background:#0A5C47;border-color:#0A5C47}
-.pa-g8:hover{background:#141414;color:#fff}
+.pa-g5:hover{color:#141414;border-color:#141414}
+.pa-g6:hover{color:#141414;border-color:#141414}
+.pa-g7:hover{color:#141414;border-color:#141414}
+.pa-g8:hover{color:#141414;border-color:#141414}
 .pa-g9:hover{background:#141414;color:#fff}
+.pa-ga:hover{background:#0A5C47;border-color:#0A5C47}
+.pa-gb:hover{background:#141414;color:#fff}
+.pa-gc:hover{background:#0A5C47;border-color:#0A5C47}
+.pa-gd:hover{background:#141414;color:#fff}
+.pa-ge:hover{background:#141414;color:#fff}
 .pa-g5:hover{border-color:#141414;color:#141414}
 .pa-g6:hover{border-color:#141414;color:#141414}
 .pa-g7:hover{border-color:#141414;color:#141414}
