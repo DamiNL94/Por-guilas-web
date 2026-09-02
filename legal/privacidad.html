@@ -1,4 +1,70 @@
 <!doctype html>
+<!-- PLACEHOLDERS PENDIENTES · inicio
+     =========================================================================
+     Esta página NO se puede publicar en dominio propio mientras quede aquí
+     abajo un solo hueco marcado PENDIENTE:. No es una recomendación: el
+     backend lee estos ficheros al arrancar y se niega a aceptar altas mientras
+     encuentre esa palabra (ver revisarPuestaEnMarcha en src/config.js), porque
+     un consentimiento informado con el responsable a medio identificar no es
+     un consentimiento informado.
+
+     QUIÉN RESPONDE  ·  resuelto el 2 de septiembre de 2026
+     Hay una sola persona jurídica: **Izquierda Unida**, NIF G78269206. Ni la
+     federación regional ni la asamblea de Águilas son entidades separadas; son
+     órganos suyos y usan ese mismo NIF. Antes esto estaba mal declarado y se
+     ha corregido en las tres páginas.
+
+     Lo que falta por rellenar:
+
+       [SEDE_AGUILAS]       Dirección de la sede de IU en Águilas. Es la que
+                            cumple como "datos de contacto del responsable"
+                            (art. 13.1.a RGPD) en la política y como
+                            "establecimiento permanente en España"
+                            (art. 10.1.a LSSI) en el aviso legal. Publicarla
+                            requiere permiso de la organización, y lo hay.
+                            BLOQUEA mientras no haya ninguna dirección.  FALTA
+       [DOMICILIO_SOCIAL]   Domicilio social de Izquierda Unida en el Registro
+                            de Partidos. NO bloquea: la LSSI admite en su lugar
+                            la dirección del establecimiento permanente. Pero es
+                            un dato público y quita cualquier duda.      FALTA
+       [INSCRIPCION]        Datos de inscripción de Izquierda Unida en el
+                            Registro de Partidos Políticos del Ministerio
+                            del Interior: tomo, folio e inscripción.      FALTA
+       [DPD]                Contacto del delegado de protección de datos.
+                            Izquierda Unida trata datos de opinión política
+                            a gran escala, así que está obligada a tenerlo
+                            (art. 37 RGPD y art. 34 LOPDGDD). Es muy
+                            probable que ya esté designado: hay que pedirle
+                            a la organización estatal su contacto.        FALTA
+
+     Ya resueltos, y por qué no se escriben aquí:
+
+       [RESPONSABLE_LEGAL]  Izquierda Unida. Vive en config.responsable
+                            (src/config.js) y el arranque comprueba que las
+                            páginas legales dicen lo mismo.
+       [NIF]                Puesto. Mismo sitio. El arranque valida además su
+                            dígito de control.
+       [EMAIL_CONTACTO]     hola@poraguilas.es. Falta comprobar que el buzón
+                            existe y que lo lee alguien.
+       [DOMINIO_WEB]        poraguilas.es.
+       [PLAZO_CONSERVACION] 30 días sin confirmar · 12 meses la IP · hasta el
+                            30-11-2027 la lista · 4 años las donaciones.
+       [IBAN]               No se escribe aquí a propósito: vive SOLO en
+                            config.donaciones (src/config.js) y de ahí lo copia
+                            todo lo demás. El banco de pruebas comprueba que no
+                            aparece a mano en ningún fichero.
+       [TITULAR_CUENTA]     Izquierda Unida Región de Murcia, mismo sitio.
+
+     Y dos que no son placeholders de texto pero bloquean igual:
+
+       · Contrato de encargado del tratamiento (art. 28 RGPD) firmado con
+         Brevo y con Railway.
+       · Confirmar si la cuenta de donaciones es de uso exclusivo y está
+         comunicada al Tribunal de Cuentas (art. 8 LO 8/2007).
+
+     La lista completa, con quién hace cada cosa, está en README-DESPLIEGUE.md.
+     =========================================================================
+     PLACEHOLDERS PENDIENTES · fin -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -9,7 +75,7 @@
 <!-- Identificador de versión del texto de consentimiento. El servidor lo lee al
      arrancar y aborta si no coincide con el suyo: así no se puede guardar un
      consentimiento que apunte a un texto distinto del publicado. -->
-<meta name="pa-version-politica" content="privacidad-2026-09-01">
+<meta name="pa-version-politica" content="privacidad-2026-09-03">
 <link rel="icon" href="/logo/por-aguilas-isotipo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/legal/legal.css">
 </head>
@@ -30,35 +96,48 @@
 
   <p class="pa-eyebrow">Información legal</p>
   <h1>Política de privacidad</h1>
-  <p class="pa-fecha">Versión <strong>privacidad-2026-09-01</strong> · en vigor desde el 1 de septiembre de 2026. Si cambiamos algo, cambia la versión y te lo contamos antes.</p>
+  <p class="pa-fecha">Versión <strong>privacidad-2026-09-03</strong> · en vigor desde el 3 de septiembre de 2026. Si cambiamos algo, cambia la versión y te lo contamos antes.</p>
+  <p class="pa-fecha"><strong>Cambios respecto a la versión anterior.</strong> Hemos corregido quién es el responsable del tratamiento: es <strong>Izquierda Unida</strong>, con NIF G78269206, y no la asamblea local, que no es una entidad jurídica separada. Con ello cambia también la casilla de cesión, que antes pedía permiso para comunicar los datos a Izquierda Unida —lo que no era una cesión, porque es el mismo responsable— y ahora pregunta solo por el Partido Comunista de España, que es la única organización distinta que hay en juego.</p>
+  <p class="pa-fecha">De la versión anterior se mantiene lo demás: el tratamiento de las <a href="#donaciones">comunicaciones de donación</a> con su propia base jurídica y sus propios plazos, los permisos del formulario de Súmate en casillas separadas, y el teléfono recogido solo de quien marca la casilla de colaborar.</p>
 
   <div class="pa-dest">
     <h2 style="margin-top:0">En corto</h2>
     <ul>
-      <li>Solo recogemos datos si te apuntas tú, rellenando el formulario de <a href="/sumate">Súmate</a>.</li>
+      <li>Solo recogemos datos si los escribes tú, en el formulario de <a href="/sumate">Súmate</a> o en el de aviso de donación.</li>
       <li>Apuntarte revela tu afinidad política. Eso es un dato especialmente protegido y por eso te pedimos un permiso expreso, no un visto bueno genérico.</li>
-      <li>Los usamos para hablar contigo sobre la candidatura. Para nada más.</li>
-      <li><strong>No vendemos, cedemos ni compartimos la lista con nadie</strong>, ni con otros partidos ni con empresas.</li>
+      <li>Son <strong>dos cosas distintas y no se mezclan</strong>: apuntarte a la lista va con tu permiso y puedes retirarlo cuando quieras; avisarnos de una donación va con una obligación legal que no depende de tu permiso, porque la ley de financiación de partidos nos obliga a saber quién dona.</li>
+      <li>Los usamos para hablar contigo sobre la candidatura y, en el caso de las donaciones, para rendir cuentas de ellas. Para nada más.</li>
+      <li><strong>No vendemos la lista ni la compartimos con empresas.</strong> Sale de Izquierda Unida en un solo caso: si marcas la casilla del <strong>Partido Comunista de España</strong>, que es voluntaria y va aparte.</li>
       <li>Puedes borrarte entero cuando quieras, desde el enlace que va en todos nuestros correos, sin dar explicaciones y sin hablar con nadie.</li>
       <li>La web no tiene cookies ni analítica. Nadie te sigue por aquí.</li>
     </ul>
   </div>
 
   <h2>1. Quién es responsable de tus datos</h2>
-  <p><strong>Por Águilas</strong> es una candidatura de unidad impulsada por Izquierda Unida y el Partido Comunista, abierta a personas independientes. Como candidatura todavía no es una entidad con personalidad jurídica propia, así que la responsable del tratamiento —la que responde legalmente de tus datos— es la organización que la impulsa:</p>
+  <p><strong>Por Águilas</strong> es una candidatura de unidad impulsada por Izquierda Unida y el Partido Comunista, abierta a personas independientes. La candidatura no es todavía una entidad con personalidad jurídica propia, así que quien responde legalmente de tus datos es la organización que la impulsa:</p>
   <table class="pa-tabla">
     <tbody>
-      <tr><th>Responsable</th><td>Izquierda Unida de Águilas</td></tr>
-      <tr><th>NIF</th><td><span class="pa-hueco">PENDIENTE: NIF</span></td></tr>
-      <tr><th>Domicilio</th><td><span class="pa-hueco">PENDIENTE: DIRECCIÓN POSTAL</span> · Águilas (Murcia)</td></tr>
-      <tr><th>Correo</th><td><a href="mailto:hola@poraguilas.es">hola@poraguilas.es</a></td></tr>
-      <tr><th>Delegado de protección de datos</th><td><span class="pa-hueco">PENDIENTE: CONFIRMAR</span> — los partidos políticos que tratan datos de opinión política a gran escala están obligados a designarlo (art. 37 RGPD y art. 34 LOPDGDD).</td></tr>
+      <tr><th>Responsable</th><td><strong>Izquierda Unida</strong></td></tr>
+      <tr><th>NIF</th><td>G78269206</td></tr>
+      <tr><th>Dirección de contacto</th><td>Calle Echegaray, 3, bajo A · Águilas (Murcia). Es la sede desde la que se lleva la candidatura, y donde te contestarán si escribes por carta.</td></tr>
+      <tr><th>Domicilio social</th><td>Avenida de la Albufera, 9 · Madrid — el que consta en el Registro de Partidos Políticos, donde Izquierda Unida está inscrita desde el 2 de noviembre de 1992. La sede federal está hoy en Calle Villablanca, 53-55, 28032 Madrid.</td></tr>
+      <tr><th>Correo de contacto</th><td><a href="mailto:hola@poraguilas.es">hola@poraguilas.es</a></td></tr>
+      <tr><th>Delegado de protección de datos</th><td><a href="mailto:dpd@izquierdaunida.org">dpd@izquierdaunida.org</a> · Calle Villablanca 53-55, 28032 Madrid. Es el delegado de Izquierda Unida, y puedes escribirle directamente sin pasar por nosotros.</td></tr>
     </tbody>
   </table>
-  <p class="pa-aviso">Dicho claro, porque es lo justo: cuando te apuntas a Por Águilas, quien guarda y custodia tus datos es <strong>Izquierda Unida de Águilas</strong>. No queremos que eso te lo tengas que imaginar.</p>
+
+  <div class="pa-dest">
+    <h3 style="margin-top:0">Una precisión que cambia bastante, y la contamos</h3>
+    <p>Cuando dices «Izquierda Unida de Águilas» te refieres a la asamblea local, y cuando dices «Izquierda Unida Región de Murcia» a la federación regional. Los dos nombres son reales y son como se conoce a la gente que hay detrás de esto. Pero <strong>ninguno de los dos es una entidad jurídica separada</strong>: son órganos de Izquierda Unida y usan su mismo NIF, el que aparece arriba.</p>
+    <p style="margin-bottom:0">Lo decimos porque tiene dos consecuencias que te afectan. La primera: <strong>quien responde de tus datos es Izquierda Unida</strong>, y es a quien puedes reclamar. La segunda: que tus datos pasen de la asamblea de Águilas a la federación regional <strong>no es una cesión a un tercero</strong>, es el mismo responsable moviéndolos por dentro. No te vamos a pedir permiso para eso, porque pedirlo daría a entender que existe una garantía donde no la hay. Lo que sí te pedimos, y en su propia casilla, es permiso para lo único que de verdad sale fuera: el <strong>Partido Comunista de España</strong>, que es otra organización.</p>
+  </div>
+
+  <p>Con las donaciones esto se nota: la cuenta en la que se ingresan es de <strong>Izquierda Unida Región de Murcia</strong>, y es esa federación la que recibe el dinero y la que rinde cuentas de él ante el Tribunal de Cuentas. Como acabas de leer, sigue siendo Izquierda Unida. Lo tienes desarrollado en el <a href="#donaciones">apartado 2.2</a> y en el 6.</p>
 
   <h2>2. Qué datos recogemos</h2>
-  <p>Solo los que escribes tú en el formulario de Súmate. Ni compramos listas, ni te sacamos de redes sociales, ni cruzamos tus datos con censos ni con ningún otro sitio.</p>
+  <p>Solo los que escribes tú. Ni compramos listas, ni te sacamos de redes sociales, ni cruzamos tus datos con censos ni con ningún otro sitio.</p>
+
+  <h3>2.1. Si te apuntas en Súmate</h3>
   <table class="pa-tabla">
     <thead><tr><th>Dato</th><th>¿Obligatorio?</th><th>Para qué</th></tr></thead>
     <tbody>
@@ -66,25 +145,77 @@
       <tr><td>Correo electrónico</td><td>Sí</td><td>Es la única vía por la que te escribimos, y la que identifica tu alta.</td></tr>
       <tr><td>Zona del municipio</td><td>No</td><td>Organizar por barrios y diputaciones. Es una lista cerrada de zonas: no te pedimos tu dirección y no la queremos.</td></tr>
       <tr><td>Cómo quieres colaborar</td><td>No</td><td>No molestarte con cosas que no te interesan.</td></tr>
+      <tr><td>Teléfono</td><td>No</td><td>Llamarte para organizar la colaboración. <strong>El campo solo aparece si marcas la casilla de colaborar</strong>, y si la desmarcas se borra: no tiene otra finalidad que esa.</td></tr>
       <tr><td>Tu mensaje</td><td>No</td><td>Leerlo y contestarte. Escribe lo que quieras, pero no hace falta que cuentes nada sobre tu salud, tu situación personal ni la de otras personas.</td></tr>
-      <tr><td>Fecha, hora, versión del texto que aceptaste y tu dirección IP</td><td>Se guarda solo</td><td>Poder demostrar que diste tu permiso, que es lo que la ley nos exige. La IP se borra al año; el resto de la prueba se queda mientras dure tu alta.</td></tr>
+      <tr><td>Fecha, hora, qué casilla marcaste, con qué texto exacto delante, qué versión de esta política estaba publicada y tu dirección IP</td><td>Se guarda solo</td><td>Poder demostrar que diste tu permiso, que es lo que la ley nos exige. Se guarda una anotación por cada casilla que marques, no una sola para todas. La IP se borra al año; el resto de la prueba se queda mientras dure tu alta.</td></tr>
     </tbody>
   </table>
-  <p><strong>Lo que no te pedimos:</strong> DNI, dirección postal, teléfono, fecha de nacimiento ni si estás afiliado a algún sitio. No nos hace falta para hablar contigo.</p>
+  <p><strong>Lo que no te pedimos aquí:</strong> DNI, dirección postal, fecha de nacimiento ni si estás afiliado a algún sitio.</p>
+
+  <h3 id="donaciones">2.2. Si nos avisas de una donación</h3>
+  <p>Este formulario <strong>no cobra nada</strong>. No hay pasarela de pago, no te pedimos ningún número de tarjeta ni ningún dato bancario tuyo: la transferencia la haces tú desde tu banco. Lo que recogemos es el aviso, para poder identificar el ingreso cuando llegue.</p>
+  <table class="pa-tabla">
+    <thead><tr><th>Dato</th><th>¿Obligatorio?</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td>Nombre y apellidos</td><td>Sí</td><td>Identificar la donación. La ley prohíbe las donaciones anónimas.</td></tr>
+      <tr><td>DNI o NIE</td><td>Sí</td><td>Lo exige el artículo 5 de la Ley Orgánica 8/2007 y es lo que hay que poner en el certificado fiscal. Solo admitimos documentos de persona física.</td></tr>
+      <tr><td>Correo electrónico</td><td>Sí</td><td>Mandarte el certificado de la donación y avisarte si hay algún problema con el ingreso.</td></tr>
+      <tr><td>Importe y fecha prevista</td><td>Sí</td><td>Cuadrar tu aviso con el apunte que llegue al banco.</td></tr>
+      <tr><td>El concepto que te indicamos</td><td>Se guarda solo</td><td>Poder cotejarlo con el extracto sin reconstruirlo a mano.</td></tr>
+      <tr><td>Fecha, hora, texto exacto de las cinco declaraciones que marcaste y versión de esta política</td><td>Se guarda solo</td><td>Acreditar que se te preguntó lo que la ley obliga a preguntar.</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Lo que no te pedimos aquí:</strong> ningún dato bancario, ninguna tarjeta, tu dirección postal ni el destino de la donación. Ese último no existe a propósito: las <strong>donaciones finalistas están prohibidas</strong>, así que no hay ningún selector que te deje elegir a qué se dedica tu dinero.</p>
+  <p class="pa-aviso"><strong>De este formulario no guardamos tu dirección IP.</strong> En las altas sirve para corroborar un permiso que no deja otro rastro; aquí tu declaración va casada con una transferencia bancaria a tu nombre, que es una prueba mucho mejor, así que la IP sería un dato de más sin ninguna función.</p>
 
   <h2>3. Para qué los usamos</h2>
   <ul>
     <li>Escribirte sobre la candidatura: asambleas, actos, programa y campaña.</li>
     <li>Ponerte en contacto con quien organice aquello en lo que has dicho que quieres echar una mano.</li>
     <li>Contestarte si nos has escrito un mensaje.</li>
+    <li>Identificar tu donación cuando llegue el ingreso, emitirte el certificado para la deducción del IRPF y rendir cuentas de ella ante quien la ley diga.</li>
   </ul>
   <p>Y se acabó. <strong>No hacemos perfiles de nadie, no puntuamos a nadie y no tomamos ninguna decisión automatizada sobre ti.</strong> No hay publicidad segmentada ni nada que se le parezca.</p>
 
   <h2>4. Con qué derecho los tratamos</h2>
-  <p>Con <strong>tu consentimiento explícito</strong>, y solo con eso: artículos 6.1.a y <strong>9.2.a</strong> del Reglamento General de Protección de Datos.</p>
-  <p>El 9.2.a es el que importa. Apuntarse a una candidatura revela una opinión política, y las opiniones políticas son <em>categoría especial de datos</em>: la ley las protege igual que la salud o las creencias religiosas. Por eso el permiso tiene que ser expreso y por separado, y por eso la casilla del formulario dice exactamente lo que dice en vez de un «acepto las condiciones».</p>
+  <p>Depende de qué formulario hayas rellenado, y la diferencia importa, así que va en una tabla en vez de en un párrafo:</p>
+  <table class="pa-tabla">
+    <thead><tr><th>Tratamiento</th><th>Base jurídica</th><th>¿Puedes retirarlo?</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Estar en la lista de Súmate</td>
+        <td><strong>Tu consentimiento explícito</strong> — arts. 6.1.a y <strong>9.2.a</strong> RGPD.</td>
+        <td>Sí, cuando quieras y de un clic.</td>
+      </tr>
+      <tr>
+        <td>Que te contactemos para colaborar, y tu teléfono</td>
+        <td><strong>Tu consentimiento</strong>, en una casilla aparte de la anterior.</td>
+        <td>Sí, y al retirarlo se borra el teléfono.</td>
+      </tr>
+      <tr>
+        <td>Comunicar tus datos al Partido Comunista de España</td>
+        <td><strong>Tu consentimiento</strong>, en una tercera casilla aparte.</td>
+        <td>Sí. Si no la marcas, no salen de Izquierda Unida.</td>
+      </tr>
+      <tr>
+        <td>Los datos de tu aviso de donación</td>
+        <td><strong>Obligación legal</strong> — art. 6.1.c RGPD, para cumplir la Ley Orgánica 8/2007 de financiación de partidos y la normativa fiscal y contable.</td>
+        <td><strong>No.</strong> Esta no depende de tu permiso: es un deber que la ley nos impone y que no podemos dejar de cumplir aunque tú quieras. Lo explicamos abajo.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>El 9.2.a es el que importa en la primera fila. Apuntarse a una candidatura revela una opinión política, y las opiniones políticas son <em>categoría especial de datos</em>: la ley las protege igual que la salud o las creencias religiosas. Por eso el permiso tiene que ser expreso y por separado, y por eso las casillas del formulario dicen exactamente lo que dicen en vez de un «acepto las condiciones». <strong>Ninguna viene marcada de antemano</strong> y ninguna agrupa dos finalidades distintas.</p>
+
   <p>Conviene saber que <strong>no nos amparamos en ninguna excepción para partidos políticos</strong>. La que existía en la ley electoral española (el artículo 58 bis.1 de la LOREG, que permitía a los partidos recopilar opiniones políticas durante la campaña) fue <strong>declarada inconstitucional y anulada</strong> por la sentencia 76/2019 del Tribunal Constitucional. Nuestra única base es que tú digas que sí, y que puedas decir que no cuando te apetezca.</p>
+
   <p>Puedes <strong>retirar el permiso en cualquier momento</strong>, y es tan fácil como pinchar el enlace de baja de cualquier correo nuestro. Retirarlo no anula lo que hicimos antes, pero a partir de ahí dejamos de escribirte y borramos tu ficha.</p>
+
+  <div class="pa-dest">
+    <h3 style="margin-top:0">Por qué una donación no se puede borrar igual que un alta</h3>
+    <p>Es la pregunta justa y merece una respuesta clara. Cuando alguien dona a un partido, la ley obliga al partido a poder decir quién fue, cuánto y cuándo: lo exige la Ley Orgánica 8/2007, lo revisa el Tribunal de Cuentas y lo comprueba Hacienda si aplicas la deducción. Ese deber no es nuestro capricho ni depende de que tú nos des permiso, y por eso <strong>no podemos borrar el registro de una donación aunque nos lo pidas</strong> mientras siga vivo el plazo legal.</p>
+    <p style="margin-bottom:0">Lo que sí puedes hacer es lo demás: pedir acceso, rectificar un dato mal escrito, y por supuesto darte de baja de la lista de correo, que es un tratamiento distinto y sí depende de tu permiso. Y si el aviso que mandaste no llegó a convertirse en una transferencia, dínoslo y lo eliminamos: sin ingreso no hay donación que rendir.</p>
+  </div>
 
   <h2>5. Cuánto tiempo los guardamos</h2>
   <table class="pa-tabla">
@@ -93,28 +224,45 @@
       <tr><td>Te apuntas pero no confirmas desde el correo</td><td>Se borra a los <strong>30 días</strong>, automáticamente. Sin confirmar, no existes para nosotros.</td></tr>
       <tr><td>Te das de baja o pides que te borremos</td><td>Se borra <strong>en el momento</strong>. Borrado de verdad: no queda una fila marcada como «dada de baja», no queda nada.</td></tr>
       <tr><td>Tu dirección IP en la prueba de consentimiento</td><td>Se borra a los <strong>12 meses</strong>, aunque sigas apuntado.</td></tr>
-      <tr><td>Todo lo demás</td><td>Hasta <strong>seis meses después de las elecciones</strong> (previsiblemente, el 30 de noviembre de 2027). Antes de esa fecha te preguntaremos si quieres seguir; si no contestas, se borra.</td></tr>
+      <tr><td>Todo lo demás de la lista</td><td>Hasta <strong>seis meses después de las elecciones</strong> (previsiblemente, el 30 de noviembre de 2027). Antes de esa fecha te preguntaremos si quieres seguir; si no contestas, se borra.</td></tr>
+      <tr><td>Un aviso de donación que nunca llegó a ingresarse</td><td>Se elimina en cuanto se comprueba que no hubo transferencia. Sin ingreso no hay nada que rendir.</td></tr>
+      <tr><td>Los datos de una donación que sí se ingresó</td><td><strong>Mínimo cuatro años</strong> desde el cierre del ejercicio, que es el plazo de prescripción fiscal y contable, y hasta que el Tribunal de Cuentas dé por fiscalizado el ejercicio. Este plazo no lo elegimos nosotros.</td></tr>
     </tbody>
   </table>
-  <p>Estos borrados no dependen de que alguien se acuerde de hacerlos: están programados en el sistema y se ejecutan solos.</p>
+  <p>Los borrados de la lista no dependen de que alguien se acuerde de hacerlos: están programados en el sistema y se ejecutan solos. El de las donaciones no, y es a propósito: un borrado automático de datos que la ley obliga a conservar sería un fallo, no una garantía. Ese se revisa a mano cuando toca.</p>
 
   <h2>6. Quién más ve tus datos</h2>
-  <p><strong>No cedemos tus datos a nadie.</strong> Ni a otros partidos, ni a la coalición, ni a empresas, ni a nadie que te quiera vender algo. Lo único que hay son dos proveedores técnicos que necesitamos para que esto funcione, y que trabajan siguiendo nuestras instrucciones y con contrato de encargado de tratamiento firmado (art. 28 RGPD):</p>
+  <p><strong>No vendemos tus datos ni los compartimos con nadie que te quiera vender algo.</strong> Hay tres supuestos en los que salen de aquí, y los tres se explican abajo: si tú marcas la casilla de cesión, si donas, y los dos proveedores técnicos que necesitamos para que esto funcione.</p>
+
+  <h3>Si marcas la casilla del Partido Comunista</h3>
+  <p>Tus datos se comunican al <strong>Partido Comunista de España</strong>, que impulsa la candidatura junto a Izquierda Unida y es una organización distinta, con su propia personalidad jurídica. Es voluntario, va en su propia casilla y no marcarla no te penaliza en nada: sigues en la lista igual. Si no la marcas, tus datos no salen de Izquierda Unida.</p>
+  <p class="pa-aviso">Aquí antes decíamos otra cosa y estaba mal, así que lo corregimos a la vista de todo el mundo en vez de cambiarlo por lo callado. La versión anterior de esta política pedía permiso para comunicar tus datos «a Izquierda Unida y al Partido Comunista», en una sola casilla. Pero Izquierda Unida no es un tercero: <strong>es el responsable</strong>. Pedir permiso para pasarle tus datos a quien ya responde de ellos no te daba ninguna garantía, y además metía en el mismo saco la única comunicación que sí es real. Ahora la casilla pregunta solo por el PCE.</p>
+
+  <h3>Si nos avisas de una donación</h3>
+  <p>La cuenta en la que se ingresan las donaciones es de <strong>Izquierda Unida Región de Murcia</strong>, la federación regional, que es quien recibe el dinero y quien responde de rendirlo. Es un órgano de Izquierda Unida, el mismo responsable que figura arriba, así que tus datos de donante <strong>no cambian de manos</strong>: se mueven por dentro de la misma organización.</p>
+  <p>De ahí sí salen, cuando la ley lo exige, a:</p>
+  <table class="pa-tabla">
+    <thead><tr><th>Quién</th><th>Por qué</th></tr></thead>
+    <tbody>
+      <tr><td>Tribunal de Cuentas</td><td>Fiscaliza la contabilidad de los partidos. Las donaciones superiores a 25.000 € se le notifican además en los tres meses siguientes (art. 5.4 LO 8/2007).</td></tr>
+      <tr><td>Agencia Tributaria</td><td>Para el certificado y la deducción del 20 % en tu IRPF.</td></tr>
+      <tr><td>La entidad bancaria</td><td>Porque la transferencia pasa por ella. Es inevitable y es la única forma de que el dinero llegue.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Los dos proveedores técnicos</h3>
+  <p>Trabajan siguiendo nuestras instrucciones y con contrato de encargado de tratamiento firmado (art. 28 RGPD):</p>
   <table class="pa-tabla">
     <thead><tr><th>Proveedor</th><th>Para qué</th><th>Dónde</th></tr></thead>
     <tbody>
-      <tr><td>Brevo (Sendinblue SAS)</td><td>Enviar los correos de confirmación y los avisos. Solo recibe tu dirección de correo y el enlace: <strong>ni tu nombre, ni tu zona, ni tu mensaje.</strong></td><td>Francia (Unión Europea)</td></tr>
+      <tr><td>Brevo (Sendinblue SAS)</td><td>Enviar los correos de confirmación y de baja de la lista. Solo recibe tu dirección de correo y el enlace: <strong>ni tu nombre, ni tu zona, ni tu mensaje.</strong> <strong>En las donaciones no interviene:</strong> tu nombre, tu DNI y el importe no pasan por él ni por ningún otro tercero.</td><td>Francia (Unión Europea)</td></tr>
       <tr><td>Railway Corp.</td><td>Alojar la web y la base de datos.</td><td>Servidores en la Unión Europea. La empresa es estadounidense, así que la transferencia se ampara en las cláusulas contractuales tipo aprobadas por la Comisión Europea.</td></tr>
     </tbody>
   </table>
   <p>Además, y solo si nos lo exige una autoridad con una orden de por medio, tendríamos que entregar lo que se nos pida. Si eso llegara a pasar y la ley nos dejara contarlo, lo contaríamos.</p>
 
-  <!-- QUITAR ESTE BLOQUE cuando las tipografías dejen de venir de Google
-       (bloque P1 de PROMPT-MEJORAS-WEB.md: auto-alojar Familjen Grotesk y
-       Public Sans). Mientras siga el <link> a fonts.googleapis.com en
-       index.html, esto tiene que estar escrito aquí. -->
-  <h3>Una cosa que estamos arreglando</h3>
-  <p>Ahora mismo el resto de la web carga sus tipografías desde un servidor de Google, lo que hace que tu navegador le enseñe tu dirección IP a Google al entrar. No nos gusta y lo estamos corrigiendo: las tipografías pasarán a servirse desde nuestro propio servidor. Esta página que estás leyendo <strong>ya no hace ninguna petición a terceros</strong>.</p>
+  <h3>Ni una petición a terceros</h3>
+  <p>Ninguna página de esta web pide nada a ningún servidor que no sea el nuestro. Las tipografías, que es lo que en casi todas las webs acaba enseñándole tu dirección IP a una empresa de fuera, están alojadas aquí. Tampoco hay mapas incrustados, ni vídeos, ni botones sociales, ni ninguna librería traída de un CDN.</p>
 
   <h2>7. Cookies y rastreo</h2>
   <p>Esta web <strong>no usa cookies</strong>, no tiene Google Analytics ni ninguna otra herramienta de medición, no lleva píxeles de Facebook ni de nadie, y no hay botones de redes sociales que te sigan. Por eso no verás ningún cartel pidiéndote permiso: no hay nada que permitir. Lo tienes más detallado en la <a href="/legal/cookies">página de cookies</a>.</p>
@@ -148,7 +296,8 @@
   <p>Si alguna vez pasara algo y hubiera riesgo para ti, te lo diríamos, además de comunicarlo a la Agencia en las 72 horas que exige el reglamento.</p>
 
   <h2>10. Menores</h2>
-  <p>El formulario es para mayores de 14 años, que es la edad a partir de la cual la ley española permite consentir por cuenta propia. Si nos damos cuenta de que ha entrado un alta de alguien más pequeño, la borramos.</p>
+  <p>Los dos formularios son <strong>para mayores de edad</strong>, y los dos te piden que lo declares en una casilla. En el de donación es evidente: para donar hace falta capacidad para disponer del propio dinero. En el de Súmate la ley española habría permitido bajar a los 14 años, que es la edad a partir de la cual se puede consentir por cuenta propia; hemos preferido no hacerlo, porque lo que se recoge ahí es un dato de opinión política y no queremos tener una lista de menores con esa información.</p>
+  <p>Si nos damos cuenta de que ha entrado un alta de alguien menor de edad, la borramos. <strong>De menores de 14 años no recogemos datos bajo ningún concepto.</strong> Y que quede claro lo que esto no significa: si tienes 16 o 17 años y quieres participar, participa. Ven a una asamblea, escríbenos, échanos una mano. Lo único que no hacemos es meterte en una base de datos.</p>
 
   <h2>11. Si esto cambia</h2>
   <p>Cada versión de esta política tiene su identificador, el que aparece arriba. Cuando guardamos tu consentimiento guardamos también qué versión aceptaste. Si un día cambiamos algo importante —para qué usamos los datos, quién los ve—, no vale con actualizar la página: <strong>te lo pediremos otra vez</strong>. Los cambios menores se publican aquí con su fecha.</p>

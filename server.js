@@ -1,6 +1,11 @@
-// Servidor estático mínimo para Railway. Sin dependencias: solo Node.
-// Sirve el sitio de Por Águilas y deja preparado el hueco para el backend
-// de "Súmate" (ver PROMPT-BACKEND-SUMATE.md).
+// Servidor del sitio de Por Águilas. Una sola dependencia (`pg`), un solo
+// proceso y un solo puerto: sirve los ficheros estáticos y monta debajo, en
+// /api/*, el backend de "Súmate" y el de las comunicaciones de donación.
+//
+// Mismo origen para la web y para la API a propósito: sin CORS que configurar,
+// sin un segundo despliegue que mantener y sin un tercer sitio donde se pueda
+// quedar vieja la configuración. Detalles del backend en src/ y en
+// README-DESPLIEGUE.md.
 "use strict";
 
 const http = require("node:http");
@@ -13,6 +18,46 @@ const { pipeline } = require("node:stream/promises");
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = "0.0.0.0";
 const ROOT = __dirname;
+
+// --- .env para desarrollo local ----------------------------------------------
+//
+// .env.example lleva desde el principio diciendo "copiar a .env para desarrollo
+// local", pero nadie lo leía: sin esto había que exportar seis variables a mano
+// en cada terminal. Son quince líneas y ahorran una dependencia.
+//
+// En producción no hace nada: Railway pone las variables en el entorno y ahí no
+// hay ningún .env. Lo que ya venga en process.env NUNCA se pisa, que es la
+// regla que evita que un .env olvidado en el servidor tape la configuración
+// real.
+(function cargarEnv() {
+  let bruto;
+  try {
+    bruto = fs.readFileSync(path.join(ROOT, ".env"), "utf8");
+  } catch {
+    return; // no hay .env: es lo normal en producción
+  }
+  for (const linea of bruto.split(/\r?\n/)) {
+    const t = linea.trim();
+    if (!t || t.startsWith("#")) continue;
+    const i = t.indexOf("=");
+    if (i < 1) continue;
+    const clave = t.slice(0, i).trim();
+    if (process.env[clave] !== undefined) continue;
+    let valor = t.slice(i + 1).trim();
+    // Comillas opcionales alrededor del valor, por si lleva espacios.
+    if (valor.length > 1 && /^(".*"|'.*')$/.test(valor)) valor = valor.slice(1, -1);
+    process.env[clave] = valor;
+  }
+  console.log("[env] variables cargadas desde .env (desarrollo local).");
+})();
+
+// Backend de Súmate y de las donaciones. Vive en src/, que el servidor estático
+// no publica (ver CARPETAS_PRIVADAS), y se monta más abajo en /api/*.
+const api = require("./src/api.js");
+const db = require("./src/db.js");
+const purga = require("./src/purga.js");
+const { donacionesPublicas } = require("./src/config.js");
+
 
 const TIPOS = {
   ".html": "text/html; charset=utf-8",
@@ -308,6 +353,16 @@ function bloqueMeta(ruta, origen) {
       JSON.stringify({ origen, rutas: META }).replace(/</g, "\\u003c") +
       "</script>"
   );
+  // Datos de la cuenta de donaciones, tal como los declara src/config.js. El
+  // index.html del repositorio lleva escrito este mismo bloque para que la web
+  // siga enseñando el IBAN correcto abierta con doble clic, sin servidor; aquí
+  // se reescribe con lo que diga la configuración, que es la fuente única. El
+  // arranque aborta si los dos dejan de coincidir (revisarPuestaEnMarcha).
+  l.push(
+    '<script type="application/json" id="pa-donaciones">' +
+      JSON.stringify(donacionesPublicas()).replace(/</g, "\\u003c") +
+      "</script>"
+  );
   return l.join("\n");
 }
 
@@ -472,6 +527,15 @@ const servidor = http.createServer(async (req, res) => {
   const metodo = req.method || "GET";
   const url = req.url || "/";
 
+  // La API va montada en el mismo proceso y el mismo puerto que el sitio
+  // estático: mismo origen, así que no hay CORS que abrir ni un segundo
+  // despliegue que mantener. Tiene que ir ANTES del filtro de método, porque
+  // es la única parte que recibe POST.
+  if (url === "/api" || url.startsWith("/api/") || url.startsWith("/api?")) {
+    await api.manejar(req, res);
+    return;
+  }
+
   if (metodo !== "GET" && metodo !== "HEAD") {
     res.writeHead(405, { "content-type": "text/plain; charset=utf-8", allow: "GET, HEAD" });
     res.end("Método no permitido");
@@ -623,15 +687,39 @@ if (faltan.length) {
   );
 }
 
+// Puesta en marcha del backend. El orden importa: primero se dice en voz alta
+// si el sistema está en condiciones de recoger datos, y solo si lo está se toca
+// la base de datos. Si no lo está, la web se sirve igual y los formularios
+// responden 503 con una dirección de correo: mejor una web que funciona con el
+// formulario cerrado que una web caída.
+const estadoApi = api.informarEstado();
+
+async function arrancarBackend() {
+  if (!estadoApi.listo) return;
+  try {
+    await db.migrar();
+    console.log("[db] esquema al día.");
+    purga.arrancar();
+  } catch (err) {
+    console.error(
+      "[db] no se ha podido preparar el esquema:",
+      err?.code || err?.message || "error",
+      "\n     Los formularios darán error hasta que se resuelva."
+    );
+  }
+}
+
 servidor.listen(PORT, HOST, () => {
   console.log(`Por Águilas · sirviendo ${ROOT} en http://${HOST}:${PORT}`);
+  arrancarBackend();
 });
 
 // Railway envía SIGTERM en cada redespliegue.
 for (const sig of ["SIGTERM", "SIGINT"]) {
   process.on(sig, () => {
     console.log(`[${sig}] cerrando servidor...`);
-    servidor.close(() => process.exit(0));
+    purga.parar();
+    servidor.close(() => db.cerrar().finally(() => process.exit(0)));
     setTimeout(() => process.exit(0), 5000).unref();
   });
 }

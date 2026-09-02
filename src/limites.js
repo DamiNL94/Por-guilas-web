@@ -56,6 +56,13 @@ function permitirAlta(ip) {
   return consumir("alta-hora", ip, ANTIABUSO.altasPorIpHora, HORA);
 }
 
+// Igual que el alta: consume el cupo diario antes que el horario.
+function permitirDonacion(ip) {
+  const dia = consumir("don-dia", ip, ANTIABUSO.donacionesPorIpDia, DIA);
+  if (!dia.permitido) return dia;
+  return consumir("don-hora", ip, ANTIABUSO.donacionesPorIpHora, HORA);
+}
+
 const permitirBorrado = (ip) => consumir("borrar", ip, ANTIABUSO.borradosPorIpHora, HORA);
 const permitirAdmin = (ip) => consumir("admin", ip, ANTIABUSO.adminPorIpMinuto, MINUTO);
 
@@ -71,6 +78,7 @@ function reiniciar() {
 module.exports = {
   consumir,
   permitirAlta,
+  permitirDonacion,
   permitirBorrado,
   permitirAdmin,
   permitirCorreo,

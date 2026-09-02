@@ -5,10 +5,10 @@
 // afinidad política no puede quedar a un enlace de distancia.
 "use strict";
 
-const { CONFIG, COMO, ZONAS } = require("./config.js");
+const { CONFIG, COMO, ZONAS, DONACIONES } = require("./config.js");
 const { consulta } = require("./db.js");
 const { json, texto } = require("./http.js");
-const { igualSeguro, ipDe } = require("./util.js");
+const { igualSeguro, ipDe, euros } = require("./util.js");
 const limites = require("./limites.js");
 
 // Devuelve true si la petición está autorizada. Nunca dice por qué falla.
@@ -33,6 +33,7 @@ async function filas(url) {
 
   const r = await consulta(
     `select a.id, a.email, a.nombre, a.zona, a.como, a.mensaje, a.estado,
+            a.telefono, a.consiente_colaborar, a.consiente_cesion,
             a.creado, a.confirmado_en,
             c.momento       as consentimiento_momento,
             c.version_texto as consentimiento_version
@@ -67,6 +68,10 @@ async function listado(req, res, url) {
       zona: f.zona ? ZONAS.get(f.zona) || f.zona : null,
       como: COMO.get(f.como) || f.como,
       mensaje: f.mensaje,
+      telefono: f.telefono,
+      // Sale al panel para que quien mande un correo sepa a quién puede
+      // escribirle de qué, sin tener que abrir la tabla de consentimientos.
+      consiente: { colaborar: f.consiente_colaborar, cesion: f.consiente_cesion },
       estado: f.estado,
       creado: f.creado,
       confirmado: f.confirmado_en,
@@ -106,6 +111,9 @@ const CABECERAS = [
   "zona",
   "como_colabora",
   "mensaje",
+  "telefono",
+  "consiente_colaborar",
+  "consiente_cesion",
   "alta",
   "confirmado",
   "consentimiento_momento",
@@ -127,6 +135,9 @@ async function csv(req, res, url) {
         f.zona ? ZONAS.get(f.zona) || f.zona : "",
         COMO.get(f.como) || f.como,
         f.mensaje || "",
+        f.telefono || "",
+        f.consiente_colaborar ? "sí" : "no",
+        f.consiente_cesion ? "sí" : "no",
         fecha(f.creado),
         fecha(f.confirmado_en),
         fecha(f.consentimiento_momento),
@@ -144,6 +155,141 @@ async function csv(req, res, url) {
   return texto(res, 200, cuerpo, {
     "content-type": "text/csv; charset=utf-8",
     "content-disposition": `attachment; filename="${nombre}"`,
+  });
+}
+
+// --- Donaciones ---------------------------------------------------------------
+//
+// El listado que el equipo cuadra contra el extracto del banco. Es la mitad
+// manual del riesgo R1 y del R2: cada ingreso se mira uno a uno antes de darlo
+// por bueno, porque ninguna casilla marcada en una web impide de verdad que una
+// empresa haga una transferencia.
+const ESTADOS_DON = new Set(["comunicada", "cobrada", "devuelta", "anulada", "todos"]);
+
+async function filasDonaciones(url) {
+  const estado = url.searchParams.get("estado") || "todos";
+  if (!ESTADOS_DON.has(estado)) return { error: "estado" };
+
+  const donde = estado === "todos" ? "" : "where estado = $1";
+  const params = estado === "todos" ? [] : [estado];
+
+  const r = await consulta(
+    `select id, creado, nombre, apellidos, dni, email, importe_centimos,
+            fecha_prevista, concepto, estado, version_texto, notas
+       from donaciones ${donde}
+      order by creado desc`,
+    params
+  );
+  return { estado, filas: r.rows };
+}
+
+// Acumulado por donante y año natural. Es el aviso temprano del riesgo R5: no
+// sustituye al control de la federación —el tope de la LO 8/2007 se cuenta
+// sobre todo lo que reciba el partido, no solo sobre lo que entre por Águilas—
+// pero enseña lo que sí podemos ver desde aquí.
+async function acumuladoPorDonante() {
+  const r = await consulta(
+    `select dni,
+            extract(year from creado)::int      as anio,
+            sum(importe_centimos)::bigint       as total,
+            count(*)::int                       as veces
+       from donaciones
+      where estado in ('comunicada','cobrada')
+      group by dni, anio
+      having sum(importe_centimos) > $1
+      order by total desc`,
+    [Math.round(DONACIONES.limiteAnual * 100 * 0.5)] // desde la mitad del tope
+  );
+  return r.rows;
+}
+
+async function listadoDonaciones(req, res, url) {
+  const { error, estado, filas: datos } = await filasDonaciones(url);
+  if (error) return json(res, 400, { ok: false, mensaje: "Estado no válido." });
+
+  const vigilar = await acumuladoPorDonante();
+
+  return json(res, 200, {
+    ok: true,
+    estado,
+    total: datos.length,
+    sumaCentimos: datos.reduce((a, f) => a + Number(f.importe_centimos), 0),
+    regimen: DONACIONES.regimen,
+    limiteAnual: DONACIONES.limiteAnual,
+    umbralNotificacion: DONACIONES.umbralNotificacion,
+    donaciones: datos.map((f) => ({
+      id: String(f.id),
+      creado: f.creado,
+      nombre: f.nombre,
+      apellidos: f.apellidos,
+      dni: f.dni,
+      email: f.email,
+      importe: euros(Number(f.importe_centimos)),
+      superaUmbralNotificacion:
+        Number(f.importe_centimos) > DONACIONES.umbralNotificacion * 100,
+      fechaPrevista: f.fecha_prevista,
+      concepto: f.concepto,
+      estado: f.estado,
+      versionTexto: f.version_texto,
+      notas: f.notas,
+    })),
+    // Quien esté cerca del tope. Mirar antes de aceptar el siguiente ingreso.
+    vigilar: vigilar.map((v) => ({
+      dni: v.dni,
+      anio: v.anio,
+      total: euros(Number(v.total)),
+      veces: v.veces,
+      superaLimite: Number(v.total) > DONACIONES.limiteAnual * 100,
+    })),
+  });
+}
+
+const CABECERAS_DON = [
+  "id",
+  "comunicada",
+  "nombre",
+  "apellidos",
+  "dni",
+  "email",
+  "importe_eur",
+  "fecha_prevista",
+  "concepto",
+  "estado",
+  "version_texto",
+  "notas",
+];
+
+async function csvDonaciones(req, res, url) {
+  const { error, estado, filas: datos } = await filasDonaciones(url);
+  if (error) return json(res, 400, { ok: false, mensaje: "Estado no válido." });
+
+  const lineas = [CABECERAS_DON.map(celda).join(SEPARADOR)];
+  for (const f of datos) {
+    lineas.push(
+      [
+        f.id,
+        fecha(f.creado),
+        f.nombre,
+        f.apellidos,
+        f.dni,
+        f.email,
+        euros(Number(f.importe_centimos)),
+        f.fecha_prevista ? new Date(f.fecha_prevista).toISOString().slice(0, 10) : "",
+        f.concepto,
+        f.estado,
+        f.version_texto,
+        f.notas || "",
+      ]
+        .map(celda)
+        .join(SEPARADOR)
+    );
+  }
+
+  const cuerpo = "\ufeff" + lineas.join("\r\n") + "\r\n";
+
+  return texto(res, 200, cuerpo, {
+    "content-type": "text/csv; charset=utf-8",
+    "content-disposition": `attachment; filename="por-aguilas-donaciones-${estado}.csv"`,
   });
 }
 
@@ -168,6 +314,8 @@ async function manejar(req, res, url) {
 
   if (url.pathname === "/api/admin/altas") return listado(req, res, url);
   if (url.pathname === "/api/admin/altas.csv") return csv(req, res, url);
+  if (url.pathname === "/api/admin/donaciones") return listadoDonaciones(req, res, url);
+  if (url.pathname === "/api/admin/donaciones.csv") return csvDonaciones(req, res, url);
 
   return json(res, 404, { ok: false, mensaje: "No existe." });
 }

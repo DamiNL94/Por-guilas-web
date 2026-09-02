@@ -38,6 +38,14 @@ async function purgar() {
 
   // 3. Borrado total de la lista pasada la fecha límite. La finalidad para la
   //    que se recogieron los datos —una campaña municipal concreta— se agota.
+  //
+  //    Ojo con lo que NO se borra aquí: la tabla `donaciones` no se toca, ni
+  //    ahora ni nunca desde este fichero. Sus datos no se conservan por
+  //    consentimiento sino por obligación legal (art. 6.1.c RGPD): la LO 8/2007
+  //    y la normativa contable y fiscal obligan a poder acreditar quién donó
+  //    qué, y ese deber sobrevive a la campaña. Borrarlas con el resto sería
+  //    incumplir la ley, no proteger a nadie. Su borrado va por el calendario
+  //    de prescripción y se hace a mano: ver README-DESPLIEGUE.md.
   const fin = new Date(CONSERVACION.fechaPurgaTotal + "T00:00:00Z");
   if (Number.isFinite(fin.getTime()) && Date.now() > fin.getTime()) {
     const todo = await consulta(`delete from altas`);

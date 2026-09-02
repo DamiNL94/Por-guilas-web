@@ -14,7 +14,7 @@
 
 const crypto = require("node:crypto");
 
-const { CONFIG, CONSERVACION, VERSION_POLITICA, TEXTO_CONSENTIMIENTO } = require("./config.js");
+const { CONFIG, CONSERVACION, VERSION_POLITICA, CONSENTIMIENTOS } = require("./config.js");
 const { consulta, enTransaccion } = require("./db.js");
 const correo = require("./correo.js");
 const limites = require("./limites.js");
@@ -141,11 +141,23 @@ async function guardarAlta(d, ip) {
       const t = nuevoToken();
       tokenConf = t.claro;
       const ins = await cli.query(
-        `insert into altas (email, nombre, zona, como, mensaje, estado,
+        `insert into altas (email, nombre, zona, como, mensaje, telefono,
+                            consiente_colaborar, consiente_cesion, estado,
                             token_conf_hash, token_conf_expira)
-         values ($1,$2,$3,$4,$5,'pendiente',$6, now() + ($7 || ' hours')::interval)
+         values ($1,$2,$3,$4,$5,$6,$7,$8,'pendiente',$9, now() + ($10 || ' hours')::interval)
          returning id`,
-        [d.email, d.nombre, d.zona, d.como, d.mensaje, t.hash, String(CONSERVACION.horasToken)]
+        [
+          d.email,
+          d.nombre,
+          d.zona,
+          d.como,
+          d.mensaje,
+          d.telefono,
+          d.consentimientos.colaborar,
+          d.consentimientos.cesion,
+          t.hash,
+          String(CONSERVACION.horasToken),
+        ]
       );
       id = ins.rows[0].id;
       estado = "pendiente";
@@ -167,10 +179,29 @@ async function guardarAlta(d, ip) {
                 zona = coalesce($3, zona),
                 como = $4,
                 mensaje = coalesce($5, mensaje),
+                telefono = coalesce($6, telefono),
+                consiente_colaborar = $7,
+                consiente_cesion = $8,
                 actualizado = now()
           where id = $1`,
-        [id, d.nombre, d.zona, d.como, d.mensaje]
+        [
+          id,
+          d.nombre,
+          d.zona,
+          d.como,
+          d.mensaje,
+          d.telefono,
+          d.consentimientos.colaborar,
+          d.consentimientos.cesion,
+        ]
       );
+
+      // Retirar el permiso de colaborar retira también el teléfono, que solo
+      // existía para esa finalidad. Si no, quedaría un dato huérfano sin base
+      // jurídica que lo sostenga.
+      if (!d.consentimientos.colaborar) {
+        await cli.query(`update altas set telefono = null where id = $1`, [id]);
+      }
 
       if (estado === "pendiente") {
         // Enlace nuevo y reloj nuevo. El anterior deja de valer.
@@ -186,13 +217,22 @@ async function guardarAlta(d, ip) {
       }
     }
 
-    // Cada envío del formulario es un acto de consentimiento, y cada uno deja
-    // su propia prueba: cuándo, qué versión del texto y desde qué IP.
-    await cli.query(
-      `insert into consentimientos (alta_id, version_texto, texto_aceptado, ip)
-       values ($1, $2, $3, $4::inet)`,
-      [id, VERSION_POLITICA, TEXTO_CONSENTIMIENTO, ip]
-    );
+    // Cada envío del formulario deja su propia prueba, y una fila por cada
+    // casilla marcada: cuándo, para qué finalidad, con qué literal exacto
+    // delante, qué versión de la política estaba publicada y desde qué IP.
+    //
+    // Una fila por finalidad y no una por envío es lo que permite responder a
+    // la pregunta que hace la AEPD cuando reclama alguien: «demuéstreme que
+    // esta persona consintió la cesión a IU y al PCE», que es distinta de
+    // «demuéstreme que consintió recibir información».
+    for (const [clave, def] of CONSENTIMIENTOS) {
+      if (!d.consentimientos[clave]) continue;
+      await cli.query(
+        `insert into consentimientos (alta_id, finalidad, version_texto, texto_aceptado, ip)
+         values ($1, $2, $3, $4, $5::inet)`,
+        [id, clave, VERSION_POLITICA, def.texto, ip]
+      );
+    }
 
     // Freno anti bombardeo: si alguien mete la dirección de un tercero en
     // bucle, esa persona no recibe un correo por cada intento.

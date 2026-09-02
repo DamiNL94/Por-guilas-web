@@ -14,17 +14,20 @@ const http = require("node:http");
 const assert = require("node:assert/strict");
 
 // --- Entorno de pruebas -------------------------------------------------------
-// Copia de la política con los huecos rellenos: demuestra que el fichero real
-// pasa todos los controles salvo el de los PENDIENTE, que es el que queremos
-// que siga fallando mientras falten el NIF y el domicilio.
+// Copias de las páginas legales con los huecos rellenos. Demuestran que los
+// ficheros reales pasan todos los controles salvo el de los PENDIENTE, que es
+// justo el que queremos que siga fallando mientras falten el domicilio social,
+// la inscripción registral y el contacto del delegado.
 const RAIZ = path.resolve(__dirname, "..");
-const copia = path.join(os.tmpdir(), `pa-politica-${process.pid}.html`);
-fs.writeFileSync(
-  copia,
-  fs.readFileSync(path.join(RAIZ, "legal", "privacidad.html"), "utf8").replace(/PENDIENTE:/g, "X:")
-);
+const dirLegal = fs.mkdtempSync(path.join(os.tmpdir(), "pa-legal-"));
+for (const pagina of ["privacidad.html", "aviso-legal.html", "cookies.html"]) {
+  fs.writeFileSync(
+    path.join(dirLegal, pagina),
+    fs.readFileSync(path.join(RAIZ, "legal", pagina), "utf8").replace(/PENDIENTE:/g, "X:")
+  );
+}
 
-process.env.RUTA_POLITICA = copia;
+process.env.RUTA_LEGAL = dirLegal;
 process.env.ADMIN_TOKEN = process.env.ADMIN_TOKEN || "t".repeat(40);
 process.env.SECRETO_HMAC = process.env.SECRETO_HMAC || "s".repeat(40);
 process.env.CORREO_EN_CONSOLA = "1";
@@ -37,10 +40,28 @@ const CON_BD = Boolean(process.env.DATABASE_URL);
 // consultas fallan al conectar y devuelven 500, que es justo lo que se espera.
 if (!CON_BD) process.env.DATABASE_URL = "postgres://nadie@127.0.0.1:1/nada?sslmode=disable";
 
+// Sin ninguna dirección del responsable el backend se declara NO listo, que es
+// exactamente lo correcto mientras el repositorio no la tenga. Para poder
+// probar todo lo demás se le da una de mentira, igual que se le dan copias de
+// las páginas legales con los huecos rellenos. Tiene que ir antes de cargar
+// api.js, que evalúa el estado de arranque al importarse.
+require("../src/config.js").RESPONSABLE.direccionContacto = "Calle de prueba 1, Águilas (Murcia)";
+
 const api = require("../src/api.js");
 const util = require("../src/util.js");
 const limites = require("../src/limites.js");
-const { ANTIABUSO } = require("../src/config.js");
+const {
+  ANTIABUSO,
+  DONACIONES,
+  CONSENTIMIENTOS,
+  DECLARACIONES,
+  VERSION_POLITICA,
+  RESPONSABLE,
+  cifValido,
+  ibanValido,
+  donacionesPublicas,
+  revisarPuestaEnMarcha,
+} = require("../src/config.js");
 
 // --- Andamiaje ----------------------------------------------------------------
 
@@ -86,7 +107,27 @@ const enviarAlta = (datos, extra = {}) =>
   pedir("/api/sumate", {
     method: "POST",
     headers: { "content-type": "application/json", ...extra },
-    body: JSON.stringify({ t0: Date.now() - 9000, consentimiento: true, ...datos }),
+    body: JSON.stringify({
+      t0: Date.now() - 9000,
+      consiente_info: true,
+      mayor_edad: true,
+      ...datos,
+    }),
+  });
+
+const enviarDonacion = (datos, extra = {}) =>
+  pedir("/api/donacion", {
+    method: "POST",
+    headers: { "content-type": "application/json", ...extra },
+    body: JSON.stringify({
+      t0: Date.now() - 9000,
+      declara_fisica: true,
+      declara_sin_contrato: true,
+      declara_no_extranjero: true,
+      acepta_privacidad: true,
+      declara_mayor_edad: true,
+      ...datos,
+    }),
   });
 
 // Formulario válido de referencia.
@@ -96,6 +137,22 @@ const VALIDO = {
   zona: "casco",
   como: "calle",
   mensaje: "Quiero echar una mano con el buzoneo.",
+};
+
+// Dentro de la horquilla que admite la fecha prevista del ingreso.
+const dentroDe = (dias) => {
+  const d = new Date();
+  d.setDate(d.getDate() + dias);
+  return d.toISOString().slice(0, 10);
+};
+
+const DONACION_VALIDA = {
+  nombre: "Ana María",
+  apellidos: "López Núñez",
+  dni: "12345678Z",
+  email: "ana@ejemplo.es",
+  importe: "50,00",
+  fecha_prevista: dentroDe(3),
 };
 
 // --- Pruebas ------------------------------------------------------------------
@@ -113,9 +170,29 @@ async function main() {
     const { errores } = util.validarAlta({ ...VALIDO, zona: "marte", como: "; drop table" });
     assert.ok(errores.zona && errores.como);
   });
-  await prueba("el consentimiento es obligatorio", () => {
-    const { errores } = util.validarAlta({ ...VALIDO, consentimiento: false });
-    assert.ok(errores.consentimiento);
+  await prueba("el consentimiento de información y la mayoría de edad son obligatorios", () => {
+    const { errores } = util.validarAlta({ ...VALIDO });
+    assert.ok(errores.consiente_info, "sin la casilla de información no puede haber alta");
+    assert.ok(errores.mayor_edad, "sin declarar mayoría de edad tampoco");
+  });
+  await prueba("los tres consentimientos van por separado y ninguno arrastra a otro", () => {
+    const base = { ...VALIDO, consiente_info: true, mayor_edad: true };
+    const solo = util.validarAlta(base);
+    assert.equal(Object.keys(solo.errores).length, 0);
+    assert.equal(solo.datos.consentimientos.info, true);
+    assert.equal(solo.datos.consentimientos.colaborar, false, "colaborar no se marca solo");
+    assert.equal(solo.datos.consentimientos.cesion, false, "la cesión no se marca sola");
+
+    const cede = util.validarAlta({ ...base, consiente_cesion: true });
+    assert.equal(cede.datos.consentimientos.cesion, true);
+    assert.equal(cede.datos.consentimientos.colaborar, false, "marcar cesión no marca colaborar");
+  });
+  await prueba("el teléfono solo se guarda si se ha pedido colaborar", () => {
+    const base = { ...VALIDO, consiente_info: true, mayor_edad: true, telefono: "600 11 22 33" };
+    const sin = util.validarAlta(base);
+    assert.equal(sin.datos.telefono, null, "sin la casilla de colaborar, el teléfono se descarta");
+    const con = util.validarAlta({ ...base, consiente_colaborar: true });
+    assert.equal(con.datos.telefono, "600112233");
   });
   await prueba("tokens con la forma esperada y comparación segura", () => {
     const t = util.nuevoToken();
@@ -239,6 +316,414 @@ async function main() {
   });
 
   // --- Flujo completo, solo con base de datos --------------------------------
+  console.log("\nDonaciones · validación");
+  await prueba("el DNI se valida por su letra de control", () => {
+    for (const bueno of ["12345678Z", "00000000T", "X1234567L", "Y1234567X", "Z1234567R"]) {
+      assert.ok(util.dniNieValido(bueno), `${bueno} debía ser válido`);
+    }
+    for (const malo of ["12345678A", "1234567Z", "X12345678Z", "", "12345678"]) {
+      assert.ok(!util.dniNieValido(malo), `${malo} no debía colar`);
+    }
+  });
+  await prueba("un NIF de persona jurídica no cuela por construcción", () => {
+    // Art. 5.1.a LO 8/2007: las donaciones de personas jurídicas son nulas. La
+    // primera barrera es que su NIF no encaja en la forma de un DNI ni un NIE.
+    for (const cif of ["B12345678", "A58818501", "G28029643", "J12345678", "W1234567E"]) {
+      assert.ok(!util.dniNieValido(cif), `${cif} es un CIF y no debía colar`);
+    }
+  });
+  await prueba("el importe se lee en céntimos y aguanta los formatos de aquí", () => {
+    assert.equal(util.parsearImporte("50"), 5000);
+    assert.equal(util.parsearImporte("50,00"), 5000);
+    assert.equal(util.parsearImporte("1.250,50"), 125050);
+    assert.equal(util.parsearImporte("1250.50"), 125050);
+    assert.equal(util.parsearImporte("-5"), null);
+    assert.equal(util.parsearImporte("50.001"), null, "tres decimales no son euros");
+    assert.equal(util.parsearImporte("abc"), null);
+  });
+  await prueba("el concepto sale sin tildes, en mayúsculas y con el DNI al final", () => {
+    const c = util.conceptoDonacion({ nombre: "María Ángeles", apellidos: "Núñez Gómez", dni: "12345678z" });
+    assert.equal(c.completo, "DONACION AGUILAS MARIA ANGELES NUNEZ GOMEZ 12345678Z");
+    assert.equal(c.corto, "DONACION AGUILAS 12345678Z");
+    assert.ok(!c.cabe, "este concepto pasa del tope de caracteres del banco");
+    assert.ok(c.corto.length <= DONACIONES.conceptoMaximoBanco, "el corto sí tiene que caber");
+  });
+  await prueba("el IBAN publicado pasa el mod-97 y los dígitos de control españoles", () => {
+    assert.ok(ibanValido(DONACIONES.iban), "el IBAN de config.donaciones está mal copiado");
+    // Un dígito bailado tiene que caer.
+    assert.ok(!ibanValido(DONACIONES.iban.replace("ES11", "ES12")));
+    assert.ok(!ibanValido("ES1121008315191300160572"));
+  });
+  await prueba("la fecha prevista solo admite de hoy a tres meses", () => {
+    assert.ok(util.fechaPrevistaValida(dentroDe(0)));
+    assert.ok(util.fechaPrevistaValida(dentroDe(89)));
+    assert.ok(!util.fechaPrevistaValida(dentroDe(-5)), "el pasado no vale");
+    assert.ok(!util.fechaPrevistaValida(dentroDe(200)), "dentro de siete meses tampoco");
+    assert.ok(!util.fechaPrevistaValida("2027-13-45"));
+  });
+
+  console.log("\nAPI · donación");
+  await prueba("una comunicación válida devuelve el concepto ya montado", async () => {
+    limites.reiniciar();
+    const r = await enviarDonacion(DONACION_VALIDA);
+    // Con base de datos responde 200; sin ella, 500 al intentar guardar. En los
+    // dos casos ha pasado la validación, que es lo que se comprueba aquí.
+    assert.ok(r.estado === 200 || r.estado === 500, `estado inesperado: ${r.estado}`);
+    if (r.estado === 200) {
+      assert.equal(r.cuerpo.transferencia.iban, DONACIONES.iban);
+      assert.equal(r.cuerpo.transferencia.titular, DONACIONES.titular);
+      assert.match(r.cuerpo.transferencia.concepto, /^DONACION AGUILAS .*12345678Z$/);
+    }
+  });
+  await prueba("sin una sola declaración, rechazo en servidor", async () => {
+    for (const falta of [
+      "declara_fisica",
+      "declara_sin_contrato",
+      "declara_no_extranjero",
+      "acepta_privacidad",
+      "declara_mayor_edad",
+    ]) {
+      limites.reiniciar();
+      const r = await enviarDonacion({ ...DONACION_VALIDA, [falta]: false });
+      assert.equal(r.estado, 400, `faltando ${falta} tenía que rechazar`);
+      assert.ok(r.cuerpo.errores[falta], `el error de ${falta} tiene que volver por campo`);
+    }
+  });
+  await prueba("DNI inválido, importe negativo, por encima del tope y correo malo: rechazados", async () => {
+    const casos = [
+      [{ dni: "12345678A" }, "dni"],
+      [{ dni: "B12345678" }, "dni"],
+      [{ importe: "-10" }, "importe"],
+      [{ importe: "0" }, "importe"],
+      [{ importe: "50001" }, "importe"],
+      [{ email: "esto-no-es-un-correo" }, "email"],
+      [{ fecha_prevista: dentroDe(-10) }, "fecha_prevista"],
+      [{ nombre: "" }, "nombre"],
+      [{ apellidos: "" }, "apellidos"],
+    ];
+    for (const [cambio, campo] of casos) {
+      limites.reiniciar();
+      const r = await enviarDonacion({ ...DONACION_VALIDA, ...cambio });
+      assert.equal(r.estado, 400, `${JSON.stringify(cambio)} tenía que dar 400`);
+      assert.ok(r.cuerpo.errores[campo], `esperaba un error en ${campo}`);
+    }
+  });
+  await prueba("el tope del importe es exactamente el límite legal", async () => {
+    limites.reiniciar();
+    const justo = await enviarDonacion({ ...DONACION_VALIDA, importe: String(DONACIONES.limiteAnual) });
+    assert.notEqual(justo.estado, 400, "el importe igual al tope sí se admite");
+    limites.reiniciar();
+    const pasado = await enviarDonacion({ ...DONACION_VALIDA, importe: String(DONACIONES.limiteAnual) + ",01" });
+    assert.equal(pasado.estado, 400, "un céntimo por encima del tope, no");
+  });
+  await prueba("la trampa descarta en silencio y no guarda nada", async () => {
+    limites.reiniciar();
+    const r = await enviarDonacion({ ...DONACION_VALIDA, [ANTIABUSO.campoTrampa]: "http://spam" });
+    assert.equal(r.estado, 200, "a un robot se le responde éxito, no un error");
+    assert.ok(r.cuerpo.ok);
+  });
+  await prueba("rellenar en menos de tres segundos también se descarta", async () => {
+    limites.reiniciar();
+    const r = await enviarDonacion({ ...DONACION_VALIDA, t0: Date.now() - 200 });
+    assert.equal(r.estado, 200);
+  });
+  await prueba("no se acepta ninguna finalidad ni destino de la donación", async () => {
+    limites.reiniciar();
+    // Aunque alguien lo mande a mano, no existe el campo y no se guarda: las
+    // donaciones finalistas están prohibidas (art. 5.1.d LO 8/2007).
+    const { datos } = util.validarDonacion({
+      ...DONACION_VALIDA,
+      declara_fisica: true, declara_sin_contrato: true, declara_no_extranjero: true,
+      acepta_privacidad: true, declara_mayor_edad: true,
+      destino: "vivienda", finalidad: "papeletas",
+    });
+    assert.equal(datos.destino, undefined);
+    assert.equal(datos.finalidad, undefined);
+  });
+  await prueba("el límite por IP acaba cortando también aquí", async () => {
+    limites.reiniciar();
+    let cortado = false;
+    for (let i = 0; i < ANTIABUSO.donacionesPorIpDia + 3; i++) {
+      const r = await enviarDonacion({ ...DONACION_VALIDA, email: `a${i}@ejemplo.es` });
+      if (r.estado === 429) { cortado = true; break; }
+    }
+    assert.ok(cortado, "tenía que acabar respondiendo 429");
+  });
+  await prueba("rechaza peticiones de otro origen", async () => {
+    limites.reiniciar();
+    const r = await enviarDonacion(DONACION_VALIDA, { origin: "https://otro-sitio.example" });
+    assert.equal(r.estado, 403);
+  });
+
+  console.log("\nQuién responde");
+  await prueba("el CIF del responsable pasa su dígito de control", () => {
+    assert.ok(cifValido(RESPONSABLE.cif), `${RESPONSABLE.cif} no es un CIF válido`);
+    // Un dígito bailado tiene que caer.
+    assert.ok(!cifValido("G78269205"));
+    assert.ok(!cifValido("G7826920"));
+    // Y un DNI de persona física no es un CIF.
+    assert.ok(!cifValido("12345678Z"));
+  });
+  await prueba("el CIF es de ámbito estatal, no de una provincia", () => {
+    // Los dos dígitos que siguen a la letra son el código de provincia, y las
+    // provincias van del 01 al 52. Un CIF que empiece por 30 sería de Murcia y
+    // señalaría que alguien ha confundido la entidad: la asamblea local y la
+    // federación regional NO tienen personalidad jurídica propia.
+    const provincia = Number(RESPONSABLE.cif.slice(1, 3));
+    assert.ok(provincia > 52, `el bloque ${provincia} es provincial y no estatal`);
+  });
+  await prueba("las páginas legales declaran al responsable que dice el código", () => {
+    for (const pagina of ["aviso-legal.html", "privacidad.html"]) {
+      const t = fs.readFileSync(path.join(RAIZ, "legal", pagina), "utf8");
+      assert.ok(t.includes(RESPONSABLE.cif), `legal/${pagina} no publica el CIF`);
+      const celda = /<th>(?:Responsable|Titular)<\/th>\s*<td>([\s\S]*?)<\/td>/.exec(t);
+      assert.ok(celda, `legal/${pagina} no declara responsable ni titular`);
+      assert.equal(
+        celda[1].replace(/<[^>]*>/g, "").trim(),
+        RESPONSABLE.denominacion,
+        `legal/${pagina} nombra a otro responsable`
+      );
+    }
+  });
+  await prueba("la asamblea local no figura como quien responde", () => {
+    // Puede aparecer nombrada —es como se conoce a la gente— pero no puede
+    // aparecer respondiendo: no es una persona jurídica y no puede hacerlo.
+    for (const pagina of ["aviso-legal.html", "privacidad.html"]) {
+      const t = fs.readFileSync(path.join(RAIZ, "legal", pagina), "utf8");
+      assert.ok(
+        !/responsable del tratamiento es[^.]*de Águilas/i.test(t),
+        `legal/${pagina} hace responder a la asamblea local`
+      );
+    }
+  });
+  await prueba("la casilla de cesión pregunta solo por el PCE", () => {
+    // Es la corrección de fondo: pedir permiso para comunicar los datos a
+    // Izquierda Unida no era una cesión —es el propio responsable— y además
+    // tapaba la única comunicación que sí lo es.
+    const texto = CONSENTIMIENTOS.get("cesion").texto;
+    assert.ok(texto.includes(RESPONSABLE.organizacionAliada), "no nombra al PCE");
+    assert.ok(
+      !/comuniquen a Izquierda Unida\b/i.test(texto),
+      "sigue pidiendo permiso para comunicar los datos al propio responsable"
+    );
+    // Y el HTML tiene que decir lo mismo que el literal que se guarda de prueba.
+    const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
+    assert.ok(
+      html.includes("Partido Comunista de España</b>, que impulsa la candidatura junto a Izquierda Unida"),
+      "la casilla del formulario no coincide con el literal guardado"
+    );
+  });
+
+  console.log("\nRevisión estática de la web publicada");
+  await prueba("ninguna casilla viene marcada de salida", () => {
+    const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
+    // El atributo que marcaría una casilla, buscado como palabra suelta.
+    const re = new RegExp("(^|[\\s\"'])checked([\\s=>\"']|$)", "i");
+    assert.ok(!re.test(html), "hay una casilla premarcada en index.html");
+  });
+  await prueba("no hay ni un recurso de terceros", () => {
+    let html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
+
+    // El mapa window.__resources es la excepción, y es la excepción que
+    // demuestra la regla: sus CLAVES son las URL de CDN que support.js lleva
+    // dentro, y están ahí precisamente para que el runtime encuentre una copia
+    // local y NO salga a Internet. Sin ese mapa habría dos peticiones a unpkg
+    // en cada carga. Se recorta del texto antes de buscar, y se comprueba
+    // aparte que todos sus valores apuntan a ficheros de este repositorio.
+    const mapa = /window\.__resources\s*=\s*\{([\s\S]*?)\};/.exec(html);
+    assert.ok(mapa, "ha desaparecido el mapa window.__resources: la web volvería al CDN");
+    for (const m of mapa[1].matchAll(/:\s*"([^"]+)"/g)) {
+      assert.match(m[1], /^\//, `__resources apunta fuera del sitio: ${m[1]}`);
+      assert.ok(
+        fs.existsSync(path.join(RAIZ, m[1].replace(/^\//, ""))),
+        `__resources apunta a un fichero que no existe: ${m[1]}`
+      );
+    }
+    html = html.replace(mapa[0], "");
+
+    // Los comentarios tampoco cuentan: dentro de un <!-- --> no hay nada que el
+    // navegador pida. Y el comentario que explica por qué existe el mapa de
+    // arriba tiene que poder nombrar el CDN del que protege.
+    html = html.replace(/<!--[\s\S]*?-->/g, "");
+
+    for (const patron of [
+      "googletagmanager", "google-analytics", "googleapis", "gstatic",
+      "facebook", "recaptcha", "unpkg.com", "cdn.jsdelivr", "matomo", "hotjar",
+    ]) {
+      assert.ok(!html.includes(patron), `index.html menciona un tercero: ${patron}`);
+    }
+
+    // Y en las páginas legales, que no llevan runtime, no hay excepción alguna.
+    for (const f of ["privacidad.html", "aviso-legal.html", "cookies.html"]) {
+      const t = fs.readFileSync(path.join(RAIZ, "legal", f), "utf8");
+      assert.ok(!/https?:\/\/(?!www\.aepd\.es)/.test(t), `${f} enlaza a un tercero`);
+    }
+  });
+  await prueba("no hay pasarela de pago ni selector de destino en la web", () => {
+    const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8").toLowerCase();
+    for (const patron of ["stripe", "paypal", "bizum", "redsys", "checkout.", "criptomoneda", "tarjeta de crédito"]) {
+      assert.ok(!html.includes(patron), `la web menciona un cauce de pago prohibido: ${patron}`);
+    }
+    assert.ok(!/name="destino"|name="finalidad"/.test(html), "hay un selector de destino de la donación");
+  });
+  await prueba("el IBAN no está escrito a mano fuera de config.donaciones", () => {
+    const suelto = DONACIONES.iban.replace(/\s/g, "");
+    for (const f of ["index.html", "server.js", "legal/privacidad.html", "legal/aviso-legal.html", "legal/cookies.html"]) {
+      const t = fs.readFileSync(path.join(RAIZ, f), "utf8");
+      // En index.html sí aparece, pero SOLO dentro del bloque generado
+      // pa-donaciones, que sale de config.donaciones y regenera un script.
+      const fuera = f === "index.html"
+        ? t.replace(/<script type="application\/json" id="pa-donaciones">[\s\S]*?<\/script>/, "")
+        : t;
+      assert.ok(!fuera.replace(/\s/g, "").includes(suelto), `IBAN escrito a mano en ${f}`);
+    }
+  });
+  await prueba("el bloque pa-donaciones de index.html está sincronizado", () => {
+    const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
+    const m = /<script type="application\/json" id="pa-donaciones">([\s\S]*?)<\/script>/.exec(html);
+    assert.ok(m, "falta el bloque pa-donaciones");
+    assert.equal(
+      JSON.stringify(JSON.parse(m[1])),
+      JSON.stringify(donacionesPublicas()),
+      "descuadre: ejecuta node scripts/sincronizar-donaciones.js"
+    );
+  });
+  await prueba("los campos del formulario son los declarados en la política", () => {
+    const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
+    // Solo los campos de formulario: el name= de un <meta> no recoge nada.
+    const nombres = new Set();
+    for (const et of html.matchAll(/<(input|select|textarea)\b[^>]*>/g)) {
+      const n = /name="([^"]+)"/.exec(et[0]);
+      if (n) nombres.add(n[1]);
+    }
+    assert.ok(nombres.size >= 15, `se han encontrado muy pocos campos (${nombres.size})`);
+    // Todo lo que el formulario recoge tiene que estar en el epígrafe "Qué
+    // datos recogemos". Si alguien añade un campo y olvida la política, falla.
+    const DECLARADOS = new Set([
+      "nombre", "email", "zona", "como", "mensaje", "telefono",
+      "consiente_info", "consiente_colaborar", "consiente_cesion", "mayor_edad",
+      "apellidos", "dni", "importe", "fecha_prevista",
+      "declara_fisica", "declara_sin_contrato", "declara_no_extranjero",
+      "acepta_privacidad", "declara_mayor_edad",
+      ANTIABUSO.campoTrampa, // trampa: no es un dato, no se guarda nunca
+    ]);
+    for (const n of nombres) {
+      assert.ok(DECLARADOS.has(n), `campo "${n}" sin declarar en la política de privacidad`);
+    }
+    // Y al revés: los campos que el servidor valida tienen que existir en el HTML.
+    for (const campo of Object.values(util.CAMPO_CONSENTIMIENTO)) {
+      assert.ok(nombres.has(campo), `el HTML no pinta la casilla ${campo}`);
+    }
+    for (const campo of Object.values(util.CAMPO_DECLARACION)) {
+      assert.ok(nombres.has(campo), `el HTML no pinta la declaración ${campo}`);
+    }
+  });
+  await prueba("cada casilla del formulario tiene su literal guardado como prueba", () => {
+    for (const [clave, def] of CONSENTIMIENTOS) {
+      assert.ok(def.texto && def.texto.length > 20, `el literal de ${clave} está vacío`);
+    }
+    for (const [clave, texto] of DECLARACIONES) {
+      assert.ok(texto && texto.length > 20, `el literal de ${clave} está vacío`);
+    }
+  });
+  await prueba("las tres páginas legales se enlazan desde el pie", () => {
+    const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
+    for (const ruta of ["/legal/aviso-legal", "/legal/privacidad", "/legal/cookies"]) {
+      assert.ok(html.includes(`href="${ruta}"`), `el pie no enlaza ${ruta}`);
+    }
+  });
+  await prueba("la versión de la política publicada coincide con la del backend", () => {
+    const p = fs.readFileSync(path.join(RAIZ, "legal", "privacidad.html"), "utf8");
+    const m = /name="pa-version-politica"\s+content="([^"]+)"/.exec(p);
+    assert.ok(m, "la política no declara su versión");
+    assert.equal(m[1], VERSION_POLITICA);
+  });
+  await prueba("las páginas legales ya no tienen ningún hueco sin rellenar", () => {
+    // El 3 de septiembre se completaron los últimos: dirección de contacto,
+    // delegado de protección de datos, domicilio social e inscripción. Esta
+    // prueba es la que impide que alguien reintroduzca un hueco sin darse
+    // cuenta al editar los textos.
+    const previo = process.env.RUTA_LEGAL;
+    delete process.env.RUTA_LEGAL;
+    const estado = revisarPuestaEnMarcha();
+    process.env.RUTA_LEGAL = previo;
+
+    const conHuecos = estado.problemas.filter((p) => p.includes("PENDIENTE"));
+    assert.deepEqual(conHuecos, [], "han vuelto a aparecer huecos en las páginas legales");
+    assert.ok(
+      !estado.problemas.some((p) => p.includes("ninguna dirección")),
+      "el responsable tiene que tener alguna dirección publicada"
+    );
+  });
+
+  await prueba("pero el mecanismo que los detecta sigue funcionando", () => {
+    // Se mete un hueco de mentira en una copia y se comprueba que lo caza. Sin
+    // esto, la prueba de arriba pasaría igual si el detector se rompiera.
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "pa-hueco-"));
+    for (const pagina of ["privacidad.html", "aviso-legal.html"]) {
+      let t = fs.readFileSync(path.join(RAIZ, "legal", pagina), "utf8");
+      if (pagina === "aviso-legal.html") {
+        t = t.replace("<tr><th>Inscripción</th><td>", '<tr><th>Inscripción</th><td>PENDIENTE: ALGO ');
+      }
+      fs.writeFileSync(path.join(dir, pagina), t);
+    }
+    const previo = process.env.RUTA_LEGAL;
+    process.env.RUTA_LEGAL = dir;
+    const estado = revisarPuestaEnMarcha();
+    process.env.RUTA_LEGAL = previo;
+    fs.rmSync(dir, { recursive: true, force: true });
+
+    assert.ok(
+      estado.problemas.some((p) => p.includes("PENDIENTE") && p.includes("ALGO")),
+      "un hueco nuevo tiene que bloquear el arranque"
+    );
+  });
+
+  await prueba("faltar solo el domicilio social avisa, pero no bloquea", () => {
+    // El art. 10.1.a de la LSSI admite la dirección de un establecimiento
+    // permanente en lugar del domicilio, así que mientras se publique la sede
+    // de Águilas esto no puede parar el despliegue.
+    const previo = RESPONSABLE.domicilioSocial;
+    RESPONSABLE.domicilioSocial = "PENDIENTE: DOMICILIO SOCIAL";
+    const estado = revisarPuestaEnMarcha();
+    RESPONSABLE.domicilioSocial = previo;
+
+    assert.ok(
+      !estado.problemas.some((p) => p.includes("ninguna dirección")),
+      "con la dirección de Águilas publicada no debería bloquear"
+    );
+    assert.ok(
+      estado.avisos.some((a) => /domicilio social/i.test(a)),
+      "pero sí tiene que avisar de que falta"
+    );
+  });
+
+  await prueba("quedarse sin ninguna dirección sí bloquea", () => {
+    const antesD = RESPONSABLE.domicilioSocial;
+    const antesC = RESPONSABLE.direccionContacto;
+    RESPONSABLE.domicilioSocial = "PENDIENTE: DOMICILIO SOCIAL";
+    RESPONSABLE.direccionContacto = "PENDIENTE: DIRECCIÓN";
+    const estado = revisarPuestaEnMarcha();
+    RESPONSABLE.domicilioSocial = antesD;
+    RESPONSABLE.direccionContacto = antesC;
+
+    assert.ok(
+      estado.problemas.some((p) => p.includes("ninguna dirección")),
+      "sin ninguna dirección no se puede publicar nada"
+    );
+  });
+
+  await prueba("la inscripción registral publicada es la de Izquierda Unida", () => {
+    // Ni la asamblea de Águilas ni la federación de Murcia están inscritas como
+    // entidad propia: por eso el titular es IU y la inscripción es la suya.
+    const t = fs.readFileSync(path.join(RAIZ, "legal", "aviso-legal.html"), "utf8");
+    assert.ok(/Registro de Partidos Políticos/.test(t), "falta el registro");
+    assert.ok(/2 de noviembre de 1992/.test(t), "falta la fecha de inscripción");
+    assert.ok(
+      RESPONSABLE.inscripcion.includes("1992"),
+      "config.responsable tiene que llevar la misma inscripción"
+    );
+  });
   console.log("\nFlujo completo");
   if (!CON_BD) {
     saltar("alta → confirmación → baja", "sin DATABASE_URL");
@@ -443,7 +928,7 @@ async function main() {
 
   // --- Resumen ---------------------------------------------------------------
   servidor.close();
-  fs.unlinkSync(copia);
+  fs.rmSync(dirLegal, { recursive: true, force: true });
 
   console.log(`\n${pasadas} pasadas · ${fallos} fallos · ${pendientes.length} sin ejecutar`);
   for (const p of pendientes) console.log(`  sin ejecutar: ${p}`);

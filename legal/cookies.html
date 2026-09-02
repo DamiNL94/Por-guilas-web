@@ -1,4 +1,70 @@
 <!doctype html>
+<!-- PLACEHOLDERS PENDIENTES · inicio
+     =========================================================================
+     Esta página NO se puede publicar en dominio propio mientras quede aquí
+     abajo un solo hueco marcado PENDIENTE:. No es una recomendación: el
+     backend lee estos ficheros al arrancar y se niega a aceptar altas mientras
+     encuentre esa palabra (ver revisarPuestaEnMarcha en src/config.js), porque
+     un consentimiento informado con el responsable a medio identificar no es
+     un consentimiento informado.
+
+     QUIÉN RESPONDE  ·  resuelto el 2 de septiembre de 2026
+     Hay una sola persona jurídica: **Izquierda Unida**, NIF G78269206. Ni la
+     federación regional ni la asamblea de Águilas son entidades separadas; son
+     órganos suyos y usan ese mismo NIF. Antes esto estaba mal declarado y se
+     ha corregido en las tres páginas.
+
+     Lo que falta por rellenar:
+
+       [SEDE_AGUILAS]       Dirección de la sede de IU en Águilas. Es la que
+                            cumple como "datos de contacto del responsable"
+                            (art. 13.1.a RGPD) en la política y como
+                            "establecimiento permanente en España"
+                            (art. 10.1.a LSSI) en el aviso legal. Publicarla
+                            requiere permiso de la organización, y lo hay.
+                            BLOQUEA mientras no haya ninguna dirección.  FALTA
+       [DOMICILIO_SOCIAL]   Domicilio social de Izquierda Unida en el Registro
+                            de Partidos. NO bloquea: la LSSI admite en su lugar
+                            la dirección del establecimiento permanente. Pero es
+                            un dato público y quita cualquier duda.      FALTA
+       [INSCRIPCION]        Datos de inscripción de Izquierda Unida en el
+                            Registro de Partidos Políticos del Ministerio
+                            del Interior: tomo, folio e inscripción.      FALTA
+       [DPD]                Contacto del delegado de protección de datos.
+                            Izquierda Unida trata datos de opinión política
+                            a gran escala, así que está obligada a tenerlo
+                            (art. 37 RGPD y art. 34 LOPDGDD). Es muy
+                            probable que ya esté designado: hay que pedirle
+                            a la organización estatal su contacto.        FALTA
+
+     Ya resueltos, y por qué no se escriben aquí:
+
+       [RESPONSABLE_LEGAL]  Izquierda Unida. Vive en config.responsable
+                            (src/config.js) y el arranque comprueba que las
+                            páginas legales dicen lo mismo.
+       [NIF]                Puesto. Mismo sitio. El arranque valida además su
+                            dígito de control.
+       [EMAIL_CONTACTO]     hola@poraguilas.es. Falta comprobar que el buzón
+                            existe y que lo lee alguien.
+       [DOMINIO_WEB]        poraguilas.es.
+       [PLAZO_CONSERVACION] 30 días sin confirmar · 12 meses la IP · hasta el
+                            30-11-2027 la lista · 4 años las donaciones.
+       [IBAN]               No se escribe aquí a propósito: vive SOLO en
+                            config.donaciones (src/config.js) y de ahí lo copia
+                            todo lo demás. El banco de pruebas comprueba que no
+                            aparece a mano en ningún fichero.
+       [TITULAR_CUENTA]     Izquierda Unida Región de Murcia, mismo sitio.
+
+     Y dos que no son placeholders de texto pero bloquean igual:
+
+       · Contrato de encargado del tratamiento (art. 28 RGPD) firmado con
+         Brevo y con Railway.
+       · Confirmar si la cuenta de donaciones es de uso exclusivo y está
+         comunicada al Tribunal de Cuentas (art. 8 LO 8/2007).
+
+     La lista completa, con quién hace cada cosa, está en README-DESPLIEGUE.md.
+     =========================================================================
+     PLACEHOLDERS PENDIENTES · fin -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -47,10 +113,11 @@
 
   <h2>Lo que sí queda registrado</h2>
   <p>Que no haya cookies no significa que no exista ningún rastro técnico. Como en cualquier web, el servidor anota lo mínimo para funcionar y para defenderse de abusos: la petición que hace tu navegador y su dirección IP, durante un plazo corto. <strong>Eso no se cruza con nada, no se usa para perfilar a nadie y no sale del servidor.</strong> Y en los registros de la aplicación no escribimos datos personales.</p>
-  <p>La única excepción, que te contamos porque toca contarla: al cargar el resto de la web, tu navegador pide todavía las tipografías a un servidor de Google, y eso le enseña tu IP a Google. Lo estamos corrigiendo para servirlas nosotros. Las páginas legales, esta incluida, ya no piden nada a nadie de fuera.</p>
+  <p>Y una cosa que antes no podíamos decir y ahora sí: <strong>ninguna página de esta web pide nada a ningún servidor de fuera.</strong> Las tipografías las servimos nosotros, no hay librerías traídas de un CDN, no hay mapas ni vídeos incrustados. Si abres la pestaña de red de tu navegador, todas las peticiones son a este mismo dominio.</p>
 
-  <h2>Si te apuntas a Súmate</h2>
-  <p>Ahí sí nos das datos, porque los escribes tú a propósito. Cómo los tratamos está en la <a href="/legal/privacidad">política de privacidad</a>. Rellenar el formulario tampoco instala ninguna cookie.</p>
+  <h2>Si rellenas un formulario</h2>
+  <p>Ahí sí nos das datos, porque los escribes tú a propósito: tanto en Súmate como en el aviso de donación. Cómo los tratamos, con qué derecho y cuánto los guardamos está en la <a href="/legal/privacidad">política de privacidad</a>. Rellenar cualquiera de los dos tampoco instala ninguna cookie.</p>
+  <p>Del de donación conviene añadir una cosa: <strong>no hay pasarela de pago.</strong> No te pedimos ninguna tarjeta y no hay ningún proveedor de cobros por medio, que es de donde suelen venir las cookies de rastreo en las webs que piden dinero. La transferencia la haces tú desde tu banco.</p>
 
   <h2>Cómo comprobarlo por tu cuenta</h2>
   <p>No hace falta que nos creas. Abre las herramientas de desarrollo de tu navegador (F12 en la mayoría), entra en la pestaña de <em>Application</em> o <em>Almacenamiento</em> y mira la lista de cookies de este dominio. Está vacía.</p>

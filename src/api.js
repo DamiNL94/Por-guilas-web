@@ -9,6 +9,7 @@
 const { revisarPuestaEnMarcha } = require("./config.js");
 const { json } = require("./http.js");
 const sumate = require("./sumate.js");
+const donacion = require("./donacion.js");
 const admin = require("./admin.js");
 
 // Se evalúa una vez al arrancar. La regla es la del encargo: sin política de
@@ -34,7 +35,8 @@ async function manejar(req, res) {
 
   try {
     // --- Súmate ---------------------------------------------------------------
-    if (ruta === "/api/sumate" && metodo === "POST") {
+    if (ruta === "/api/sumate") {
+      if (metodo !== "POST") return noPermitido(res, "POST");
       if (!ESTADO.listo) return json(res, 503, MENSAJE_NO_LISTO);
       return await sumate.alta(req, res);
     }
@@ -57,8 +59,21 @@ async function manejar(req, res) {
       return await sumate.borrar(req, res);
     }
 
+    // --- Donaciones -----------------------------------------------------------
+    // Comunicación previa de una transferencia. No cobra: ver donacion.js.
+    if (ruta === "/api/donacion") {
+      if (metodo !== "POST") return noPermitido(res, "POST");
+      if (!ESTADO.listo) return json(res, 503, MENSAJE_NO_LISTO);
+      return await donacion.comunicar(req, res);
+    }
+
     // --- Panel del equipo -----------------------------------------------------
-    if (ruta === "/api/admin/altas" || ruta === "/api/admin/altas.csv") {
+    if (
+      ruta === "/api/admin/altas" ||
+      ruta === "/api/admin/altas.csv" ||
+      ruta === "/api/admin/donaciones" ||
+      ruta === "/api/admin/donaciones.csv"
+    ) {
       return await admin.manejar(req, res, url);
     }
 

@@ -35,9 +35,14 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/json" id="pa-donaciones">{"regimen":"ordinario","marco":"LO 8/2007","titular":"Izquierda Unida Región de Murcia","iban":"ES11 2100 8315 1913 0016 0571","conceptoPrefijo":"DONACION AGUILAS","limiteAnual":50000,"umbralNotificacion":25000,"conceptoMaximoBanco":35,"importeMinimo":1,"diasFechaPrevista":90,"deduccion":{"porcentaje":20,"baseMaxima":600},"avisos":{"limite":"Máximo 50.000 € por donante y año natural (art. 5.1.b LO 8/2007). El control del acumulado lo lleva la federación con todas las donaciones que reciba, no solo con las de Águilas.","noFinalista":"La donación no es finalista: no se puede destinar a una parte concreta de la campaña ni a un eje del programa. Va al sostenimiento general de la actividad.","noRevocable":"La donación no es revocable. Una vez hecha la transferencia no hay devolución, salvo que resulte ser una donación nula de las que la ley obliga a devolver.","notificacion":"Las donaciones superiores a 25.000 € se notifican al Tribunal de Cuentas dentro de los tres meses siguientes (art. 5.4 LO 8/2007).","deduccion":"Desgrava el 20 % en el IRPF sobre una base máxima de 600 € al año (art. 68.3 de la Ley del IRPF). Para aplicarla necesitas el certificado que emite la formación: sin certificado no hay deducción."}}</script>
 <!-- metadatos:fin -->
-<!-- Tipografías auto-alojadas: cero peticiones a Google (RGPD) y cero
-     dependencia de fonts.googleapis.com. Ficheros y licencia en fonts/. -->
+<!-- Tipografías auto-alojadas: cero peticiones al servidor de fuentes de
+     Google y, por tanto, cero IP de visitantes entregadas a un tercero.
+     Ficheros y licencia en fonts/. El nombre de ese servidor no se escribe
+     aquí a propósito: el punto 8 de la lista de validación comprueba con un
+     grep que no aparece ningún dominio de terceros en este fichero, y un
+     comentario que lo mencione haría fallar la comprobación sin motivo. -->
 <link rel="preload" href="/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/familjen-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -96,6 +101,60 @@ a:hover{color:#0E7A5F}
 :focus-visible{outline:3px solid #0E7A5F;outline-offset:2px}
 @keyframes pa-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* --- Formularios de Súmate y de donaciones ---------------------------------
+   El resto de la página va con estilos en línea, nodo a nodo. Aquí no: son dos
+   formularios con más de treinta campos, etiquetas, casillas y mensajes de
+   error, y repetir la misma declaración treinta veces es la forma más fiable
+   de que una de ellas acabe distinta de las demás. Todos los valores salen del
+   manual de marca; ninguno introduce un color nuevo.
+
+   Contrastes comprobados sobre blanco: negro #141414 18,4:1 · verde #0E7A5F
+   5,3:1 · gris de etiqueta #403B3A 11,0:1 · gris opcional #6F6867 5,4:1 ·
+   bermellón #D9351F 4,7:1. Todos por encima del 4,5:1 que exige la AA. */
+.pa-f{display:grid;gap:18px;max-width:560px}
+.pa-c{display:flex;flex-direction:column;gap:7px}
+.pa-fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:16px}
+.pa-lab{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A}
+.pa-opt{font-weight:600;text-transform:none;letter-spacing:0;color:#6F6867}
+.pa-in{font:400 16px/1.4 'Public Sans',sans-serif;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:13px 14px;min-height:50px;width:100%;border-radius:0}
+textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
+.pa-in:focus{border-color:#0E7A5F}
+.pa-in[aria-invalid="true"]{border-color:#D9351F}
+/* Regiones vivas (errores de campo y aviso de copiado). El hueco existe SIEMPRE
+   en el DOM, aunque esté vacío: un aria-live que se crea a la vez que su
+   contenido no lo anuncia, porque el lector de pantalla necesita estar ya
+   observando la región cuando cambia.
+   El detalle que obliga a escribirlo así: el runtime de Claude Design envuelve
+   cada interpolación en un <span class="sc-interp">, de modo que el párrafo
+   NUNCA está vacío y :empty sobre él no serviría de nada. El filete y el
+   espacio se cuelgan por eso del span, que sí queda vacío cuando no hay texto. */
+.pa-err,.pa-vivo{margin:0}
+.pa-err>.sc-interp,.pa-vivo>.sc-interp{display:block}
+.pa-err>.sc-interp:empty,.pa-vivo>.sc-interp:empty{display:none}
+.pa-err>.sc-interp{font-size:14.5px;line-height:1.5;color:#141414;font-weight:600;border-left:4px solid #D9351F;padding:1px 0 1px 11px}
+.pa-vivo>.sc-interp{font-size:15px;line-height:1.55;color:#141414;border-left:5px solid #0E7A5F;padding:6px 0 6px 14px}
+/* Variante con texto fijo alrededor de la interpolación: ahí el recuadro va en
+   el propio párrafo, porque siempre tiene algo que enseñar. */
+.pa-err-fijo{margin:0;font-size:14.5px;line-height:1.5;color:#141414;font-weight:600;border-left:4px solid #D9351F;padding:1px 0 1px 11px}
+.pa-err-fijo>.sc-interp{display:inline}
+.pa-set{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pa-leg{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A;padding:0;margin:0 0 2px}
+.pa-chk{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.5;color:#403B3A;cursor:pointer}
+.pa-chk input{margin:3px 0 0;accent-color:#0E7A5F;width:20px;height:20px;flex:none}
+.pa-chk b{color:#141414;font-weight:700}
+.pa-bt{font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:17px 26px;cursor:pointer;min-height:54px}
+.pa-bt:hover{background:#0A5C47;border-color:#0A5C47}
+.pa-bt[disabled]{background:#6F6867;border-color:#6F6867;cursor:progress}
+.pa-bt2{font:800 13.5px/1 'Public Sans',sans-serif;background:#fff;color:#0A5C47;border:2px solid #0E7A5F;padding:12px 16px;cursor:pointer;min-height:46px}
+.pa-bt2:hover{background:#EFF4F1}
+.pa-est{margin:0;font-size:15px;line-height:1.55;color:#141414;border-left:5px solid #0E7A5F;padding:6px 0 6px 14px}
+.pa-est-mal{border-left-color:#D9351F}
+.pa-dat{font:700 15px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;color:#141414;background:#EFF4F1;border:2px solid #D5D0CE;padding:12px 14px;word-break:break-all;user-select:all}
+.pa-nota{font-size:14px;line-height:1.55;color:#403B3A;margin:0}
+/* Trampa para robots. Fuera de la pantalla, fuera del orden de tabulación y
+   oculta al lector de pantalla: quien rellene esto no es una persona. */
+.pa-trampa{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 </style>
 </helmet>
 
@@ -504,77 +563,302 @@ a:hover{color:#0E7A5F}
         Súmate
       </span>
       <h2 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(28px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance">Aquí no hace falta carné.</h2>
-      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Se puede colaborar de dos maneras: apuntándote al proyecto o echando horas en la calle y en los actos. Las dos cuentan y ninguna obliga a nada más.</p>
+      <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16.5px,1.7vw,18px);line-height:1.6;text-wrap:pretty">Se puede colaborar de tres maneras: apuntándote al proyecto, echando horas en la calle y en los actos, o poniendo dinero. Las tres cuentan, ninguna obliga a las otras dos y con una sola basta.</p>
     </div>
 
+    <!-- ================= A · Apúntate al proyecto ================= -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
       <div>
-        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,25px);font-weight:700;letter-spacing:-.025em;margin:0 0 20px">Apúntate al proyecto</h3>
-        <form onSubmit="{{ enviar }}" style="display:grid;gap:16px;max-width:540px">
-          <div style="display:flex;flex-direction:column;gap:7px">
-            <label for="pa-nombre" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Nombre y apellidos</label>
-            <input id="pa-nombre" name="nombre" type="text" required style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(21px,2.4vw,25px);font-weight:700;letter-spacing:-.025em;margin:0 0 8px">Apúntate al proyecto</h3>
+        <p style="margin:0 0 20px;color:#403B3A;font-size:15.5px;line-height:1.58;max-width:52ch">Te escribimos para contarte cuándo hay asamblea, y poco más. Puedes borrarte de un clic desde cualquiera de esos correos.</p>
+
+        <form onSubmit="{{ sumEnviar }}" noValidate class="pa-f">
+          <div class="pa-c">
+            <label class="pa-lab" for="pa-nombre">Nombre y apellidos</label>
+            <input class="pa-in" id="pa-nombre" name="nombre" type="text" required autoComplete="name" maxLength="80" aria-describedby="pa-e-nombre" aria-invalid="{{ malNombre }}">
+            <p class="pa-err" id="pa-e-nombre" aria-live="polite">{{ errNombre }}</p>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:16px">
-            <div style="display:flex;flex-direction:column;gap:7px">
-              <label for="pa-email" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Correo electrónico</label>
-              <input id="pa-email" name="email" type="email" required style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+
+          <div class="pa-fila">
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-email">Correo electrónico</label>
+              <input class="pa-in" id="pa-email" name="email" type="email" required autoComplete="email" maxLength="254" aria-describedby="pa-e-email" aria-invalid="{{ malEmail }}">
+              <p class="pa-err" id="pa-e-email" aria-live="polite">{{ errEmail }}</p>
             </div>
-            <div style="display:flex;flex-direction:column;gap:7px">
-              <label for="pa-tel" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Teléfono <span style="font-weight:600;text-transform:none;letter-spacing:0;color:#6F6867">(opcional)</span></label>
-              <input id="pa-tel" name="tel" type="tel" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-zona">Zona <span class="pa-opt">(opcional)</span></label>
+              <select class="pa-in" id="pa-zona" name="zona">
+                <option value="">Prefiero no decirlo</option>
+                <option value="casco">Casco urbano</option>
+                <option value="molinetas">Las Molinetas</option>
+                <option value="cocon">El Cocón</option>
+                <option value="calarreona">Calarreona</option>
+                <option value="calabardina">Calabardina</option>
+                <option value="tebar">Tébar</option>
+                <option value="marina">La Marina de Cope</option>
+                <option value="garrobillo">El Garrobillo</option>
+                <option value="cuesta">Cuesta de Gos</option>
+                <option value="tovar">Los Tovares</option>
+                <option value="otra">Otra zona de Águilas</option>
+              </select>
+              <p class="pa-nota">Lista cerrada de zonas. No te pedimos tu dirección.</p>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:7px">
-            <label for="pa-zona" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Barrio, barriada o diputación</label>
-            <input id="pa-zona" name="zona" type="text" placeholder="Casco, Las Molinetas, Calarreona, Tébar…" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
-          </div>
-          <div style="display:flex;flex-direction:column;gap:7px">
-            <label for="pa-como" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Cómo quieres colaborar</label>
-            <select id="pa-como" name="como" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;min-height:50px" style-focus="border-color:#0E7A5F">
-              <option>Solo quiero recibir información</option>
-              <option>Ir a las asambleas abiertas</option>
-              <option>Echar horas en la calle y en actos</option>
-              <option>Aportar en una mesa sectorial</option>
-              <option>Estar en la candidatura</option>
-              <option>Colaborar económicamente</option>
+
+          <div class="pa-c">
+            <label class="pa-lab" for="pa-como">Cómo quieres colaborar</label>
+            <select class="pa-in" id="pa-como" name="como">
+              <option value="info">Solo quiero recibir información</option>
+              <option value="asambleas">Ir a las asambleas abiertas</option>
+              <option value="calle">Echar horas en la calle y en actos</option>
+              <option value="sectorial">Aportar en una mesa sectorial</option>
+              <option value="candidatura">Estar en la candidatura</option>
+              <option value="economico">Colaborar económicamente</option>
             </select>
           </div>
-          <div style="display:flex;flex-direction:column;gap:7px">
-            <label for="pa-msg" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#403B3A">Cuéntanos algo <span style="font-weight:600;text-transform:none;letter-spacing:0;color:#6F6867">(opcional)</span></label>
-            <textarea id="pa-msg" name="mensaje" rows="4" style="font-family:'Public Sans',sans-serif;font-size:16px;color:#141414;background:#fff;border:2px solid #D5D0CE;padding:14px 14px;resize:vertical" style-focus="border-color:#0E7A5F"></textarea>
+
+          <div class="pa-c">
+            <label class="pa-lab" for="pa-msg">Cuéntanos algo <span class="pa-opt">(opcional)</span></label>
+            <textarea class="pa-in" id="pa-msg" name="mensaje" rows="4" maxLength="1000"></textarea>
+            <p class="pa-nota">No hace falta que cuentes nada sobre tu salud ni sobre tu situación personal.</p>
           </div>
-          <label style="display:flex;gap:12px;align-items:flex-start;font-size:14.5px;color:#403B3A;line-height:1.5">
-            <input type="checkbox" required style="margin-top:4px;accent-color:#6B2D5C;width:20px;height:20px;flex:none">
-            <span>He leído y acepto la política de privacidad. Mis datos se usan solo para contactarme sobre la candidatura y no se ceden a nadie.</span>
-          </label>
+
+          <!-- Consentimientos. Uno por finalidad, ninguno agrupado y ninguno
+               premarcado: el atributo HTML que los marcaría de salida no
+               aparece ni una vez en todo el fichero, y eso se comprueba con un
+               grep en el banco de pruebas. El literal de cada casilla es el
+               mismo que el backend guarda como prueba del consentimiento
+               (CONSENTIMIENTOS, en src/config.js). -->
+          <fieldset class="pa-set">
+            <legend class="pa-leg">Tus permisos</legend>
+
+            <label class="pa-chk">
+              <input type="checkbox" name="consiente_info" required>
+              <span>Consiento expresamente que <b>Izquierda Unida</b> trate mi nombre y mi correo —y con ellos mi afinidad política, que es un <b>dato de categoría especial</b>— para informarme sobre la candidatura Por Águilas. Puedo retirarlo cuando quiera. He leído la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a>. <b>Obligatorio.</b></span>
+            </label>
+            <p class="pa-err" aria-live="polite">{{ errInfo }}</p>
+
+            <label class="pa-chk">
+              <input type="checkbox" name="consiente_colaborar" onChange="{{ alternarColaborar }}">
+              <span>Además, quiero echar una mano. Consiento que se me contacte para organizar esa colaboración y que, si lo facilito, se trate también mi teléfono para eso y solo para eso.</span>
+            </label>
+
+            <sc-if value="{{ sumColaborar }}">
+            <div class="pa-c" style="margin-left:32px">
+              <label class="pa-lab" for="pa-tel">Teléfono <span class="pa-opt">(opcional)</span></label>
+              <input class="pa-in" id="pa-tel" name="telefono" type="tel" autoComplete="tel" maxLength="24" aria-describedby="pa-e-tel" aria-invalid="{{ malTel }}">
+              <p class="pa-nota">Este campo solo aparece porque has marcado la casilla de arriba. Si la desmarcas, el teléfono no se guarda.</p>
+              <p class="pa-err" id="pa-e-tel" aria-live="polite">{{ errTel }}</p>
+            </div>
+            </sc-if>
+
+            <label class="pa-chk">
+              <input type="checkbox" name="consiente_cesion">
+              <span>Consiento que mis datos se comuniquen al <b>Partido Comunista de España</b>, que impulsa la candidatura junto a Izquierda Unida y es una organización distinta. Si no marco esta casilla, mis datos no salen de Izquierda Unida.</span>
+            </label>
+
+            <label class="pa-chk">
+              <input type="checkbox" name="mayor_edad" required>
+              <span>Declaro que soy <b>mayor de edad</b>. <b>Obligatorio.</b></span>
+            </label>
+            <p class="pa-err" aria-live="polite">{{ errEdad }}</p>
+          </fieldset>
+
+          <div class="pa-trampa" aria-hidden="true">
+            <label for="pa-web">No rellenes este campo</label>
+            <input id="pa-web" name="pa_web" type="text" tabIndex="-1" autoComplete="off">
+          </div>
+
           <div>
-            <button type="submit" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;border:2px solid #0E7A5F;padding:17px 26px;cursor:pointer;min-height:54px" style-hover="background:#0A5C47;border-color:#0A5C47">Enviar</button>
+            <button class="pa-bt" type="submit" disabled="{{ sumEnviando }}">{{ sumBoton }}</button>
           </div>
-          <sc-if value="{{ mensajeForm }}">
-            <p role="status" style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:0;line-height:1.55">{{ mensajeForm }}</p>
+
+          <sc-if value="{{ sumMsg }}">
+            <p class="pa-est {{ sumClase }}" role="status" aria-live="polite">{{ sumMsg }}</p>
           </sc-if>
         </form>
       </div>
 
+      <!-- ================= B · Colabora con tu tiempo ================= -->
       <div style="display:flex;flex-direction:column;gap:2px">
         <div style="border:2px solid #141414;background:#fff">
           <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Voluntariado</div>
           <div style="padding:24px clamp(20px,3vw,26px) 28px">
-            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px">Echar unas horas</h3>
-            <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">No hay tarea pequeña. Reparto de material, mesas informativas, traducción de propuestas a lenguaje claro, fotografía, redes o café para la asamblea.</p>
+            <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.025em;margin:0 0 10px">Colabora con tu tiempo</h3>
+            <p style="margin:0;color:#403B3A;font-size:16px;line-height:1.58;text-wrap:pretty">No hay tarea pequeña. Esto no es otro formulario: si te encaja algo de la lista, márcalo arriba en «cómo quieres colaborar» y te escribimos.</p>
             <ul style="margin:18px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>Buzoneo y mesas en el paseo y en las barriadas</span></li>
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>Apoyo técnico: datos, web, vídeo, diseño</span></li>
-              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>Interventores y apoderados para el 23 de mayo</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Reparto.</b> Buzoneo por barriadas y diputaciones, y pegada de cartelería.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Mesas.</b> Mesas informativas en el paseo, en el mercado y en las fiestas de barrio.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Redes.</b> Escribir, grabar, editar vídeo y fotografiar los actos.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Datos.</b> Rastrear presupuestos y contratos municipales, y traducirlos a lenguaje claro.</span></li>
+              <li style="display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#403B3A;line-height:1.5"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Jornada electoral.</b> Interventores y apoderados para el 23 de mayo.</span></li>
             </ul>
           </div>
         </div>
-        <!-- Aquí iba la tarjeta de "Financiación" con importes de ejemplo.
-             Retirada a propósito: no se pide dinero hasta que haya cuenta
-             electoral abierta y administrador electoral designado. Ver
-             BACKEND-SUMATE.md para lo que haría falta antes de volver a
-             ponerla. -->
+      </div>
+    </div>
+
+    <!-- ================= C · Donaciones ================= -->
+    <div style="margin-top:clamp(48px,6vw,78px);border-top:2px solid #141414;padding-top:clamp(32px,4vw,46px)">
+      <div style="max-width:62ch;margin-bottom:clamp(26px,3.5vw,36px)">
+        <span style="display:flex;align-items:center;gap:11px;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0E7A5F;margin-bottom:15px">
+          <span style="width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none"></span>
+          Donaciones
+        </span>
+        <h3 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:0;text-wrap:balance">Una campaña cuesta dinero, y el nuestro no sale de ningún banco.</h3>
+        <p style="color:#403B3A;margin:16px 0 0;font-size:clamp(16px,1.6vw,17.5px);line-height:1.6;text-wrap:pretty">Papeletas, carteles, el alquiler del local, el sonido de los actos y el material que se reparte en la calle: eso es todo lo que se paga, y de eso se rinden cuentas. Aquí no se cobra nada con tarjeta: la donación se hace por transferencia, desde tu banco y a tu nombre, porque la ley exige que se sepa quién dona.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:clamp(26px,3.5vw,44px);align-items:start">
+
+        <div style="border:2px solid #141414;background:#fff">
+          <div style="background:#0E7A5F;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Datos para la transferencia</div>
+          <div style="padding:24px clamp(20px,3vw,26px) 28px;display:flex;flex-direction:column;gap:20px">
+
+            <div class="pa-c">
+              <span class="pa-lab">Titular de la cuenta</span>
+              <p class="pa-dat">{{ donTitular }}</p>
+            </div>
+
+            <div class="pa-c">
+              <span class="pa-lab">IBAN</span>
+              <p class="pa-dat" id="pa-dato-iban">{{ donIban }}</p>
+              <div>
+                <button class="pa-bt2" type="button" onClick="{{ copiarIban }}">Copiar IBAN</button>
+              </div>
+            </div>
+
+            <div class="pa-c">
+              <span class="pa-lab">Concepto · obligatorio</span>
+              <p class="pa-nota">Escríbelo tal cual, con tu nombre y tu DNI. Sin él no podemos identificar el ingreso y hay que devolverlo.</p>
+              <p class="pa-dat">{{ donPatron }}</p>
+            </div>
+
+            <sc-if value="{{ hayPrevio }}">
+            <div class="pa-c">
+              <span class="pa-lab">El tuyo, ya montado</span>
+              <p class="pa-dat" id="pa-dato-concepto">{{ conceptoPrevio }}</p>
+              <div>
+                <button class="pa-bt2" type="button" onClick="{{ copiarConcepto }}">Copiar concepto</button>
+              </div>
+              <sc-if value="{{ conceptoNoCabe }}">
+                <p class="pa-err-fijo">Son {{ conceptoLargo }} caracteres y hay bancos que cortan en {{ donMaxBanco }}. Si el tuyo no te deja escribirlo entero, pon esto otro: {{ conceptoCorto }}</p>
+              </sc-if>
+            </div>
+            </sc-if>
+
+            <p class="pa-vivo" role="status" aria-live="polite">{{ copiado }}</p>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="border:2px solid #141414;background:#EFF4F1">
+            <div style="background:#141414;color:#fff;padding:11px 20px;min-height:52px;display:flex;align-items:center;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase">Lo que dice la ley</div>
+            <div style="padding:24px clamp(20px,3vw,26px) 28px">
+              <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px">
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Solo personas físicas, en nombre propio y con fondos propios.</b> Las donaciones de empresas, asociaciones y cualquier persona jurídica están prohibidas y son nulas.</span></li>
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span><b style="color:#141414">Nada de donaciones anónimas.</b> Sin nombre, apellidos y DNI en el concepto, el ingreso se devuelve.</span></li>
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoLimite }}</span></li>
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoNoFinalista }}</span></li>
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoNoRevocable }}</span></li>
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoNotificacion }}</span></li>
+                <li style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#403B3A;line-height:1.55"><span style="width:0;height:0;border-left:8px solid #D9351F;border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none;margin-top:7px"></span><span>{{ avisoDeduccion }}</span></li>
+              </ul>
+              <p style="margin:20px 0 0;font-size:14px;line-height:1.55;color:#403B3A;border-left:5px solid #0E7A5F;padding:4px 0 4px 13px">Régimen <b style="color:#141414">{{ donRegimen }}</b>, marco {{ donMarco }}. Desde que se convoquen las elecciones cambia el régimen, y con él la cuenta y el límite. Se actualizará aquí el mismo día.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:clamp(30px,4vw,46px)">
+        <h4 style="font-family:'Familjen Grotesk',sans-serif;font-size:clamp(20px,2.2vw,24px);font-weight:700;letter-spacing:-.025em;margin:0 0 8px">Avísanos de la transferencia</h4>
+        <p style="margin:0 0 20px;color:#403B3A;font-size:15.5px;line-height:1.58;max-width:62ch">Este formulario <b style="color:#141414">no cobra nada</b> y no te pide ningún dato bancario: la transferencia la haces tú, desde tu banco. Sirve para que, cuando llegue el ingreso, sepamos de quién es y podamos emitirte el certificado de la deducción.</p>
+
+        <form onSubmit="{{ donEnviar }}" noValidate class="pa-f" style="max-width:620px">
+          <div class="pa-fila">
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-d-nombre">Nombre</label>
+              <input class="pa-in" id="pa-d-nombre" name="nombre" type="text" required autoComplete="given-name" maxLength="80" onInput="{{ cambiaConcepto }}" aria-describedby="pa-e-dnombre" aria-invalid="{{ malDNombre }}">
+              <p class="pa-err" id="pa-e-dnombre" aria-live="polite">{{ errDNombre }}</p>
+            </div>
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-d-apellidos">Apellidos</label>
+              <input class="pa-in" id="pa-d-apellidos" name="apellidos" type="text" required autoComplete="family-name" maxLength="100" onInput="{{ cambiaConcepto }}" aria-describedby="pa-e-dapellidos" aria-invalid="{{ malDApellidos }}">
+              <p class="pa-err" id="pa-e-dapellidos" aria-live="polite">{{ errDApellidos }}</p>
+            </div>
+          </div>
+
+          <div class="pa-fila">
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-d-dni">DNI o NIE</label>
+              <input class="pa-in" id="pa-d-dni" name="dni" type="text" required maxLength="12" autoComplete="off" onInput="{{ cambiaConcepto }}" aria-describedby="pa-e-ddni" aria-invalid="{{ malDDni }}">
+              <p class="pa-nota">Obligatorio por ley. Solo documentos de persona física.</p>
+              <p class="pa-err" id="pa-e-ddni" aria-live="polite">{{ errDDni }}</p>
+            </div>
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-d-email">Correo electrónico</label>
+              <input class="pa-in" id="pa-d-email" name="email" type="email" required autoComplete="email" maxLength="254" aria-describedby="pa-e-demail" aria-invalid="{{ malDEmail }}">
+              <p class="pa-nota">Para mandarte el certificado de la donación.</p>
+              <p class="pa-err" id="pa-e-demail" aria-live="polite">{{ errDEmail }}</p>
+            </div>
+          </div>
+
+          <div class="pa-fila">
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-d-importe">Importe en euros</label>
+              <input class="pa-in" id="pa-d-importe" name="importe" type="text" required inputMode="decimal" maxLength="12" aria-describedby="pa-e-dimporte" aria-invalid="{{ malDImporte }}">
+              <p class="pa-nota">Máximo {{ donLimiteTexto }} € por donante y año.</p>
+              <p class="pa-err" id="pa-e-dimporte" aria-live="polite">{{ errDImporte }}</p>
+            </div>
+            <div class="pa-c">
+              <label class="pa-lab" for="pa-d-fecha">Fecha prevista del ingreso</label>
+              <input class="pa-in" id="pa-d-fecha" name="fecha_prevista" type="date" required min="{{ hoyIso }}" max="{{ topeIso }}" aria-describedby="pa-e-dfecha" aria-invalid="{{ malDFecha }}">
+              <p class="pa-err" id="pa-e-dfecha" aria-live="polite">{{ errDFecha }}</p>
+            </div>
+          </div>
+
+          <!-- Declaraciones responsables. Las cinco obligatorias y las cinco por
+               separado: cada una cubre una prohibición distinta de la LO 8/2007,
+               y agruparlas dejaría la declaración sin valor. Ninguna marcada. -->
+          <fieldset class="pa-set">
+            <legend class="pa-leg">Declaraciones · las cinco son obligatorias</legend>
+
+            <label class="pa-chk">
+              <input type="checkbox" name="declara_fisica" required>
+              <span>Declaro que dono como <b>persona física, en nombre propio y con fondos propios</b>.</span>
+            </label>
+            <label class="pa-chk">
+              <input type="checkbox" name="declara_sin_contrato" required>
+              <span>Declaro que <b>no tengo contrato vigente con el sector público</b> de los previstos en la legislación de contratos del sector público, ni por mí mismo ni a través de una empresa de la que forme parte.</span>
+            </label>
+            <label class="pa-chk">
+              <input type="checkbox" name="declara_no_extranjero" required>
+              <span>Declaro que <b>no soy un gobierno ni una entidad pública extranjera</b>, ni actúo por cuenta ni en interés de ninguno.</span>
+            </label>
+            <label class="pa-chk">
+              <input type="checkbox" name="acepta_privacidad" required>
+              <span>He leído y acepto la <a href="/legal/privacidad" target="_blank" rel="noopener">política de privacidad</a>, y entiendo que estos datos se tratan para cumplir la obligación legal de identificar a quien dona.</span>
+            </label>
+            <label class="pa-chk">
+              <input type="checkbox" name="declara_mayor_edad" required>
+              <span>Declaro que soy <b>mayor de edad</b>.</span>
+            </label>
+            <p class="pa-err" aria-live="polite">{{ errDeclaraciones }}</p>
+          </fieldset>
+
+          <div class="pa-trampa" aria-hidden="true">
+            <label for="pa-d-web">No rellenes este campo</label>
+            <input id="pa-d-web" name="pa_web" type="text" tabIndex="-1" autoComplete="off">
+          </div>
+
+          <div>
+            <button class="pa-bt" type="submit" disabled="{{ donEnviando }}">{{ donBoton }}</button>
+          </div>
+
+          <sc-if value="{{ donMsg }}">
+            <p class="pa-est {{ donClase }}" role="status" aria-live="polite">{{ donMsg }}</p>
+          </sc-if>
+        </form>
       </div>
     </div>
   </div>
@@ -618,9 +902,9 @@ a:hover{color:#0E7A5F}
     <div style="border-top:1px solid rgba(255,255,255,.18);margin-top:clamp(30px,4vw,42px);padding-top:20px;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;font-size:13px;color:#9A9291">
       <span>© 2026 Por Águilas · Borrador de trabajo</span>
       <span style="display:flex;gap:18px;flex-wrap:wrap">
-        <a href="#" style="color:#9A9291">Aviso legal</a>
-        <a href="#" style="color:#9A9291">Privacidad</a>
-        <a href="#" style="color:#9A9291">Cookies</a>
+        <a href="/legal/aviso-legal" style="color:#D5D0CE">Aviso legal</a>
+        <a href="/legal/privacidad" style="color:#D5D0CE">Privacidad</a>
+        <a href="/legal/cookies" style="color:#D5D0CE">Cookies</a>
       </span>
     </div>
   </div>
@@ -736,10 +1020,215 @@ const PAGS = [
   { id:"agenda", label:"Agenda" }
 ];
 
+// --- Donaciones: configuración ------------------------------------------------
+//
+// `config.donaciones` es el ÚNICO sitio del cliente donde viven el IBAN, el
+// titular, el límite y los avisos legales. No hay ni un dato de la cuenta
+// escrito a mano en la plantilla: todo sale de aquí.
+//
+// De dónde sale: el servidor inyecta el bloque <script id="pa-donaciones"> con
+// lo que declare src/config.js. Si la página se abre con doble clic, sin
+// servidor, se lee el literal que el fichero lleva escrito, que mantiene igual
+// scripts/sincronizar-donaciones.js. El arranque del servidor aborta si los dos
+// dejan de coincidir, así que no pueden separarse en silencio.
+//
+// <!-- CAMBIO A RÉGIMEN ELECTORAL -->
+// No se toca nada aquí para conmutar. Se cambia REGIMEN en src/config.js, se
+// ejecuta el script de sincronización y esta parte se entera sola.
+const config = {
+  donaciones: (() => {
+    try { return JSON.parse(document.getElementById("pa-donaciones").textContent); }
+    catch { return null; }
+  })()
+};
+
+// Si faltara el bloque, la sección de donaciones no puede pintarse con datos
+// inventados: mejor que grite en consola y enseñe huecos evidentes.
+if (!config.donaciones) {
+  console.error("[por-aguilas] Falta el bloque pa-donaciones. Ejecuta: node scripts/sincronizar-donaciones.js");
+  config.donaciones = {
+    regimen: "?", marco: "?", titular: "PENDIENTE", iban: "PENDIENTE",
+    conceptoPrefijo: "DONACION AGUILAS", limiteAnual: 0, conceptoMaximoBanco: 35,
+    importeMinimo: 1, diasFechaPrevista: 90, deduccion: { porcentaje: 20, baseMaxima: 600 },
+    avisos: {}
+  };
+}
+
+// --- Validación en cliente ----------------------------------------------------
+//
+// Repite lo que hace src/util.js. La duplicación es deliberada y tiene dos
+// motivos: que el error se vea al instante sin ida y vuelta al servidor, y que
+// el formulario siga avisando de un DNI mal escrito aunque la página se haya
+// abierto sin servidor detrás.
+//
+// La regla que no se rompe: esto es una comodidad, NO una defensa. El servidor
+// vuelve a validar todo, campo por campo, y es el único que decide. Cualquiera
+// puede saltarse esta parte con dos líneas de consola.
+
+const LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE";
+
+const limpiaTexto = (v) => String(v == null ? "" : v).replace(/\s+/g, " ").trim();
+const normDni = (v) => limpiaTexto(v).toUpperCase().replace(/[\s._\-\/]/g, "");
+
+function dniValido(v) {
+  const s = normDni(v);
+  const m = /^([XYZ]?)(\d{7,8})([A-Z])$/.exec(s);
+  if (!m) return false;
+  let num = m[2];
+  if (m[1]) { if (num.length !== 7) return false; num = String("XYZ".indexOf(m[1])) + num; }
+  else if (num.length !== 8) return false;
+  return LETRAS_DNI[Number(num) % 23] === m[3];
+}
+
+const RE_MAIL = /^[^\s@,;:<>()[\]"]{1,64}@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
+const mailValido = (v) => { const s = limpiaTexto(v).toLowerCase(); return Boolean(s) && s.length <= 254 && !s.includes("..") && RE_MAIL.test(s); };
+
+const telValido = (v) => /^[6789]\d{8}$/.test(limpiaTexto(v).replace(/[\s.\-()\/]/g, "").replace(/^(\+34|0034|34)/, ""));
+
+// Céntimos enteros o null. En céntimos porque con dinero la coma flotante
+// muerde: 0.1 + 0.2 no es 0.3.
+function importeCentimos(v) {
+  let s = limpiaTexto(v).replace(/[\s€]/g, "");
+  if (!s) return null;
+  if (s.includes(",") && s.includes(".")) {
+    s = s.lastIndexOf(",") > s.lastIndexOf(".") ? s.replace(/\./g, "") : s.replace(/,/g, "");
+  }
+  s = s.replace(",", ".");
+  if (!/^\d{1,9}(\.\d{1,2})?$/.test(s)) return null;
+  return Math.round(Number(s) * 100);
+}
+
+const iso = (d) => d.toISOString().slice(0, 10);
+
+// --- Concepto de la transferencia ---------------------------------------------
+//
+// Mismo formato que monta el servidor (src/util.js, conceptoDonacion). Sin
+// tildes ni eñes: hay bancos que las convierten en interrogaciones al generar
+// el fichero, y un nombre ilegible en el concepto no identifica a nadie.
+// El rango de las marcas diacríticas se escribe con escapes \u y no con los
+// caracteres literales: escritos tal cual, cualquier editor que toque el
+// fichero puede convertirlos y la expresión deja de hacer lo que dice.
+const DIACRITICOS = new RegExp("[\\u0300-\\u036F]", "g");
+
+const sinAcentos = (v) => String(v == null ? "" : v)
+  .normalize("NFD")
+  .replace(DIACRITICOS, "")
+  .replace(/[^A-Za-z0-9 ]/g, " ")
+  .replace(/ +/g, " ")
+  .trim();
+
+function conceptoDe(nombre, apellidos, dni) {
+  const pre = config.donaciones.conceptoPrefijo;
+  const doc = normDni(dni);
+  const persona = sinAcentos(limpiaTexto(nombre) + " " + limpiaTexto(apellidos)).toUpperCase();
+  const completo = (pre + " " + persona + " " + doc).replace(/ +/g, " ").trim();
+  return { completo, corto: (pre + " " + doc).trim(), largo: completo.length };
+}
+
+function validarAltaCliente(d) {
+  const e = {};
+  if (!limpiaTexto(d.nombre)) e.nombre = "Escribe tu nombre.";
+  else if (limpiaTexto(d.nombre).length < 2) e.nombre = "Ese nombre se queda corto.";
+  if (!limpiaTexto(d.email)) e.email = "Necesitamos un correo para escribirte.";
+  else if (!mailValido(d.email)) e.email = "Ese correo no parece válido. Revísalo.";
+  if (!d.consiente_info) e.consiente_info = "Sin tu permiso expreso no podemos guardar nada. Es obligatorio.";
+  if (!d.mayor_edad) e.mayor_edad = "El formulario es para mayores de edad. Tienes que declararlo.";
+  if (d.consiente_colaborar && limpiaTexto(d.telefono) && !telValido(d.telefono)) {
+    e.telefono = "Ese teléfono no parece de aquí. Nueve dígitos, sin prefijo.";
+  }
+  return e;
+}
+
+const DECLARACIONES_DON = [
+  "declara_fisica", "declara_sin_contrato", "declara_no_extranjero",
+  "acepta_privacidad", "declara_mayor_edad"
+];
+
+function validarDonacionCliente(d) {
+  const e = {};
+  const c = config.donaciones;
+
+  if (!limpiaTexto(d.nombre)) e.nombre = "Escribe tu nombre.";
+  if (!limpiaTexto(d.apellidos)) e.apellidos = "Escribe tus apellidos.";
+
+  if (!limpiaTexto(d.dni)) e.dni = "El DNI o NIE es obligatorio: la ley prohíbe las donaciones anónimas.";
+  else if (!dniValido(d.dni)) {
+    e.dni = "Ese DNI o NIE no cuadra con su letra de control. Solo admitimos documentos de persona física: las donaciones de empresas están prohibidas por ley.";
+  }
+
+  if (!limpiaTexto(d.email)) e.email = "Necesitamos un correo para mandarte el certificado.";
+  else if (!mailValido(d.email)) e.email = "Ese correo no parece válido. Revísalo.";
+
+  const cent = importeCentimos(d.importe);
+  if (cent === null) e.importe = "Escribe el importe en euros. Por ejemplo: 50.";
+  else if (cent < c.importeMinimo * 100) e.importe = "El mínimo son " + c.importeMinimo + " €.";
+  else if (cent > c.limiteAnual * 100) {
+    e.importe = "El máximo legal son " + c.limiteAnual.toLocaleString("es-ES") + " € por donante y año (" + c.marco + ").";
+  }
+
+  const f = limpiaTexto(d.fecha_prevista);
+  if (!f) e.fecha_prevista = "Dinos qué día prevés hacer la transferencia.";
+  else {
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+    const tope = new Date(hoy); tope.setDate(tope.getDate() + c.diasFechaPrevista);
+    const elegida = new Date(f + "T12:00:00");
+    if (!(elegida >= hoy && elegida <= tope)) {
+      e.fecha_prevista = "Tiene que ser una fecha de hoy en adelante y dentro de los próximos " + c.diasFechaPrevista + " días.";
+    }
+  }
+
+  for (const clave of DECLARACIONES_DON) {
+    if (!d[clave]) e[clave] = "Esta declaración es obligatoria.";
+  }
+  return e;
+}
+
+// --- Mensajes de estado -------------------------------------------------------
+//
+// Uno por estado y por formulario. En el tono del manual: decir qué ha pasado y
+// qué puede hacer la persona, sin jerga y sin exclamaciones. El de éxito del
+// alta no dice "gracias por unirte": dice que hay que ir al correo, que es lo
+// único que hace falta hacer ahora.
+const CORREO_EQUIPO = "hola@poraguilas.es";
+
+const MENSAJES_SUM = {
+  reposo: "",
+  enviando: "Enviando…",
+  exito: "Te hemos mandado un correo para confirmar. Pincha el enlace y ya estás dentro. Si no llega en unos minutos, mira en la carpeta de spam.",
+  "error-red": "No hemos podido conectar. Puede ser tu conexión o puede ser nuestro servidor. Vuelve a intentarlo, y si sigue igual escríbenos a " + CORREO_EQUIPO + ".",
+  "error-validacion": "Repasa los campos marcados.",
+  "sin-backend": "Esta copia de la web está abierta sin servidor, así que el formulario no puede enviar nada. Escríbenos a " + CORREO_EQUIPO + " y te apuntamos a mano."
+};
+
+const MENSAJES_DON = {
+  reposo: "",
+  enviando: "Enviando…",
+  exito: "",
+  "error-red": "No hemos podido conectar. Vuelve a intentarlo, y si sigue igual escríbenos a " + CORREO_EQUIPO + ".",
+  "error-validacion": "Repasa los campos marcados.",
+  "sin-backend": "Esta copia de la web está abierta sin servidor, así que el aviso no puede enviarse. Puedes hacer la transferencia igual con el concepto de arriba y avisarnos a " + CORREO_EQUIPO + "."
+};
+
+// Estados que se pintan con el filete bermellón en vez del verde.
+const MALOS = new Set(["error-red", "error-validacion", "error-servidor", "sin-backend"]);
+
+// aria-invalid quiere la cadena "true" o "false", no un booleano.
+const mal = (e) => (e ? "true" : "false");
+
 class Component extends DCLogic {
   // La página inicial sale de la URL, no es siempre "inicio": así funcionan los
   // enlaces directos a /programa, /prensa, etc.
-  state = { pag:pagDesdeRuta(location.pathname), tema:"Todas", menu:false, ancho:1200, aviso:true, msg:"" };
+  //
+  // Los dos formularios llevan su propio estado, y son los cinco que pide el
+  // encargo más uno: reposo, enviando, exito, error-red, error-validacion y
+  // "sin-backend", que es el que sale cuando la página se ha abierto con doble
+  // clic y no hay ningún servidor al que enviar.
+  state = {
+    pag: pagDesdeRuta(location.pathname), tema: "Todas", menu: false, ancho: 1200, aviso: true,
+    sumEstado: "reposo", sumErrores: {}, sumColaborar: false,
+    donEstado: "reposo", donErrores: {}, donPrevio: null,
+    copiado: ""
+  };
 
   componentDidMount(){
     this._r = () => {
@@ -747,6 +1236,11 @@ class Component extends DCLogic {
       const w = Math.max(el.clientWidth || 0, window.innerWidth || 0);
       if(w && w !== this.state.ancho) this.setState({ ancho: w });
     };
+    // Momento en que se ha pintado la página. Va con cada envío y el servidor
+    // descarta lo que llegue en menos de tres segundos: nadie rellena un
+    // formulario con casillas de consentimiento en ese tiempo.
+    this._t0 = Date.now();
+
     this._r();
     requestAnimationFrame(this._r);
     setTimeout(this._r, 120);
@@ -769,6 +1263,144 @@ class Component extends DCLogic {
     window.removeEventListener("resize", this._r);
     window.removeEventListener("popstate", this._pop);
     if(this._ro) this._ro.disconnect();
+  }
+
+  // --- Formularios ------------------------------------------------------------
+
+  // Lee el formulario del propio DOM en vez de llevar un estado por campo. Los
+  // campos son treinta y pico y ninguno necesita reaccionar mientras se
+  // escribe: mantener treinta trozos de estado sincronizados sería más código y
+  // más sitios donde equivocarse.
+  leerFormulario(form){
+    const d = {};
+    for(const el of form.elements){
+      if(!el.name) continue;
+      d[el.name] = el.type === "checkbox" ? el.checked : el.value;
+    }
+    // Marca de tiempo del momento en que se pintó el formulario. Junto al campo
+    // trampa, descarta el relleno automático: un robot tarda milisegundos.
+    d.t0 = this._t0;
+    return d;
+  }
+
+  // Envío común a los dos formularios. Devuelve siempre por setState, nunca por
+  // excepción: un formulario que se queda mudo es peor que uno que da error.
+  async enviarA(ev, cual){
+    ev.preventDefault();
+    const form = ev.currentTarget || ev.target;
+    const datos = this.leerFormulario(form);
+
+    const clave = cual === "sum" ? "sumEstado" : "donEstado";
+    const claveErr = cual === "sum" ? "sumErrores" : "donErrores";
+    const ruta = cual === "sum" ? "/api/sumate" : "/api/donacion";
+
+    const errores = cual === "sum" ? validarAltaCliente(datos) : validarDonacionCliente(datos);
+    if(Object.keys(errores).length){
+      this.setState({ [clave]:"error-validacion", [claveErr]:errores });
+      // El foco va al primer campo con problema. Sin esto, quien navega con
+      // teclado o con lector de pantalla se queda al final del formulario sin
+      // saber dónde está el fallo.
+      const primero = form.querySelector('[name="' + Object.keys(errores)[0] + '"]');
+      if(primero && primero.focus) primero.focus();
+      return;
+    }
+
+    // Abierta con doble clic no hay servidor al que llamar. Se dice claramente
+    // en vez de fingir un error de red, y se ofrece el correo como salida.
+    if(location.protocol === "file:"){
+      this.setState({ [clave]:"sin-backend", [claveErr]:{} });
+      return;
+    }
+
+    this.setState({ [clave]:"enviando", [claveErr]:{} });
+
+    let res, cuerpo;
+    try {
+      res = await fetch(ruta, {
+        method: "POST",
+        headers: { "content-type":"application/json", "accept":"application/json" },
+        body: JSON.stringify(datos)
+      });
+      cuerpo = await res.json().catch(() => null);
+    } catch {
+      this.setState({ [clave]:"error-red" });
+      return;
+    }
+
+    if(res.ok && cuerpo && cuerpo.ok){
+      if(cual === "sum"){
+        form.reset();
+        this.setState({ sumEstado:"exito", sumErrores:{}, sumColaborar:false });
+      } else {
+        // El formulario de donación NO se limpia: quien acaba de enviarlo
+        // necesita el concepto delante para copiarlo en su banco. Se sustituye
+        // el concepto calculado aquí por el que ha guardado el servidor, que es
+        // el que de verdad se va a cotejar contra el extracto.
+        const t = cuerpo.transferencia || null;
+        this.setState({
+          donEstado:"exito", donErrores:{},
+          donPrevio: t ? { completo:t.concepto, corto:t.conceptoCorto, largo:t.concepto.length } : this.state.donPrevio
+        });
+      }
+      return;
+    }
+
+    // 400 con detalle por campo: el servidor ha visto algo que el cliente no.
+    if(res.status === 400 && cuerpo && cuerpo.errores){
+      this.setState({ [clave]:"error-validacion", [claveErr]:cuerpo.errores });
+      const primero = form.querySelector('[name="' + Object.keys(cuerpo.errores)[0] + '"]');
+      if(primero && primero.focus) primero.focus();
+      return;
+    }
+
+    // Cualquier otra cosa: 503 con el formulario aún cerrado, 429 por límite de
+    // tasa, 500. El mensaje del servidor manda, porque es el que sabe qué ha
+    // pasado y suele traer una salida (una dirección de correo, un tiempo de
+    // espera). Solo si no lo trae se pone uno genérico.
+    this.setState({
+      [clave]: "error-servidor",
+      [claveErr]: {},
+      [cual === "sum" ? "sumMsgServidor" : "donMsgServidor"]: (cuerpo && cuerpo.mensaje) || ""
+    });
+  }
+
+  // Concepto en directo mientras se escriben nombre, apellidos y DNI. Ver lo
+  // que va a hacer falta escribir en el banco antes de enviar evita la mitad de
+  // los ingresos mal identificados.
+  refrescarConcepto(ev){
+    const form = ev.target.form;
+    if(!form) return;
+    const v = (n) => (form.elements[n] ? form.elements[n].value : "");
+    const c = conceptoDe(v("nombre"), v("apellidos"), v("dni"));
+    // Sin nada escrito no se enseña un concepto a medias.
+    this.setState({ donPrevio: c.completo === config.donaciones.conceptoPrefijo ? null : c });
+  }
+
+  // Copiar al portapapeles, con una degradación que sirve de algo.
+  //
+  // navigator.clipboard falla más de lo que parece: en http:// sin contexto
+  // seguro, con el permiso denegado en los ajustes del navegador, y dentro de
+  // algunos navegadores embebidos. Cuando falla no se finge que ha ido bien:
+  // se selecciona el texto en pantalla, que deja el Ctrl+C a un dedo, y se
+  // dice lo que hay que hacer.
+  async copiar(texto, que, id){
+    try {
+      await navigator.clipboard.writeText(texto);
+      this.setState({ copiado: que + " copiado." });
+      return;
+    } catch {}
+
+    try {
+      const nodo = document.getElementById(id);
+      const rango = document.createRange();
+      rango.selectNodeContents(nodo);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(rango);
+      this.setState({ copiado: "Tu navegador no nos deja copiar solos. Ya te lo hemos seleccionado: pulsa Ctrl+C (o Cmd+C)." });
+    } catch {
+      this.setState({ copiado: "Tu navegador no nos deja copiar. Selecciona el texto de arriba a mano." });
+    }
   }
 
   // Título, descripción y canonical al día en cada cambio de ruta. Esto lo lee
@@ -811,6 +1443,12 @@ class Component extends DCLogic {
   renderVals(){
     const s = this.state;
     const escritorio = s.ancho >= 900;
+    const don = config.donaciones;
+
+    // Horquilla de la fecha prevista del ingreso. Se calcula en cada pintado
+    // para que una pestaña abierta desde ayer no ofrezca una fecha ya pasada.
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+    const tope = new Date(hoy); tope.setDate(tope.getDate() + don.diasFechaPrevista);
     const fecha = new Date((this.props.fechaElectoral || "2027-05-23") + "T09:00:00");
     const dias = Math.max(0, Math.ceil((fecha - new Date())/86400000)).toLocaleString("es-ES");
 
@@ -869,9 +1507,79 @@ class Component extends DCLogic {
       eventos: EVENTOS.map(mapEvento),
       eventosHome: EVENTOS.slice(0,2).map(mapEvento),
       hitos: HITOS.map(h => ({ c:h.c, t:h.t, d:h.d, clave:h.key, normal:!h.key })),
-      mensajeForm: s.msg,
-      enviar:(ev) => { ev.preventDefault();
-        this.setState({ msg:"Maqueta: el formulario todavía no envía datos. Hay que conectarlo a un servicio de listas o de correo antes de publicar la web." }); }
+
+      // --- Formulario de Súmate ------------------------------------------------
+      sumEnviar: (ev) => this.enviarA(ev, "sum"),
+      sumEnviando: s.sumEstado === "enviando",
+      sumBoton: s.sumEstado === "enviando" ? "Enviando…" : "Apuntarme",
+      sumMsg: s.sumEstado === "error-servidor"
+        ? (s.sumMsgServidor || "Algo ha fallado por nuestra parte. Vuelve a intentarlo en un minuto.")
+        : (MENSAJES_SUM[s.sumEstado] || ""),
+      sumClase: MALOS.has(s.sumEstado) ? "pa-est-mal" : "",
+      sumColaborar: s.sumColaborar,
+      alternarColaborar: (ev) => this.setState({ sumColaborar: Boolean(ev.target.checked) }),
+      errNombre: s.sumErrores.nombre || "",
+      errEmail: s.sumErrores.email || "",
+      errTel: s.sumErrores.telefono || "",
+      errInfo: s.sumErrores.consiente_info || "",
+      errEdad: s.sumErrores.mayor_edad || "",
+      // aria-invalid quiere la cadena "true" o "false", no un booleano.
+      malNombre: mal(s.sumErrores.nombre),
+      malEmail: mal(s.sumErrores.email),
+      malTel: mal(s.sumErrores.telefono),
+
+      // --- Donaciones ----------------------------------------------------------
+      // Todo esto sale de config.donaciones. Ni un dato de la cuenta escrito a
+      // mano en la plantilla.
+      donTitular: don.titular,
+      donIban: don.iban,
+      donPatron: don.conceptoPrefijo + " NOMBRE APELLIDOS DNI",
+      donMaxBanco: don.conceptoMaximoBanco,
+      donRegimen: don.regimen,
+      donMarco: don.marco,
+      donLimiteTexto: Number(don.limiteAnual).toLocaleString("es-ES"),
+      avisoLimite: don.avisos.limite || "",
+      avisoNoFinalista: don.avisos.noFinalista || "",
+      avisoNoRevocable: don.avisos.noRevocable || "",
+      avisoNotificacion: don.avisos.notificacion || "",
+      avisoDeduccion: don.avisos.deduccion || "",
+      hoyIso: iso(hoy),
+      topeIso: iso(tope),
+
+      hayPrevio: Boolean(s.donPrevio),
+      conceptoPrevio: s.donPrevio ? s.donPrevio.completo : "",
+      conceptoCorto: s.donPrevio ? s.donPrevio.corto : "",
+      conceptoLargo: s.donPrevio ? String(s.donPrevio.largo) : "",
+      conceptoNoCabe: Boolean(s.donPrevio && s.donPrevio.largo > don.conceptoMaximoBanco),
+      copiado: s.copiado,
+      copiarIban: () => this.copiar(don.iban, "IBAN", "pa-dato-iban"),
+      copiarConcepto: () => this.copiar(s.donPrevio ? s.donPrevio.completo : "", "Concepto", "pa-dato-concepto"),
+
+      donEnviar: (ev) => this.enviarA(ev, "don"),
+      donEnviando: s.donEstado === "enviando",
+      donBoton: s.donEstado === "enviando" ? "Enviando…" : "Avisar de la transferencia",
+      donMsg: (s.donEstado === "exito" && s.donPrevio)
+        ? "Anotado. Ahora haz la transferencia con este concepto exacto: " + s.donPrevio.completo
+        : s.donEstado === "error-servidor"
+          ? (s.donMsgServidor || "Algo ha fallado por nuestra parte. Vuelve a intentarlo en un minuto.")
+          : (MENSAJES_DON[s.donEstado] || ""),
+      donClase: MALOS.has(s.donEstado) ? "pa-est-mal" : "",
+      cambiaConcepto: (ev) => this.refrescarConcepto(ev),
+      errDNombre: s.donErrores.nombre || "",
+      errDApellidos: s.donErrores.apellidos || "",
+      errDDni: s.donErrores.dni || "",
+      errDEmail: s.donErrores.email || "",
+      errDImporte: s.donErrores.importe || "",
+      errDFecha: s.donErrores.fecha_prevista || "",
+      errDeclaraciones: DECLARACIONES_DON.some(k => s.donErrores[k])
+        ? "Tienes que marcar las cinco declaraciones. Son obligatorias por ley."
+        : "",
+      malDNombre: mal(s.donErrores.nombre),
+      malDApellidos: mal(s.donErrores.apellidos),
+      malDDni: mal(s.donErrores.dni),
+      malDEmail: mal(s.donErrores.email),
+      malDImporte: mal(s.donErrores.importe),
+      malDFecha: mal(s.donErrores.fecha_prevista)
     };
   }
 }

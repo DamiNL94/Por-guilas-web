@@ -100,10 +100,80 @@ create table if not exists consentimientos (
 
 create index if not exists cons_alta_ix    on consentimientos (alta_id);
 create index if not exists cons_momento_ix on consentimientos (momento) where ip is not null;
+
+-- Comunicaciones de donación.
+--
+-- Esta tabla NO cobra nada ni guarda ningún medio de pago: recoge el aviso
+-- previo de una transferencia que la persona hace desde su banco. Existe para
+-- cumplir el art. 5.1.c de la LO 8/2007, que prohíbe las donaciones anónimas:
+-- sin un nombre y un DNI asociados al concepto del ingreso, ese ingreso hay
+-- que devolverlo.
+--
+-- Tres decisiones que conviene no deshacer sin pensarlo:
+--
+--  1. NO hay columna de IP. En las altas la IP corrobora un consentimiento que
+--     por sí solo no deja rastro; aquí la declaración responsable va casada con
+--     un apunte bancario a nombre de la misma persona, que es una prueba
+--     incomparablemente mejor. Guardar la IP sería un dato personal de más sin
+--     ninguna función.
+--  2. NO cae en la purga total de la lista. Los datos de las altas se borran
+--     seis meses después de las elecciones porque su finalidad se agota; estos
+--     no, porque la obligación contable y fiscal de conservarlos sobrevive a la
+--     campaña (mínimo cuatro años). Ver purga.js.
+--  3. El DNI se guarda en claro. Es lo que hay que poner en el certificado de
+--     donación y lo que se rinde al Tribunal de Cuentas: seudonimizarlo lo
+--     dejaría inservible. La protección es de otro orden —cifrado en reposo,
+--     acceso con credencial, cifrado en tránsito—, no el disfraz del dato.
+create table if not exists donaciones (
+  id               bigint generated always as identity primary key,
+  creado           timestamptz not null default now(),
+  actualizado      timestamptz not null default now(),
+  nombre           text        not null,
+  apellidos        text        not null,
+  dni              text        not null,
+  email            text        not null,
+  importe_centimos bigint      not null check (importe_centimos > 0),
+  fecha_prevista   date        not null,
+  -- El concepto exacto que se le dijo a la persona que escribiera. Se guarda
+  -- para poder cotejarlo con el extracto sin reconstruirlo a mano.
+  concepto         text        not null,
+  estado           text        not null default 'comunicada'
+                               check (estado in ('comunicada','cobrada','devuelta','anulada')),
+  -- Prueba de las declaraciones responsables: qué versión del texto legal
+  -- estaba publicada y el literal exacto de cada casilla que se marcó.
+  version_texto    text        not null,
+  declaraciones    jsonb       not null,
+  -- Para el seguimiento manual de cada ingreso por parte del equipo.
+  notas            text
+);
+
+create index if not exists don_creado_ix on donaciones (creado);
+create index if not exists don_estado_ix on donaciones (estado);
+-- Control del acumulado por donante y año (art. 5.1.b LO 8/2007). No impide
+-- pasarse —el tope se cuenta sobre todo lo que reciba la federación, no solo
+-- sobre lo de Águilas— pero sí permite ver lo que ha entrado por aquí.
+create index if not exists don_dni_ix    on donaciones (dni, creado);
+`;
+
+// Cambios sobre tablas que ya existen en producción. Van aparte del bloque de
+// creación porque `create table if not exists` no toca una tabla ya creada: sin
+// esto, una base de datos anterior a las donaciones se quedaría sin las
+// columnas nuevas y el alta fallaría en caliente.
+const MIGRACIONES = `
+alter table altas add column if not exists telefono           text;
+alter table altas add column if not exists consiente_colaborar boolean not null default false;
+alter table altas add column if not exists consiente_cesion    boolean not null default false;
+
+-- Una fila de consentimiento por finalidad marcada, no una por envío: es lo que
+-- permite demostrar ante la AEPD que el permiso para ceder a IU y al PCE se dio
+-- por separado del permiso para informar.
+alter table consentimientos add column if not exists finalidad text not null default 'info';
+create index if not exists cons_finalidad_ix on consentimientos (finalidad);
 `;
 
 async function migrar() {
   await consulta(ESQUEMA);
+  await consulta(MIGRACIONES);
 }
 
 async function cerrar() {

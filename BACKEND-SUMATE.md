@@ -1,3 +1,20 @@
+> **Aviso: este documento se quedó por detrás del código el 2 de septiembre de 2026.**
+>
+> Sigue siendo correcto en lo esencial —arquitectura, doble opt-in, purga, panel—, pero tres cosas
+> han cambiado desde que se escribió:
+>
+> 1. **El consentimiento ya no es una casilla, son cuatro**: informar (obligatoria), colaborar,
+>    ceder a IU y al PCE, y mayoría de edad. La prueba se guarda con **una fila por finalidad**,
+>    no una por envío.
+> 2. **Hay un segundo formulario**, el de comunicación de donación (`POST /api/donacion`), con su
+>    tabla, sus cinco declaraciones responsables y su propia base jurídica: obligación legal, no
+>    consentimiento.
+> 3. **La API está montada de verdad** en `server.js`, que antes solo servía ficheros estáticos.
+>
+> Para operar y desplegar, el documento vigente es **`README-DESPLIEGUE.md`**. Para el análisis de
+> riesgo, **`RIESGOS-LEGALES.md`**.
+
+
 # Backend de "Súmate" — estado, integración y puesta en marcha
 
 Documento interno. No se publica: `esPrivado()` excluye todos los `.md`.

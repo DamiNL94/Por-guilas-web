@@ -1,4 +1,70 @@
 <!doctype html>
+<!-- PLACEHOLDERS PENDIENTES · inicio
+     =========================================================================
+     Esta página NO se puede publicar en dominio propio mientras quede aquí
+     abajo un solo hueco marcado PENDIENTE:. No es una recomendación: el
+     backend lee estos ficheros al arrancar y se niega a aceptar altas mientras
+     encuentre esa palabra (ver revisarPuestaEnMarcha en src/config.js), porque
+     un consentimiento informado con el responsable a medio identificar no es
+     un consentimiento informado.
+
+     QUIÉN RESPONDE  ·  resuelto el 2 de septiembre de 2026
+     Hay una sola persona jurídica: **Izquierda Unida**, NIF G78269206. Ni la
+     federación regional ni la asamblea de Águilas son entidades separadas; son
+     órganos suyos y usan ese mismo NIF. Antes esto estaba mal declarado y se
+     ha corregido en las tres páginas.
+
+     Lo que falta por rellenar:
+
+       [SEDE_AGUILAS]       Dirección de la sede de IU en Águilas. Es la que
+                            cumple como "datos de contacto del responsable"
+                            (art. 13.1.a RGPD) en la política y como
+                            "establecimiento permanente en España"
+                            (art. 10.1.a LSSI) en el aviso legal. Publicarla
+                            requiere permiso de la organización, y lo hay.
+                            BLOQUEA mientras no haya ninguna dirección.  FALTA
+       [DOMICILIO_SOCIAL]   Domicilio social de Izquierda Unida en el Registro
+                            de Partidos. NO bloquea: la LSSI admite en su lugar
+                            la dirección del establecimiento permanente. Pero es
+                            un dato público y quita cualquier duda.      FALTA
+       [INSCRIPCION]        Datos de inscripción de Izquierda Unida en el
+                            Registro de Partidos Políticos del Ministerio
+                            del Interior: tomo, folio e inscripción.      FALTA
+       [DPD]                Contacto del delegado de protección de datos.
+                            Izquierda Unida trata datos de opinión política
+                            a gran escala, así que está obligada a tenerlo
+                            (art. 37 RGPD y art. 34 LOPDGDD). Es muy
+                            probable que ya esté designado: hay que pedirle
+                            a la organización estatal su contacto.        FALTA
+
+     Ya resueltos, y por qué no se escriben aquí:
+
+       [RESPONSABLE_LEGAL]  Izquierda Unida. Vive en config.responsable
+                            (src/config.js) y el arranque comprueba que las
+                            páginas legales dicen lo mismo.
+       [NIF]                Puesto. Mismo sitio. El arranque valida además su
+                            dígito de control.
+       [EMAIL_CONTACTO]     hola@poraguilas.es. Falta comprobar que el buzón
+                            existe y que lo lee alguien.
+       [DOMINIO_WEB]        poraguilas.es.
+       [PLAZO_CONSERVACION] 30 días sin confirmar · 12 meses la IP · hasta el
+                            30-11-2027 la lista · 4 años las donaciones.
+       [IBAN]               No se escribe aquí a propósito: vive SOLO en
+                            config.donaciones (src/config.js) y de ahí lo copia
+                            todo lo demás. El banco de pruebas comprueba que no
+                            aparece a mano en ningún fichero.
+       [TITULAR_CUENTA]     Izquierda Unida Región de Murcia, mismo sitio.
+
+     Y dos que no son placeholders de texto pero bloquean igual:
+
+       · Contrato de encargado del tratamiento (art. 28 RGPD) firmado con
+         Brevo y con Railway.
+       · Confirmar si la cuenta de donaciones es de uso exclusivo y está
+         comunicada al Tribunal de Cuentas (art. 8 LO 8/2007).
+
+     La lista completa, con quién hace cada cosa, está en README-DESPLIEGUE.md.
+     =========================================================================
+     PLACEHOLDERS PENDIENTES · fin -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -26,24 +92,35 @@
 
   <p class="pa-eyebrow">Información legal</p>
   <h1>Aviso legal</h1>
-  <p class="pa-fecha">Actualizado el 1 de septiembre de 2026.</p>
+  <p class="pa-fecha">Actualizado el 3 de septiembre de 2026.</p>
 
   <h2>1. Quién hay detrás de esta web</h2>
   <p>En cumplimiento del artículo 10 de la Ley 34/2002 de servicios de la sociedad de la información y de comercio electrónico:</p>
   <table class="pa-tabla">
     <tbody>
-      <tr><th>Titular</th><td>Izquierda Unida de Águilas</td></tr>
-      <tr><th>NIF</th><td><span class="pa-hueco">PENDIENTE: NIF</span></td></tr>
-      <tr><th>Domicilio</th><td><span class="pa-hueco">PENDIENTE: DIRECCIÓN POSTAL</span> · Águilas (Murcia)</td></tr>
+      <tr><th>Titular</th><td><strong>Izquierda Unida</strong></td></tr>
+      <tr><th>NIF</th><td>G78269206</td></tr>
+      <tr><th>Domicilio social</th><td>Avenida de la Albufera, 9 · Madrid. Es el que consta en el Registro de Partidos Políticos.</td></tr>
+      <tr><th>Sede federal</th><td>Calle Villablanca, 53-55 · 28032 Madrid. Es donde está hoy la organización y donde ella misma pide que se le escriba.</td></tr>
+      <tr><th>Establecimiento en Águilas</th><td>Calle Echegaray, 3, bajo A · Águilas (Murcia). Es la sede desde la que se lleva la candidatura y la dirección a efectos de comunicación directa y efectiva, conforme al art. 10.1.a de la Ley 34/2002.</td></tr>
       <tr><th>Correo</th><td><a href="mailto:hola@poraguilas.es">hola@poraguilas.es</a></td></tr>
-      <tr><th>Inscripción</th><td><span class="pa-hueco">PENDIENTE</span> — datos de inscripción en el Registro de Partidos Políticos del Ministerio del Interior.</td></tr>
+      <tr><th>Delegado de protección de datos</th><td><a href="mailto:dpd@izquierdaunida.org">dpd@izquierdaunida.org</a></td></tr>
+      <tr><th>Inscripción</th><td>Inscrita en el <strong>Registro de Partidos Políticos</strong> del Ministerio del Interior el <strong>2 de noviembre de 1992</strong>.</td></tr>
       <tr><th>Dominio</th><td>poraguilas.es</td></tr>
     </tbody>
   </table>
-  <p><strong>Por Águilas</strong> es la candidatura municipalista que Izquierda Unida y el Partido Comunista impulsan para las elecciones municipales de Águilas de 2027, abierta a personas independientes. Cuando la coalición se formalice ante la Junta Electoral, actualizaremos este aviso con su denominación registral y con el nombre del administrador electoral.</p>
+  <p><strong>Por Águilas</strong> es la candidatura municipalista que Izquierda Unida y el Partido Comunista impulsan para las elecciones municipales de Águilas de 2027, abierta a personas independientes. <strong>La candidatura todavía no está inscrita en ningún registro</strong> y no tiene personalidad jurídica propia: por eso quien figura como titular de esta web es Izquierda Unida. Cuando la coalición se formalice ante la Junta Electoral, actualizaremos este aviso con su denominación registral y con el nombre del administrador electoral.</p>
+  <p>A lo largo de la web verás nombrar a <strong>Izquierda Unida de Águilas</strong>, que es la asamblea local, y a <strong>Izquierda Unida Región de Murcia</strong>, que es la federación regional. Son los nombres con los que se conoce a quienes están detrás de esto, pero ninguno es una entidad jurídica aparte: <strong>ninguno de los dos está inscrito como entidad propia</strong> en el Registro de Partidos Políticos. Los dos son órganos de Izquierda Unida y operan con el NIF de arriba. Quien responde de esta web, y de tus datos, es Izquierda Unida.</p>
+  <p class="pa-aviso">Las dos direcciones de Madrid no coinciden y lo decimos en vez de disimularlo: la del Registro es la que consta desde la inscripción de 1992, y la de Villablanca es donde está hoy la organización. Si escribes por correo postal, usa esta última, o directamente la sede de Águilas.</p>
 
   <h2>2. Para qué sirve esta web</h2>
-  <p>Para explicar quiénes somos, qué proponemos y qué hacemos, y para que quien quiera pueda ponerse en contacto o echar una mano. Es una web de contenido político y electoral. No se vende nada, no se contrata nada y no hay ninguna transacción económica: si algún día hubiera un cauce para aportaciones a la campaña, tendría sus propias condiciones y su propio marco legal, que es el de la ley electoral y el de la financiación de partidos.</p>
+  <p>Para explicar quiénes somos, qué proponemos y qué hacemos, y para que quien quiera pueda ponerse en contacto o echar una mano. Es una web de contenido político y electoral. <strong>No se vende nada y no se contrata nada.</strong></p>
+
+  <h3>2.1. El cauce de donaciones</h3>
+  <p>Sí hay un cauce para donar, y conviene explicar exactamente qué es y qué no es.</p>
+  <p><strong>Esta web no cobra.</strong> No hay pasarela de pago, ni tarjeta, ni Bizum, ni PayPal, ni criptomonedas. Lo único que publicamos son los datos de una cuenta bancaria y el formato del concepto; la transferencia la ordena quien dona, desde su banco y bajo su responsabilidad. El formulario de «avísanos de la transferencia» no mueve dinero: es una comunicación previa que sirve para identificar el ingreso, porque la ley prohíbe las donaciones anónimas.</p>
+  <p>El marco legal es el de la <strong>Ley Orgánica 8/2007, de financiación de los partidos políticos</strong>, que es la que rige mientras no se convoquen las elecciones. Sus reglas, resumidas: solo personas físicas, en nombre propio y con fondos propios; nada de personas jurídicas; nada de anónimas; nada de finalistas; nada de revocables; máximo 50.000 € por donante y año; y prohibidas las de quien tenga contrato vigente con el sector público y las de gobiernos y entidades públicas extranjeras. Están todas escritas junto al formulario, en la sección <a href="/sumate">Súmate</a>.</p>
+  <p>La cuenta en la que se ingresan es titularidad de <strong>Izquierda Unida Región de Murcia</strong>, la federación regional, que opera con el NIF de Izquierda Unida que figura en el apartado 1. Desde el día en que se convoquen las elecciones cambia el régimen: entra en juego la LOREG, hay que designar administrador electoral y abrir cuenta electoral, el límite por aportante baja a 10.000 € y estos textos y esos datos se actualizan aquí.</p>
 
   <h2>3. Condiciones de uso</h2>
   <p>Entrar aquí no te obliga a nada más que a lo evidente: usar la web de buena fe y sin liarla. En concreto, no vale utilizarla para actividades ilícitas, intentar tumbarla o reventarla, acceder a partes que no son públicas, ni recolectar datos de forma automatizada.</p>
@@ -54,7 +131,7 @@
   <p>Las propuestas del programa son la posición política de la candidatura en el momento de publicarlas. Las fechas y plazos electorales que aparecen son orientativos hasta que la Junta Electoral publique el calendario oficial tras la convocatoria.</p>
 
   <h2>5. Propiedad intelectual</h2>
-  <p>Los textos, la identidad visual, el logotipo y el diseño de esta web son de Izquierda Unida de Águilas. El <strong>programa y las propuestas políticas están para que se difundan</strong>: puedes copiarlos, citarlos, imprimirlos y repartirlos libremente, siempre que digas de dónde salen y no los cambies de forma que tergiverses lo que decimos.</p>
+  <p>Los textos, la identidad visual, el logotipo y el diseño de esta web son de Izquierda Unida. El <strong>programa y las propuestas políticas están para que se difundan</strong>: puedes copiarlos, citarlos, imprimirlos y repartirlos libremente, siempre que digas de dónde salen y no los cambies de forma que tergiverses lo que decimos.</p>
   <p>La marca gráfica y el logotipo son otra cosa: no se pueden usar para dar a entender que algo lo respalda la candidatura cuando no es así.</p>
   <p>Las fotografías y materiales de terceros que aparezcan llevan su atribución allí donde estén. Si eres titular de algo publicado aquí y crees que no debería estarlo, escribe a <a href="mailto:hola@poraguilas.es">hola@poraguilas.es</a> y lo retiramos mientras lo aclaramos.</p>
 
@@ -66,7 +143,7 @@
   <p>Hacemos lo que está en nuestra mano para que la web esté disponible y sin errores, pero no podemos garantizar que nunca se caiga ni que no haya erratas. No respondemos de los daños que puedan derivarse de interrupciones del servicio, de fallos técnicos ni del uso que cada cual haga de la información publicada.</p>
 
   <h2>8. Datos personales</h2>
-  <p>Todo lo relativo a datos personales está en la <a href="/legal/privacidad">política de privacidad</a>, y lo de las cookies —que no hay— en la <a href="/legal/cookies">página de cookies</a>.</p>
+  <p>Todo lo relativo a datos personales está en la <a href="/legal/privacidad">política de privacidad</a>, incluidos los del aviso de donación, que se tratan con una base jurídica distinta —obligación legal— y con sus propios plazos. Lo de las cookies —que no hay— está en la <a href="/legal/cookies">página de cookies</a>.</p>
 
   <h2>9. Ley aplicable</h2>
   <p>Se aplica la legislación española. Para cualquier conflicto, los juzgados y tribunales que correspondan conforme a la normativa vigente.</p>
