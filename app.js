@@ -79,6 +79,22 @@
       $$('[data-pa-click="cerrarMenu"]', dialogo).forEach((b) =>
         b.addEventListener("click", cerrar)
       );
+      // Un enlace del menú a un ancla de ESTA misma página no recarga nada: el
+      // navegador salta al sitio y el diálogo se queda encima tapándolo. Pasa
+      // con los cuatro ejes cuando ya estás en /programa. Se cierra a mano, y
+      // el foco se lleva al destino en vez de devolverlo al botón del menú:
+      // quien acaba de pedir «llévame al eje 02» quiere estar en el eje 02.
+      $$("a[href]", dialogo).forEach((enlace) =>
+        enlace.addEventListener("click", () => {
+          const destino = enlace.hash && document.getElementById(enlace.hash.slice(1));
+          if (!destino) { cerrar(); return; }
+          quitar("menuAbierto", document);
+          abrir.setAttribute("aria-expanded", "false");
+          document.body.style.overflow = "";
+          destino.setAttribute("tabindex", "-1");
+          destino.focus({ preventScroll: true });
+        })
+      );
       // Escape cierra, como en cualquier diálogo.
       document.addEventListener("keydown", function esc(ev) {
         if (ev.key !== "Escape") return;

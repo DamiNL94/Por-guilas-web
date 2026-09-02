@@ -80,13 +80,11 @@ lugar a la candidatura.
   en 2023 es regalar el marco, pero es material que existe y puede querer
   publicarse. Si se decide publicarlo, el texto está en el `.docx` y entra como
   un bloque más antes de las quince medidas.
-- **Prensa y Agenda siguen con contenido de ejemplo**, y alguna nota contradice
-  ya al programa: la del 25 de agosto habla de un censo de vivienda vacía
-  «actualizado cada semestre» y el programa dice **cada año**; la del 14 de julio
-  dice que la normativa permite el recargo del IBI «desde 2022» y el programa lo
-  ancla en la **Ley 12/2023**. Hay que rehacerlas o retirarlas antes de publicar.
-- **La marquesina de la portada** lleva tres de los cuatro lemas: falta
-  «Que se pueda quedar quien quiera quedarse», el del eje 01.
+- **Prensa y Agenda siguen con contenido de ejemplo.** Una nota contradice ya al
+  programa: la del 14 de julio dice que la normativa permite el recargo del IBI
+  «desde 2022», y el programa lo ancla en la **Ley 12/2023** (fuente 9). Hay que
+  rehacer las cinco notas o retirarlas antes de publicar; no se han tocado
+  porque escribir notas de prensa nuevas sería inventar contenido.
 - **La foto de la portada del programa** sigue siendo un hueco
   («FOTO PENDIENTE · portada del programa o acto de calle»).
 
@@ -112,6 +110,14 @@ lugar a la candidatura.
 - **Impresión.** La sección entera sale en A4 sin menús, sin fondos de color y
   con un eje por página (17 páginas). Se comprueba imprimiendo `/programa` desde
   el navegador.
+- **La marquesina de la portada sale de `EJES`.** Llevaba tres de los cuatro
+  lemas; ahora lleva el del programa más los cuatro de los ejes, en orden, y se
+  genera de los datos para que no vuelva a quedarse corta. Las dos mitades de la
+  cinta se pintan del mismo array, que es lo que mantiene el bucle sin costura.
+- **El menú del móvil cierra al saltar a un ancla.** Estando ya en `/programa`,
+  tocar «Eje 02» no recargaba nada: el diálogo se quedaba encima tapando el
+  destino. Ahora se cierra y el foco va a la sección, no de vuelta al botón.
+  Está en `app.js`, en el manejador de `abrirMenu`.
 - **Anclas.** `/programa#medidas`, `/programa#eje-01` … `#eje-04`,
   `#competencias`, `#indicadores`, `#fuentes`. Están enlazadas desde la portada,
   desde el índice de la propia página y desde el menú del móvil. Si se cambia un
