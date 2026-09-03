@@ -6,22 +6,7 @@
 <meta name="theme-color" content="#0E7A5F">
 <link rel="icon" href="/logo/por-aguilas-isotipo.svg" type="image/svg+xml">
 
-<!-- ==========================================================================
-     TODO LO QUE HAY ENTRE ESTOS DOS MARCADORES LO SUSTITUYE EL SERVIDOR.
-     server.js reemplaza el bloque entero por los metadatos de la ruta pedida
-     (título, descripción, canonical, og:*, twitter:*, JSON-LD y la tabla de
-     rutas para el cliente), con las URL absolutas del dominio real desde el
-     que se está sirviendo.
 
-     ¿Por qué en el servidor y no en JavaScript? Porque los rastreadores de
-     WhatsApp, Telegram, Twitter y Facebook NO ejecutan JavaScript: leen el
-     HTML tal como sale del servidor. Una og:title puesta desde el runtime no
-     la ve nadie.
-
-     Lo que hay escrito aquí abajo son los valores de la portada, y solo se ven
-     si se abre este fichero sin servidor. Para editarlos de verdad hay que ir
-     a la tabla META de server.js.
-     ========================================================================== -->
 <!-- metadatos:inicio -->
 <title>Por Águilas · Candidatura municipalista de izquierdas · Municipales 2027</title>
 <meta name="description" content="Candidatura municipalista de izquierdas para las elecciones municipales de 2027 en Águilas. Vivienda, servicios públicos, litoral y democracia municipal.">
@@ -37,12 +22,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/json" id="pa-donaciones">{"regimen":"ordinario","marco":"LO 8/2007","titular":"Izquierda Unida Región de Murcia","iban":"ES11 2100 8315 1913 0016 0571","conceptoPrefijo":"DONACION AGUILAS","limiteAnual":50000,"umbralNotificacion":25000,"conceptoMaximoBanco":35,"importeMinimo":1,"diasFechaPrevista":90,"deduccion":{"porcentaje":20,"baseMaxima":600},"avisos":{"noFinalista":"La donación no es finalista: no se puede destinar a una parte concreta de la campaña ni a un eje del programa. Va al sostenimiento general de la actividad.","noRevocable":"La donación no es revocable. Una vez hecha la transferencia no hay devolución, salvo que resulte ser una donación nula de las que la ley obliga a devolver.","deduccion":"Desgrava el 20 % en el IRPF sobre una base máxima de 600 € al año (art. 68.3 de la Ley del IRPF). Para aplicarla necesitas el certificado que emite la formación: sin certificado no hay deducción."}}</script>
 <!-- metadatos:fin -->
-<!-- Tipografías auto-alojadas: cero peticiones al servidor de fuentes de
-     Google y, por tanto, cero IP de visitantes entregadas a un tercero.
-     Ficheros y licencia en fonts/. El nombre de ese servidor no se escribe
-     aquí a propósito: el punto 8 de la lista de validación comprueba con un
-     grep que no aparece ningún dominio de terceros en este fichero, y un
-     comentario que lo mencione haría fallar la comprobación sin motivo. -->
+
 <link rel="preload" href="/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/familjen-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -55,7 +35,7 @@
 </head>
 <body>
 <div style="background:#141414;color:#fff;font-size:13px;font-weight:600;line-height:1.45;display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px clamp(20px,5vw,44px);text-align:center">
-  <span style="max-width:70ch">Borrador de trabajo · los textos, notas de prensa y fechas son de ejemplo y hay que sustituirlos antes de publicar.</span>
+  <span style="max-width:70ch">Web en construcción. Las notas de prensa y las fechas de la agenda son ejemplos de muestra, no información en firme.</span>
   <button type="button" data-pa-click="cerrarAviso" style="font:inherit;font-weight:800;background:none;color:inherit;border:1.5px solid currentColor;padding:3px 13px;cursor:pointer;flex:none">Entendido</button>
 </div>
 
@@ -406,7 +386,7 @@
             </div>
             <div class="pa-c">
               <label class="pa-lab" for="pa-d-fecha">Fecha prevista del ingreso</label>
-              <input class="pa-in" id="pa-d-fecha" name="fecha_prevista" type="date" required="" min="2026-09-01" max="2026-11-30" aria-describedby="pa-e-dfecha" aria-invalid="false">
+              <input class="pa-in" id="pa-d-fecha" name="fecha_prevista" type="date" required="" min="2026-09-02" max="2026-12-01" aria-describedby="pa-e-dfecha" aria-invalid="false">
               <p class="pa-err" id="pa-e-dfecha" aria-live="polite"></p>
             </div>
           </div>
@@ -493,14 +473,13 @@
       <div>
         <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Contacto</h4>
         <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
-          <li>Local de la candidatura · Águilas</li>
+          <li>Calle Echegaray, 3, bajo A · Águilas (Murcia)</li>
           <li><a href="mailto:admin@por-aguilas.es" style="color:#fff">admin@por-aguilas.es</a></li>
-          <li style="color:#9A9291">Dirección y teléfono pendientes</li>
         </ul>
       </div>
     </div>
     <div style="border-top:1px solid rgba(255,255,255,.18);margin-top:clamp(30px,4vw,42px);padding-top:20px;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;font-size:13px;color:#9A9291">
-      <span>© 2026 Por Águilas · Borrador de trabajo</span>
+      <span>© 2026 Por Águilas · Municipales 2027</span>
       <span style="display:flex;gap:18px;flex-wrap:wrap">
         <a href="/legal/aviso-legal" style="color:#D5D0CE">Aviso legal</a>
         <a href="/legal/privacidad" style="color:#D5D0CE">Privacidad</a>

@@ -78,6 +78,20 @@ function cabecera(html) {
   ];
   for (const re of fuera) head = head.replace(re, "");
 
+  // Los comentarios del <head> de index.html son notas para quien edita la
+  // plantilla: dónde vive cada cosa, por qué las tipografías están aquí, qué
+  // sustituye el servidor. El cuerpo ya no publica ninguno —el compilador de
+  // plantilla los descarta— y no hay razón para que el <head> sí: en una web de
+  // campaña, "ver código fuente" es algo que la gente hace.
+  //
+  // Los dos únicos que sobreviven son los marcadores metadatos:inicio y
+  // metadatos:fin, que no son documentación: server.js los busca literalmente
+  // para sustituir el bloque de metadatos por los de la ruta pedida. Sin ellos
+  // todas las páginas saldrían con el <title> de la portada.
+  head = head.replace(/<!--([\s\S]*?)-->/g, (todo, dentro) =>
+    /^\s*metadatos:(inicio|fin)\s*$/.test(dentro) ? todo : ""
+  );
+
   return head.replace(/\n{3,}/g, "\n\n").trim();
 }
 

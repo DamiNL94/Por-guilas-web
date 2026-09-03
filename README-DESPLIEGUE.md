@@ -219,6 +219,30 @@ y actualizar el `<meta name="pa-version-politica">` de `legal/privacidad.html`. 
 backend se niega a arrancar: guardar un consentimiento que apunte a un texto distinto del que la
 persona leyó no vale nada como prueba.
 
+### 4.1. De dónde sale cada dato de las páginas legales
+
+Esta tabla vivía como un comentario dentro de las tres páginas de `legal/`. Se trajo aquí el
+3 de septiembre de 2026 porque era documentación interna publicada: no la ve quien lee la
+página, pero sí quien mira el código fuente, y en una web de campaña eso se lee.
+
+La regla que sustituye al comentario: **en `legal/*.html` no se escribe a mano ninguno de estos
+datos sin mirar antes de dónde sale.** El arranque comprueba que la página y el código dicen lo
+mismo, y falla si no.
+
+| Dato | De dónde sale y qué lo vigila |
+|---|---|
+| Responsable legal | Izquierda Unida. Vive en `config.responsable` (`src/config.js`); el arranque comprueba que las páginas legales dicen lo mismo. |
+| NIF | `G78269206`, mismo sitio. El arranque valida además su dígito de control. |
+| Sede de Águilas | Calle Echegaray, 3, bajo A · Águilas (Murcia). Cumple como «datos de contacto del responsable» (art. 13.1.a RGPD) en la política y como «establecimiento permanente en España» (art. 10.1.a LSSI) en el aviso legal. El arranque bloquea si no queda ninguna dirección. |
+| Domicilio social | Avenida de la Albufera, 9 · Madrid. Es el que consta en el Registro de Partidos y **no** coincide con la sede federal de hoy, Calle Villablanca, 53-55. Se publican las dos, cada una con su etiqueta: el asiento registral está sin actualizar desde 1992 y disimularlo sería peor que enseñarlo. |
+| Inscripción | Registro de Partidos Políticos del Ministerio del Interior, 2 de noviembre de 1992. Hay una prueba que falla si el aviso legal deja de nombrarlos. |
+| Delegado de protección de datos | `dpd@izquierdaunida.org` · Calle Villablanca 53-55, 28032 Madrid. Ya estaba designado por la organización estatal: no hubo que nombrar a nadie desde Águilas. |
+| Correo de contacto | `admin@por-aguilas.es` |
+| Dominio | `por-aguilas.es`, **con guion**. |
+| Plazos de conservación | 30 días sin confirmar · 12 meses la IP · hasta el 30-11-2027 la lista · 4 años las donaciones. |
+| IBAN | No se escribe en las páginas legales a propósito: vive **solo** en `config.donaciones` (`src/config.js`) y de ahí lo copia todo lo demás. El banco de pruebas comprueba que no aparece a mano en ningún fichero. |
+| Titular de la cuenta | Izquierda Unida Región de Murcia, mismo sitio. |
+
 ---
 
 ## 5. La configuración de donaciones

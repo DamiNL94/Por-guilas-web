@@ -303,7 +303,7 @@ html{scroll-behavior:smooth}
 
 <sc-if value="{{ aviso }}" hint-placeholder-val="{{ true }}">
 <div style="background:#141414;color:#fff;font-size:13px;font-weight:600;line-height:1.45;display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px clamp(20px,5vw,44px);text-align:center">
-  <span style="max-width:70ch">Borrador de trabajo · los textos, notas de prensa y fechas son de ejemplo y hay que sustituirlos antes de publicar.</span>
+  <span style="max-width:70ch">Web en construcción. Las notas de prensa y las fechas de la agenda son ejemplos de muestra, no información en firme.</span>
   <button type="button" onClick="{{ cerrarAviso }}" style="font:inherit;font-weight:800;background:none;color:inherit;border:1.5px solid currentColor;padding:3px 13px;cursor:pointer;flex:none">Entendido</button>
 </div>
 </sc-if>
@@ -371,7 +371,27 @@ html{scroll-behavior:smooth}
 <sc-if value="{{ esInicio }}" hint-placeholder-val="{{ true }}">
 <div>
   <div style="background:#D9351F">
-    <div style="background:#0E7A5F;color:#fff;clip-path:polygon(0 0,100% 0,100% calc(100% - clamp(22px,3.4vw,44px)),0 100%)">
+    <!-- La portada lleva foto de fondo: la bahía, el castillo de San Juan y el
+         paseo. Es de dominio público (se acredita en el aviso legal, apartado
+         5) y está alojada aquí, como todo lo demás: ninguna página de esta web
+         pide nada a un servidor de fuera.
+
+         El contraste del texto se sostiene en DOS SITIOS, y conviene saberlo
+         antes de tocar cualquiera de los dos:
+
+           1. El fichero ya viene tratado. fotos/aguilas-portada.jpg no es la
+              foto original: se aplanó a verde oscuro al generarla, de modo que
+              su píxel más claro es (103,140,127). Eso es lo que hace que el
+              contraste no dependa del ancho de la pantalla.
+           2. Este degradado, que va DELANTE de la imagen en la misma
+              propiedad. Oscurece la columna izquierda, que es donde cae el
+              texto en escritorio, y deja el pueblo asomando por la derecha.
+
+         Con los dos juntos, el párrafo en verde claro (#D8F2E8) queda por
+         encima de 5,5:1 sobre el punto más claro de la foto, en cualquier
+         ancho. Si algún día se cambia la fotografía hay que volver a tratarla
+         igual, no basta con sustituir el fichero. -->
+    <div style="background-color:#0E7A5F;background-image:linear-gradient(0deg,rgba(5,42,34,.42) 0%,rgba(5,42,34,.08) 38%,rgba(5,42,34,0) 60%),linear-gradient(96deg,rgba(5,42,34,.72) 0%,rgba(7,58,45,.62) 45%,rgba(8,66,52,.40) 100%),url('/fotos/aguilas-portada.jpg');background-size:cover;background-position:center 42%;background-repeat:no-repeat;color:#fff;clip-path:polygon(0 0,100% 0,100% calc(100% - clamp(22px,3.4vw,44px)),0 100%)">
       <div style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,78px) clamp(20px,5vw,44px) calc(clamp(46px,6vw,66px) + clamp(22px,3.4vw,44px))">
         <p style="display:flex;align-items:center;gap:12px;margin:0 0 clamp(18px,3vw,26px);font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff">
           <span style="width:0;height:0;border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;flex:none"></span>
@@ -480,7 +500,7 @@ html{scroll-behavior:smooth}
         <sc-for list="{{ notasHome }}" as="n" hint-placeholder-count="3">
           <article style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
             <div style="aspect-ratio:16/10;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border-bottom:2px solid #141414;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center">
-              <span style="font:600 11px/1.5 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>{{ n.tema }}</span>
+              <img src="/logo/por-aguilas-isotipo.svg" alt="" style="width:52px;height:52px;opacity:.32;display:block">
             </div>
             <div style="padding:22px clamp(18px,2.4vw,24px) 26px;display:flex;flex-direction:column;gap:11px;flex:1">
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -502,7 +522,7 @@ html{scroll-behavior:smooth}
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:clamp(28px,4vw,52px);align-items:start">
         <div>
           <div style="aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border:2px solid #D5D0CE;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
-            <span style="font:600 11.5px/1.6 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>portada del programa<br>o acto de calle</span>
+            <img src="/logo/por-aguilas-isotipo.svg" alt="" style="width:76px;height:76px;opacity:.34;display:block">
           </div>
         </div>
         <div>
@@ -516,7 +536,7 @@ html{scroll-behavior:smooth}
             <a href="/programa" onClick="{{ irEjes }}" style="font:800 15px/1 'Public Sans',sans-serif;background:#0E7A5F;color:#fff;text-decoration:none;border:2px solid #0E7A5F;padding:16px 24px;min-height:52px;display:inline-flex;align-items:center" style-hover="background:#0A5C47;border-color:#0A5C47">Leer el programa</a>
             <a href="{{ descargaHref }}" download style="font:800 15px/1 'Public Sans',sans-serif;background:transparent;color:#141414;border:2px solid #141414;padding:16px 24px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;gap:9px;text-decoration:none" style-hover="background:#141414;color:#fff">Descargar el programa</a>
           </div>
-          <p style="margin:16px 0 0;font-size:14px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;max-width:46ch">El documento que se descarga es un borrador de trabajo. Mientras lo sea, lo que manda es esta web.</p>
+          <p style="margin:16px 0 0;font-size:14px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;max-width:46ch">El programa sigue abierto a aportaciones. Mientras lo esté, la versión que manda es la de esta web.</p>
         </div>
       </div>
     </div>
@@ -575,9 +595,9 @@ html{scroll-behavior:smooth}
       </div>
       <div>
         <div style="aspect-ratio:3/4;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border:2px solid #D5D0CE;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center">
-          <span style="font:600 11.5px/1.7 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>grupo de la candidatura<br>en la calle, luz natural</span>
+          <img src="/logo/por-aguilas-isotipo.svg" alt="" style="width:76px;height:76px;opacity:.34;display:block">
         </div>
-        <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:22px 0 0;line-height:1.55">Pendiente de completar: nombres del equipo, trayectoria de la persona candidata a la Alcaldía y enlace a los estatutos internos.</p>
+        <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:22px 0 0;line-height:1.55">La lista y la persona candidata a la Alcaldía se eligen en asamblea durante el invierno. Cuando estén, se publican aquí con nombres y trayectoria.</p>
       </div>
     </div>
   </div>
@@ -706,7 +726,7 @@ html{scroll-behavior:smooth}
 
     <section class="pa-desc" aria-labelledby="descarga-t">
       <h2 class="pa-h2 pa-h2-p" id="descarga-t">Descargar el programa</h2>
-      <p class="pa-p">El documento de trabajo completo, tal cual se edita. Mientras sea un borrador, lo que manda es esta página.</p>
+      <p class="pa-p">El documento completo, para leerlo entero o imprimirlo. Mientras siga abierto a aportaciones, la versión que manda es la de esta página.</p>
       <p class="pa-desc-p"><a class="pa-desc-a" href="{{ descargaHref }}" download>Descargar el programa</a></p>
       <p class="pa-pg-nota">{{ descargaNombre }}</p>
     </section>
@@ -740,7 +760,7 @@ html{scroll-behavior:smooth}
       <sc-for list="{{ notasFiltradas }}" as="n" hint-placeholder-count="5">
         <article data-pa-tema="{{ n.tema }}" style="background:#fff;border:2px solid #141414;display:flex;flex-direction:column">
           <div style="aspect-ratio:16/10;background:repeating-linear-gradient(135deg,#E1EAE5 0 10px,#EFF4F1 10px 20px);border-bottom:2px solid #141414;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center">
-            <span style="font:600 11px/1.5 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:#6F6867">FOTO PENDIENTE<br>{{ n.tema }}</span>
+            <img src="/logo/por-aguilas-isotipo.svg" alt="" style="width:52px;height:52px;opacity:.32;display:block">
           </div>
           <div style="padding:22px clamp(18px,2.4vw,24px) 26px;display:flex;flex-direction:column;gap:11px;flex:1">
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -809,7 +829,7 @@ html{scroll-behavior:smooth}
         </li>
       </sc-for>
     </ul>
-    <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:8px 0 0;max-width:62ch;line-height:1.55">Los plazos legales son orientativos y hay que contrastarlos con el calendario oficial que publique la Junta Electoral una vez convocadas las elecciones.</p>
+    <p style="font-size:14.5px;color:#403B3A;border-left:5px solid #D9351F;padding:2px 0 2px 14px;margin:8px 0 0;max-width:62ch;line-height:1.55">Los plazos legales son orientativos. El calendario que manda es el que publique la Junta Electoral una vez convocadas las elecciones.</p>
   </div>
 </div>
 </sc-if>
@@ -1138,14 +1158,13 @@ html{scroll-behavior:smooth}
       <div>
         <h4 style="font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9A9291;margin:0 0 16px">Contacto</h4>
         <ul style="list-style:none;margin:0;padding:0;font-size:15px;display:flex;flex-direction:column;gap:10px">
-          <li>Local de la candidatura · Águilas</li>
+          <li>Calle Echegaray, 3, bajo A · Águilas (Murcia)</li>
           <li><a href="mailto:admin@por-aguilas.es" style="color:#fff">admin@por-aguilas.es</a></li>
-          <li style="color:#9A9291">Dirección y teléfono pendientes</li>
         </ul>
       </div>
     </div>
     <div style="border-top:1px solid rgba(255,255,255,.18);margin-top:clamp(30px,4vw,42px);padding-top:20px;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;font-size:13px;color:#9A9291">
-      <span>© 2026 Por Águilas · Borrador de trabajo</span>
+      <span>© 2026 Por Águilas · Municipales 2027</span>
       <span style="display:flex;gap:18px;flex-wrap:wrap">
         <a href="/legal/aviso-legal" style="color:#D5D0CE">Aviso legal</a>
         <a href="/legal/privacidad" style="color:#D5D0CE">Privacidad</a>
@@ -1177,8 +1196,8 @@ const PROGRAMA = {
   lema: "Águilas se vive todo el año.",
   candidatura: "Candidatura de unidad de la izquierda · IU + PCE",
   eleccion: "Elecciones municipales de Águilas · 23 de mayo de 2027",
-  version: "Borrador de trabajo · versión 1 · septiembre de 2026",
-  nota: "Documento interno de la candidatura. Las cifras llevan fuente al final. Antes de publicarlo hay que actualizar los datos que caduquen y sustituir los plazos aproximados por fechas cerradas."
+  version: "Versión 1 · septiembre de 2026",
+  nota: "Documento abierto: se amplía con lo que salga de las mesas sectoriales y de la asamblea. Cada cifra que aparece lleva su fuente al final de la página."
 };
 
 // Bloque A · Las quince que definen el mandato.
@@ -1428,7 +1447,7 @@ const INDICADORES = {
 
 // Bloque E · Las once fuentes. Cada cifra del texto sale de una de estas.
 const FUENTES = {
-  nota: "Todas consultadas en septiembre de 2026. Antes de publicar el programa hay que volver a comprobarlas y actualizar las que hayan cambiado.",
+  nota: "Todas consultadas en septiembre de 2026. Si un dato cambia, cambia aquí, y se dice.",
   lista: [
     "CIS, barómetro de mayo de 2026: la vivienda alcanza el récord de menciones como primer problema de España; crisis económica 20,7 %, inmigración 18,9 %, sanidad 17,8 %. Recogido en idealista/news, 29 de mayo de 2026.",
     "CIS, barómetro de abril de 2026: la vivienda, primer problema para el 41,3 %. Nota del propio CIS.",
@@ -1447,7 +1466,7 @@ const FUENTES = {
 // El documento de trabajo, tal cual se descarga desde la sección Programa.
 const DESCARGA = {
   href: "/descargas/programa-por-aguilas-2027.docx",
-  nombre: "Programa Por Águilas 2027 · borrador de trabajo"
+  nombre: "Programa Por Águilas 2027 · versión 1, septiembre de 2026"
 };
 
 const NOTAS = [
