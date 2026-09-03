@@ -323,7 +323,7 @@ function jsonLd(origen) {
     name: "Por Águilas",
     alternateName: "Por Águilas · Candidatura municipalista",
     url: origen + "/",
-    logo: origen + "/logo/por-aguilas-logotipo.svg",
+    logo: origen + "/logo/por-aguilas-logotipo.png",
     image: origen + OG_IMAGEN,
     description: META["/"].desc,
     email: "admin@por-aguilas.es",

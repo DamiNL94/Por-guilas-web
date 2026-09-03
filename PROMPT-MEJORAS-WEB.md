@@ -136,7 +136,7 @@ Si sale bien y no se complica, valora enlaces permanentes por nota de prensa
 
 ### P3 · Que se vea bien al compartir y en buscadores
 
-- **`og:image` está mal**: apunta a `logo/por-aguilas-logotipo.svg`, y
+- **`og:image` está mal**: apunta a `logo/por-aguilas-logotipo.png`, y
   WhatsApp, Telegram, Twitter/X y Facebook **no renderizan SVG** en las
   previsualizaciones. Hay que generar un PNG o JPG de 1200×630 con la marca y
   apuntar ahí, con URL **absoluta** (los rastreadores no resuelven rutas

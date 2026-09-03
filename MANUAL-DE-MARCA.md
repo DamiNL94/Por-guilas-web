@@ -86,8 +86,8 @@ El perfil está calcado punto a punto sobre una fotografía del peñón tomada d
 
 | Archivo | Uso |
 |---|---|
-| `por-aguilas-logotipo.svg` | Versión completa. Cabeceras, carteles, cartelería grande |
-| `por-aguilas-isotipo.svg` | Solo el sol con el peñón y las franjas. Avatares, favicon, chapas, sellos. De 24 px para abajo, siempre esta |
+| `por-aguilas-logotipo.png` | Versión completa: la marca con el nombre debajo. Cabeceras, carteles, cartelería grande |
+| `por-aguilas-isotipo.png` | Solo la marca: el triángulo con la ola y el corazón. Avatares, favicon, chapas, sellos. De 24 px para abajo, siempre esta |
 | `por-aguilas-una-tinta.svg` | Blanco sobre fondo oscuro con el peñón calado. Serigrafía barata, sellos, prensa a un color |
 
 **Nunca:** contorno, sombra, degradado ni un color de más. Nunca girar el sol ni cambiarle el número de rayos. Nunca alterar la inclinación de cinco grados.
