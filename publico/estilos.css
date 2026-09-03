@@ -14,13 +14,11 @@ a:hover{color:#0E7A5F}
    formularios con más de treinta campos, etiquetas, casillas y mensajes de
    error, y repetir la misma declaración treinta veces es la forma más fiable
    de que una de ellas acabe distinta de las demás. Todos los valores salen del
-   manual de marca, salvo el morado que sustituye al bermellón como color de
-   acento y que todavía hay que reflejar en MANUAL-DE-MARCA.md.
+   manual de marca; ninguno introduce un color nuevo.
 
    Contrastes comprobados sobre blanco: negro #141414 18,4:1 · verde #0E7A5F
    5,3:1 · gris de etiqueta #403B3A 11,0:1 · gris opcional #6F6867 5,4:1 ·
-   morado #7C2BD9 6,5:1. Todos por encima del 4,5:1 que exige la AA.
-   El bermellón #D9351F 4,7:1 queda ya solo para los estados de error. */
+   bermellón #D9351F 4,7:1. Todos por encima del 4,5:1 que exige la AA. */
 .pa-f{display:grid;gap:18px;max-width:560px}
 .pa-c{display:flex;flex-direction:column;gap:7px}
 .pa-fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:16px}
@@ -73,20 +71,15 @@ textarea.pa-in{min-height:98px;resize:vertical;line-height:1.55}
    acabe distinta de las demás, y además la impresión necesita poder decir
    «todos los ejes empiezan en página nueva» en una sola regla.
 
-   Todos los valores salen del manual de marca, salvo el morado que sustituye
-   al bermellón como color de acento y que todavía hay que reflejar en
-   MANUAL-DE-MARCA.md. Contrastes comprobados sobre blanco: negro #141414 18,4:1 ·
+   Todos los valores salen del manual de marca; ninguno introduce un color
+   nuevo. Contrastes comprobados sobre blanco: negro #141414 18,4:1 ·
    verde #0E7A5F 5,3:1 · verde oscuro #0A5C47 7,7:1 · gris #403B3A 11,0:1 ·
-   morado #7C2BD9 6,5:1. Blanco sobre verde #0E7A5F, 5,3:1. Todos por
-   encima del 4,5:1 que exige la AA. Sobre el negro #141414 del pie y del
-   contador este morado no llega (2,7:1): allí va el morado claro #B98CFF,
-   7,2:1, igual que el verde pasa de #0E7A5F a #3FCB9E.
+   bermellón #D9351F 4,7:1. Blanco sobre verde #0E7A5F, 5,3:1. Todos por
+   encima del 4,5:1 que exige la AA.
 
-   El morado aparece solo en las cuñas, en el «Por» y en la línea de
-   «borrador»: es lo urgente. Los números de las quince medidas van en verde
-   oscuro a propósito, porque quince cifras de color seguidas dejan de señalar
-   nada. El bermellón #D9351F ya no es color de marca: queda como color de
-   error (campo inválido, estado fallido, botón de borrado). */
+   El bermellón aparece solo en las cuñas y en la línea de «borrador»: es lo
+   urgente. Los números de las quince medidas van en verde oscuro a propósito,
+   porque quince cifras rojas seguidas dejan de señalar nada. */
 
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -97,7 +90,7 @@ html{scroll-behavior:smooth}
 /* La cuña. Un triángulo hecho con bordes: sin fichero, sin petición y sin
    texto que un lector de pantalla pueda leer quince veces seguidas. En el
    marcado va siempre con aria-hidden. */
-.pa-cuna{display:inline-block;width:0;height:0;border-left:10px solid #7C2BD9;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none}
+.pa-cuna{display:inline-block;width:0;height:0;border-left:10px solid #D9351F;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none}
 .pa-cuna-s{border-left-width:8px;border-top-width:5px;border-bottom-width:5px}
 
 .pa-pg-cab{max-width:64ch;border-bottom:2px solid #141414;padding-bottom:clamp(26px,3.4vw,36px);margin-bottom:clamp(26px,3.4vw,36px)}
@@ -106,7 +99,7 @@ html{scroll-behavior:smooth}
 .pa-pg-lema{font-family:'Familjen Grotesk',sans-serif;font-size:clamp(20px,2.6vw,30px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:14px 0 0;color:#0E7A5F}
 .pa-pg-meta{margin:18px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#403B3A;line-height:1.5}
 .pa-pg-meta+.pa-pg-meta{margin-top:4px}
-.pa-pg-version{margin:16px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#7C2BD9}
+.pa-pg-version{margin:16px 0 0;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#D9351F}
 .pa-pg-nota{margin:14px 0 0;font-size:14.5px;line-height:1.6;color:#403B3A;max-width:72ch;text-wrap:pretty}
 
 /* Índice de la página. Es la navegación entre ejes que pide el manual: anclas
