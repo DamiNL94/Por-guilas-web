@@ -32,7 +32,7 @@ function plantilla({ titulo, parrafos, boton, urlBaja }) {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:2px solid #141414">
     <tr><td style="border-top:8px solid #0E7A5F;padding:28px 28px 0">
       <p style="margin:0;font-family:Georgia,serif;font-size:22px;font-weight:700;letter-spacing:-.03em;color:#141414">
-        <span style="color:#7C2BD9">Por</span> <span style="color:#0E7A5F">Águilas</span>
+        <span style="color:#D9351F">Por</span> <span style="color:#0E7A5F">Águilas</span>
       </p>
       <p style="margin:6px 0 0;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#6F6867">Municipales 2027</p>
     </td></tr>

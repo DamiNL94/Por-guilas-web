@@ -6,7 +6,7 @@
 :root{
   --verde:#0E7A5F;
   --verde-osc:#0A5C47;
-  --morado:#7C2BD9;
+  --rojo:#D9351F;
   --negro:#141414;
   --gris:#403B3A;
   --gris-cl:#6F6867;
@@ -31,7 +31,7 @@ header.pa-cab{border-bottom:8px solid var(--verde);padding:22px 0}
 .pa-marca{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;width:max-content}
 .pa-marca img{width:44px;height:44px;display:block;flex:none}
 .pa-marca b{font-family:var(--titulo);font-weight:700;font-size:22px;letter-spacing:-.035em;line-height:1;display:block}
-.pa-marca i{font-style:normal;color:var(--morado)}
+.pa-marca i{font-style:normal;color:var(--rojo)}
 .pa-marca em{font-style:normal;color:var(--verde)}
 .pa-marca span small{display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gris-cl);margin-top:5px}
 
@@ -41,7 +41,7 @@ main{padding:clamp(40px,6vw,68px) 0 clamp(48px,7vw,80px)}
   letter-spacing:.1em;text-transform:uppercase;color:var(--verde);margin-bottom:15px;
 }
 .pa-eyebrow::before{
-  content:"";width:0;height:0;border-left:10px solid var(--morado);
+  content:"";width:0;height:0;border-left:10px solid var(--rojo);
   border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;flex:none;
 }
 h1{font-family:var(--titulo);font-size:clamp(28px,4.4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.04;margin:0 0 10px;text-wrap:balance}
@@ -49,19 +49,19 @@ h2{font-family:var(--titulo);font-size:clamp(20px,2.6vw,26px);font-weight:700;le
 h3{font-family:var(--titulo);font-size:18px;font-weight:700;letter-spacing:-.02em;margin:26px 0 8px}
 p,li{color:var(--gris);text-wrap:pretty}
 a{color:var(--verde-osc)}
-a:hover{color:var(--morado)}
+a:hover{color:var(--rojo)}
 :focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 strong{color:var(--negro)}
 ul,ol{padding-left:22px;display:flex;flex-direction:column;gap:8px}
 .pa-fecha{font-size:14px;color:var(--gris-cl);margin:0 0 clamp(28px,4vw,40px)}
-.pa-aviso{border-left:5px solid var(--morado);padding:2px 0 2px 16px;margin:22px 0;font-size:15.5px}
+.pa-aviso{border-left:5px solid var(--rojo);padding:2px 0 2px 16px;margin:22px 0;font-size:15.5px}
 .pa-dest{border:2px solid var(--negro);padding:clamp(18px,3vw,26px);margin:26px 0}
 .pa-dest :first-child{margin-top:0}
 .pa-dest :last-child{margin-bottom:0}
 .pa-tabla{width:100%;border-collapse:collapse;margin:20px 0;font-size:15.5px;display:block;overflow-x:auto}
 .pa-tabla th,.pa-tabla td{border:1px solid var(--linea);padding:11px 13px;text-align:left;vertical-align:top;color:var(--gris)}
 .pa-tabla th{background:#F6F4F3;color:var(--negro);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.pa-hueco{background:#F3EAFD;border-bottom:2px solid var(--morado);padding:1px 5px;font-weight:800;color:var(--negro);white-space:nowrap}
+.pa-hueco{background:#FDECE9;border-bottom:2px solid var(--rojo);padding:1px 5px;font-weight:800;color:var(--negro);white-space:nowrap}
 .pa-btn{
   display:inline-flex;align-items:center;min-height:54px;padding:17px 26px;margin-top:8px;
   font:800 15px/1 var(--texto);background:var(--verde);color:#fff;border:2px solid var(--verde);
