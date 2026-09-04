@@ -1,16 +1,62 @@
-// Correo transaccional con Brevo, por su API REST y sin SDK: Node 22 ya trae
-// `fetch`, y una dependencia menos es una dependencia menos.
+// Correo transaccional por SMTP autenticado contra el buzón del propio dominio
+// (IONOS, donde ya está el correo de por-aguilas.es).
 //
-// Regla de minimización que se aplica aquí: al proveedor solo le llega la
-// dirección de destino y el enlace. Ni el nombre, ni la zona, ni el mensaje.
+// POR QUÉ SMTP PROPIO Y NO UN PROVEEDOR DE ENVÍO
+//
+// Antes esto hablaba con la API de Brevo. Enviar desde el buzón del dominio
+// tiene dos ventajas que pesan más: no hay un tercero al que le llegue ni una
+// dirección de la lista, y el SPF del dominio ya autoriza a IONOS, así que no
+// hace falta añadir ni un registro DNS —ni arriesgarse a romper el SPF que ya
+// existe, que se llevaría por delante también el correo de entrada.
+//
+// El precio es una segunda dependencia, `nodemailer`. Node no trae cliente
+// SMTP, y lo que hay que resolver —TLS, AUTH, y sobre todo la codificación
+// MIME de los asuntos con acentos y de las cabeceras del RFC 8058— no es sitio
+// para escribirlo a mano en un flujo con efectos legales.
+//
+// Regla de minimización que se aplica aquí: por el servidor de correo solo pasa
+// la dirección de destino y el enlace. Ni el nombre, ni la zona, ni el mensaje.
 // Los correos se redactan sin nombre propio a propósito.
 "use strict";
+
+const nodemailer = require("nodemailer");
 
 const { CONFIG } = require("./config.js");
 const { permitirCorreo } = require("./limites.js");
 
-const ENDPOINT = "https://api.brevo.com/v3/smtp/email";
 const TIEMPO_MAXIMO = 10_000;
+
+// Un solo transporte para todo el proceso: nodemailer mantiene el pool de
+// conexiones y no negocia TLS en cada correo. Se crea la primera vez que hace
+// falta, no al cargar el módulo, para que en modo consola —y en las pruebas—
+// no se construya nada.
+let transporte = null;
+
+function obtenerTransporte() {
+  if (transporte) return transporte;
+  transporte = nodemailer.createTransport({
+    host: CONFIG.smtpHost,
+    port: CONFIG.smtpPuerto,
+    // 465 es TLS desde el primer byte; 587 empieza en claro y sube con
+    // STARTTLS. `requireTLS` impide que un 587 se quede sin cifrar si el
+    // servidor no anuncia STARTTLS: antes que mandar credenciales en claro,
+    // que falle el envío.
+    secure: CONFIG.smtpPuerto === 465,
+    requireTLS: CONFIG.smtpPuerto !== 465,
+    auth: { user: CONFIG.smtpUsuario, pass: CONFIG.smtpClave },
+    pool: true,
+    maxConnections: 2,
+    connectionTimeout: TIEMPO_MAXIMO,
+    greetingTimeout: TIEMPO_MAXIMO,
+    socketTimeout: TIEMPO_MAXIMO,
+  });
+  return transporte;
+}
+
+// Para las pruebas: fuerza un transporte ya construido y olvida el anterior.
+function _usarTransporte(t) {
+  transporte = t;
+}
 
 // Envuelve el cuerpo en la misma plantilla sobria de la web: fondo blanco,
 // letra negra, verde para señalar. Sin imágenes remotas, que en un correo son
@@ -64,7 +110,7 @@ async function enviar({ para, asunto, titulo, parrafos, boton, urlBaja, textoPla
 
   if (CONFIG.correoEnConsola) {
     // Modo local: nada sale a Internet. Se imprime el enlace para poder seguir
-    // el flujo entero sin cuenta de Brevo ni dominio verificado.
+    // el flujo entero sin buzón ni credenciales de ningún tipo.
     console.log("\n--- CORREO (modo consola) ---");
     console.log("Para:", para);
     console.log("Asunto:", asunto);
@@ -74,13 +120,13 @@ async function enviar({ para, asunto, titulo, parrafos, boton, urlBaja, textoPla
     return { ok: true, motivo: "consola" };
   }
 
-  const payload = {
-    sender: { name: CONFIG.remitenteNombre, email: CONFIG.remitente },
-    to: [{ email: para }], // sin `name`: el proveedor no necesita saberlo
-    replyTo: { email: CONFIG.respuestaA, name: CONFIG.remitenteNombre },
+  const mensaje = {
+    from: { name: CONFIG.remitenteNombre, address: CONFIG.remitente },
+    to: para, // sin nombre: el servidor de correo no necesita saberlo
+    replyTo: { name: CONFIG.remitenteNombre, address: CONFIG.respuestaA },
     subject: asunto,
-    htmlContent: html,
-    textContent: textoPlano,
+    html,
+    text: textoPlano,
     headers: {
       // RFC 8058: permite darse de baja desde el propio cliente de correo.
       // Ese botón hace un POST a la URL, que el backend atiende igual que el
@@ -91,27 +137,14 @@ async function enviar({ para, asunto, titulo, parrafos, boton, urlBaja, textoPla
   };
 
   try {
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      headers: {
-        "api-key": CONFIG.brevoApiKey,
-        "content-type": "application/json",
-        accept: "application/json",
-      },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(TIEMPO_MAXIMO),
-    });
-
-    if (!res.ok) {
-      // El detalle del error del proveedor puede traer la dirección de destino,
-      // así que se anota el código y nada más.
-      console.error(`[correo] Brevo respondió ${res.status}`);
-      return { ok: false, motivo: `http-${res.status}` };
-    }
+    await obtenerTransporte().sendMail(mensaje);
     return { ok: true };
   } catch (err) {
-    console.error("[correo] fallo de envío:", err?.name || "error");
-    return { ok: false, motivo: "red" };
+    // La respuesta del servidor puede traer la dirección de destino, así que
+    // se anota el código de SMTP y el nombre del fallo, nunca el texto entero.
+    const codigo = err?.responseCode || err?.code || err?.name || "error";
+    console.error(`[correo] fallo de envío: ${codigo}`);
+    return { ok: false, motivo: String(codigo) };
   }
 }
 

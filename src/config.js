@@ -431,12 +431,18 @@ const CONFIG = {
   urlBase: env("URL_BASE", "http://localhost:3000").replace(/\/+$/, ""),
   databaseUrl: env("DATABASE_URL"),
   adminToken: env("ADMIN_TOKEN"),
-  brevoApiKey: env("BREVO_API_KEY"),
+  // Correo saliente por SMTP autenticado contra el buzón del propio dominio.
+  // Los valores por defecto son los de IONOS, que es donde está el correo de
+  // por-aguilas.es; cambiarlos vale para cualquier otro proveedor.
+  smtpHost: env("SMTP_HOST", "smtp.ionos.es"),
+  smtpPuerto: Number(env("SMTP_PUERTO", "587")) || 587,
+  smtpUsuario: env("SMTP_USUARIO"),
+  smtpClave: env("SMTP_CLAVE"),
   remitente: env("REMITENTE", "no-responder@por-aguilas.es"),
   remitenteNombre: env("REMITENTE_NOMBRE", "Por Águilas"),
   respuestaA: env("RESPUESTA_A", "admin@por-aguilas.es"),
   secretoHmac: env("SECRETO_HMAC"),
-  // Permite arrancar en local sin Brevo: los correos se escriben en consola.
+  // Permite arrancar en local sin buzón: los correos se escriben en consola.
   correoEnConsola: env("CORREO_EN_CONSOLA") === "1",
 };
 
@@ -630,30 +636,47 @@ function revisarPuestaEnMarcha() {
     problemas.push("SECRETO_HMAC es demasiado corto: mínimo 32 caracteres aleatorios.");
   }
 
-  if (!CONFIG.brevoApiKey && !CONFIG.correoEnConsola) {
-    problemas.push("Falta BREVO_API_KEY (o CORREO_EN_CONSOLA=1 para desarrollo local).");
+  if (!CONFIG.correoEnConsola) {
+    if (!CONFIG.smtpUsuario) {
+      problemas.push("Falta SMTP_USUARIO (o CORREO_EN_CONSOLA=1 para desarrollo local).");
+    }
+    if (!CONFIG.smtpClave) {
+      problemas.push("Falta SMTP_CLAVE (o CORREO_EN_CONSOLA=1 para desarrollo local).");
+    }
+    if (!CONFIG.smtpHost) problemas.push("Falta SMTP_HOST.");
+  }
+
+  // IONOS —y casi cualquier SMTP autenticado— exige que el From sea el buzón
+  // con el que te has autenticado, o rechaza el envío con un 550. Es un fallo
+  // que solo se ve cuando ya no llega ningún correo, así que se avisa antes.
+  if (CONFIG.smtpUsuario && CONFIG.remitente && CONFIG.smtpUsuario !== CONFIG.remitente) {
+    avisos.push(
+      `REMITENTE (${CONFIG.remitente}) no coincide con SMTP_USUARIO (${CONFIG.smtpUsuario}). ` +
+        "La mayoría de servidores SMTP rechazan enviar en nombre de otra dirección: si los " +
+        "correos no salen, esto es lo primero que hay que mirar."
+    );
   }
 
   // El remitente NO puede ser una dirección de Gmail, Hotmail, Yahoo y compañía.
   //
   // Esos dominios publican una política DMARC que dice, en esencia, "solo yo
-  // envío en mi nombre". Si Brevo manda un correo poniendo como remitente una
-  // dirección @gmail.com, la firma no alinea con el dominio y el correo lo
+  // envío en mi nombre". Si el servidor manda un correo poniendo como remitente
+  // una dirección @gmail.com, la firma no alinea con el dominio y el correo lo
   // rechazan o lo mandan a spam los propios Gmail, Outlook y Yahoo, que es
   // donde está prácticamente toda la lista. No es una recomendación de
   // entregabilidad: es que los correos de confirmación no llegan, y sin
   // confirmar no hay alta.
   //
   // La dirección de contacto sí puede ser de Gmail —a esa escribe la gente, no
-  // el servidor— y de hecho lo es. Lo que tiene que ir en un dominio propio y
-  // verificado con SPF, DKIM y DMARC es el REMITENTE.
+  // el servidor— y de hecho lo es. Lo que tiene que ir en un dominio propio
+  // cubierto por su SPF es el REMITENTE.
   const dominioRemitente = CONFIG.remitente.split("@")[1] || "";
   const GRATUITOS = ["gmail.com", "googlemail.com", "hotmail.com", "outlook.com", "live.com", "yahoo.com", "yahoo.es", "icloud.com", "protonmail.com", "gmx.es"];
   if (GRATUITOS.includes(dominioRemitente.toLowerCase())) {
     problemas.push(
       `REMITENTE no puede ser una dirección de ${dominioRemitente}: su política DMARC hará que ` +
         "los correos de confirmación se rechacen o acaben en spam, y sin confirmar no hay alta. " +
-        "Tiene que ser una dirección de un dominio propio verificado en Brevo."
+        "Tiene que ser un buzón del dominio propio, el mismo con el que se autentica el SMTP."
     );
   }
   if (CONFIG.correoEnConsola) {

@@ -15,7 +15,7 @@
 // Lo que este fichero NO hace, y es deliberado:
 //
 //   · No manda ningún correo. El nombre, el DNI y el importe no salen de
-//     nuestra infraestructura: no pasan por Brevo ni por ningún tercero. La
+//     nuestra infraestructura: no pasan ni siquiera por el servidor de correo. La
 //     persona ve el concepto en pantalla y el equipo lo lee en el panel. Es la
 //     minimización del art. 5.1.c RGPD aplicada al camino del dato, no solo a
 //     la lista de campos.

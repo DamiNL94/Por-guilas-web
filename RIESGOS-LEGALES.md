@@ -72,7 +72,7 @@ que ninguna línea de código puede hacer:
 | # | Qué falta exactamente | De quién depende |
 |---|---|---|
 | R1 y R2 | **Asignar a una persona** la revisión semanal del extracto. El procedimiento ya está escrito en `PROTOCOLO-INGRESOS.md`; lo que falta es un nombre | Tesorería |
-| R7 | Firmar los dos contratos de encargado del tratamiento con Brevo y Railway | Protección de datos |
+| R7 | Firmar los dos contratos de encargado del tratamiento con IONOS y Railway | Protección de datos |
 | R6 | Poner en el calendario la conmutación a régimen electoral | Web |
 
 Con la revisión de ingresos asignada, R1 y R2 bajan de 12 a 8. Con los contratos firmados, R7 baja
@@ -361,7 +361,7 @@ Aquí conviven dos cosas sensibles: una lista de afinidad política y una tabla 
   a nombre de la misma persona, que es mejor prueba, así que la IP sería un dato de más.
 - La IP de la prueba de consentimiento se borra automáticamente a los 12 meses.
 - Minimización en el camino del dato: el nombre, el DNI y el importe **no salen** de nuestra
-  infraestructura. No pasan por Brevo ni por ningún tercero, porque las donaciones no generan
+  infraestructura. No pasan ni por el servidor de correo ni por ningún tercero, porque las donaciones no generan
   ningún correo.
 - Superficie mínima: un proceso, un puerto, una dependencia (`pg`), sin CORS abierto.
 
@@ -369,7 +369,7 @@ Aquí conviven dos cosas sensibles: una lista de afinidad política y una tabla 
 
 | Opción | Coste | Efectividad | ¿Hecho? |
 |---|---|---|---|
-| **Contrato de encargado del tratamiento con Brevo y con Railway** (art. 28) | ~2 h | Obligatorio, no opcional | ⬜ |
+| **Contrato de encargado del tratamiento con IONOS y con Railway** (art. 28) | ~2 h | Obligatorio, no opcional | ⬜ |
 | Rotación del token de administración tras la campaña | Nulo | Media | ⬜ |
 | Copia de seguridad cifrada y probada de la tabla de donaciones | ~2 h | Alta: aquí borrar de más es incumplir | ⬜ |
 | Procedimiento escrito de notificación en 72 h | ~1 h | Alta si pasa | ⬜ |
@@ -573,11 +573,11 @@ certificado no hay deducción, en vez de dar la deducción por hecha.
 1. **Poner un nombre** a la revisión semanal del extracto. El procedimiento está escrito paso a paso
    en `PROTOCOLO-INGRESOS.md`, con qué mirar, qué devolver y en qué plazo. Falta quién lo hace.
    Cierra la mitad humana de R1 y R2.
-2. **Firmar los dos contratos** de encargado del tratamiento (art. 28 RGPD) con Brevo y con Railway.
+2. **Firmar los dos contratos** de encargado del tratamiento (art. 28 RGPD) con IONOS y con Railway.
    Los dos publican su contrato tipo; es aceptarlo desde el panel de cada uno y guardar copia.
 3. **Meter en el calendario** la conmutación a régimen electoral, para el día de la convocatoria.
-4. **Configurar el despliegue**: variables de entorno en Railway y dominio verificado en Brevo con
-   SPF, DKIM y DMARC.
+4. **Configurar el despliegue**: variables de entorno en Railway y buzón de envío creado en IONOS.
+   El DNS no hay que tocarlo: el SPF del dominio ya autoriza a IONOS.
 
 Cerrados hasta aquí: **R10** con el Registro de Partidos; la **dirección de contacto**, el
 **delegado de protección de datos**, el **domicilio social** y la **inscripción registral**, con lo

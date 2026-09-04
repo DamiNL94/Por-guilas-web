@@ -16,6 +16,7 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
+    "nodemailer": "^10.0.0",
     "pg": "^8.23.0"
   }
 }

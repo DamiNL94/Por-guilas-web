@@ -36,7 +36,10 @@ Punto de partida: `cp .env.example .env`.
 | `ADMIN_TOKEN` | ✅ | Credencial del panel del equipo. Mínimo 32 caracteres aleatorios. |
 | `SECRETO_HMAC` | ✅ | Del que se derivan los enlaces de baja. Mínimo 32 caracteres. |
 | `URL_BASE` | ✅ | Dirección pública del sitio, sin barra final. Base de los enlaces de los correos. |
-| `BREVO_API_KEY` | ✅ (o consola) | Clave de la API de Brevo para el correo transaccional. |
+| `SMTP_HOST` | | Servidor de correo saliente. Por defecto `smtp.ionos.es`. |
+| `SMTP_PUERTO` | | `587` (STARTTLS) por defecto; `465` para TLS directo. |
+| `SMTP_USUARIO` | ✅ (o consola) | Buzón **de verdad, con contraseña** desde el que se envía. Un alias que solo reenvía no vale: no tiene credenciales. |
+| `SMTP_CLAVE` | ✅ (o consola) | Contraseña de ese buzón. |
 | `REMITENTE` | | Dirección **de un dominio propio verificado**. Por defecto `no-responder@por-aguilas.es`. **No puede ser de Gmail, Outlook ni similar**: su política DMARC haría que los correos de confirmación se rechacen o acaben en spam, y sin confirmar no hay alta. El arranque lo rechaza. |
 | `REMITENTE_NOMBRE` | | Por defecto `Por Águilas`. |
 | `RESPUESTA_A` | | Buzón que lee alguien de verdad. Por defecto `admin@por-aguilas.es`. |
@@ -124,9 +127,9 @@ detector sigue vivo.
 
 | # | Qué falta | Quién |
 |---|---|---|
-| 1 | **Contrato de encargado del tratamiento (art. 28 RGPD) con Brevo** (Sendinblue SAS, Francia) | Protección de datos |
+| 1 | **Contrato de encargado del tratamiento (art. 28 RGPD) con IONOS**, que aloja el correo del dominio | Protección de datos |
 | 2 | **Contrato de encargado del tratamiento (art. 28 RGPD) con Railway** (EE. UU., servidores en la UE, cláusulas contractuales tipo) | Protección de datos |
-| 3 | Verificar el dominio en Brevo con SPF, DKIM y DMARC en el DNS | Web |
+| 3 | Crear en IONOS el buzón desde el que se envía (`no-responder@por-aguilas.es`) y poner su contraseña en `SMTP_CLAVE` | Web |
 | 4 | Confirmar que `admin@por-aguilas.es` existe y que lo lee alguien | Secretaría |
 | 5 | **Asignar quién revisa cada ingreso contra el extracto**, semanalmente. El procedimiento está escrito en `PROTOCOLO-INGRESOS.md`; falta el nombre (riesgos R1, R2 y R11) | Tesorería |
 | 6 | Confirmar si la cuenta es de uso exclusivo de donaciones y está comunicada al Tribunal de Cuentas (art. 8 LO 8/2007) | Federación |
@@ -413,7 +416,7 @@ cp .env.example .env
 ```
 
 Con `CORREO_EN_CONSOLA=1` se recorre el alta entera —incluido el enlace de confirmación, que se
-imprime por consola— sin cuenta de Brevo ni dominio verificado.
+imprime por consola— sin buzón ni contraseña de ningún tipo.
 
 Sin Postgres a mano, el sitio y los dos formularios se pueden abrir igual: la validación, la
 trampa, el control de origen y el límite por IP funcionan, y el guardado devuelve error. Así pasan

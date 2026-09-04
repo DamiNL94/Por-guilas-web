@@ -24,9 +24,9 @@ Documento interno. No se publica: `esPrivado()` excluye todos los `.md`.
 ## Qué hay construido
 
 Todo el backend vive en `src/`, que el servidor estático ya excluía de la
-publicación (`CARPETAS_PRIVADAS` en `server.js`). Una sola dependencia nueva en
-todo el proyecto: **`pg`**. El correo va por la API REST de Brevo con el `fetch`
-que trae Node 22, sin SDK.
+publicación (`CARPETAS_PRIVADAS` en `server.js`). Dos dependencias en todo el
+proyecto: **`pg`** y **`nodemailer`**. El correo sale por SMTP autenticado
+contra el buzón del propio dominio, no por un proveedor de envío.
 
 | Fichero | Qué hace |
 |---|---|
@@ -127,14 +127,13 @@ ante la AEPD. Hay que confirmarlo con quien lleve lo orgánico antes de publicar
 ### 3. Configurar el entorno
 
 Variables en `.env.example`. Las obligatorias: `DATABASE_URL`, `ADMIN_TOKEN`,
-`SECRETO_HMAC`, `URL_BASE`, `BREVO_API_KEY`.
+`SECRETO_HMAC`, `URL_BASE`, `SMTP_USUARIO`, `SMTP_CLAVE`.
 
-**DNS de `por-aguilas.es`**, sin esto los correos van a spam:
-
-- SPF: `v=spf1 include:spf.brevo.com ~all`
-- DKIM: el registro que dé Brevo al verificar el dominio.
-- DMARC: empezar en `v=DMARC1; p=none; rua=mailto:...`, y subir a
-  `p=quarantine` cuando los informes salgan limpios.
+**DNS de `por-aguilas.es`.** Enviando desde el buzón del propio dominio no hay
+que añadir nada: el SPF que ya publica IONOS (`include:_spf-eu.ionos.com`)
+autoriza esos envíos, y el DKIM lo firma el propio proveedor. El DMARC actual es
+`v=DMARC1; p=none;`; conviene añadirle un `rua=mailto:...` y subir a
+`p=quarantine` cuando los informes salgan limpios.
 
 **Región de Railway:** hay que desplegar en la región europea. La política de
 privacidad afirma que los servidores están en la UE.
@@ -149,10 +148,12 @@ dato vive en un servicio aparte y no se lo lleva por delante una reconfiguració
 del servicio web, y porque `pg` es JavaScript puro frente a un `node:sqlite`
 todavía experimental o un `better-sqlite3` que exige compilar.
 
-**Brevo y no Resend.** Empresa e infraestructura en la UE. Con datos del art. 9
-eso ahorra el capítulo de transferencias internacionales. Solo se usa la parte
-transaccional: subir la lista a los "contactos" de Brevo duplicaría la base de
-datos dentro de una herramienta de marketing de terceros.
+**El SMTP del dominio y no un proveedor de envío.** Con datos del art. 9, el
+mejor tercero es el que no existe: enviando desde IONOS, que ya aloja el correo
+del dominio, no se le entrega ni una dirección de la lista a ninguna empresa
+nueva, no hay contrato de encargado que sumar y no hay que tocar el DNS. El
+precio es `nodemailer`, porque Node no trae cliente SMTP; escribirlo a mano era
+más superficie de fallo de la que compensa en un flujo con efectos legales.
 
 **Al proveedor de correo solo le llega la dirección de destino.** Ni el nombre,
 ni la zona, ni el mensaje. Los correos se redactan sin nombre propio a
