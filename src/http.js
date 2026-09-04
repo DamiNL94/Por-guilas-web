@@ -121,6 +121,18 @@ async function leerCuerpo(req, maximo = LIMITES.cuerpo) {
 function origenAjeno(req) {
   const origen = req.headers.origin;
   if (!origen) return false; // los formularios del propio sitio pueden no mandarlo
+
+  // Origen opaco. Las páginas de confirmar y de borrar se sirven con
+  // Referrer-Policy: no-referrer, para que el token de la URL no viaje en el
+  // Referer, y Chrome ata a esa política el Origin de los POST de navegación:
+  // manda literalmente "null" aunque el formulario esté en la propia página.
+  // Sin esto, confirmar el alta desde Chrome contestaba siempre "ese enlace ya
+  // no vale", y nadie llegaba a quedar apuntado. Se resuelve con Sec-Fetch-Site,
+  // que lo pone el navegador y una web ajena no puede falsear: "same-origin" es
+  // justo lo que se quería comprobar. Si no llega ninguna de las dos cabeceras
+  // no hay forma de saberlo, y entonces sí se rechaza.
+  if (origen === "null") return req.headers["sec-fetch-site"] !== "same-origin";
+
   try {
     return new URL(origen).host !== String(req.headers.host || "");
   } catch {

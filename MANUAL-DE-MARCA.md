@@ -109,15 +109,16 @@ El símbolo es el sol; el elemento que ordena las piezas es **la cuña bermelló
 | **Blanco** | `#FFFFFF` | Fondo por defecto de todo |
 | **Negro** | `#141414` | Tinta de todo el texto, filetes, pie. 15,9:1 sobre blanco |
 | **Verde Águilas** | `#0E7A5F` | Color de marca. Bloques, botones, portada, «Águilas». Verde profundo con tiro a marino, nunca lima. 5,3:1 sobre blanco |
-| **Rojo bermellón** | `#D9351F` | El bermellón del símbolo del PCE. Solo la cuña, el «Por» y lo urgente. Nunca una superficie grande |
+| **Rojo bermellón** | `#D9351F` | El bermellón del símbolo del PCE. Solo la cuña y lo urgente. Nunca una superficie grande |
+| **Morado del corazón** | `#8229A7` | El morado del corazón del isotipo. Solo el «Por» de la marca, en cualquier fondo claro. 7,4:1 sobre blanco |
 | Verde oscuro | `#0A5C47` | Enlaces, etiquetas, fechas |
 | Espuma | `#EFF4F1` | Secciones alternas |
 | Gris filete | `#D5D0CE` | Filetes secundarios |
-| Verde claro / bermellón claro | `#3FCB9E` / `#FF7A63` | Únicamente sobre fondo negro |
+| Verde claro / bermellón claro | `#3FCB9E` / `#FF7A63` | Sobre fondo negro, y además el «Águilas» de la marca en cualquier fondo. Ojo: 2,1:1 sobre blanco, por debajo del mínimo de la AA |
 
-**Regla de uso.** Fondo blanco y letra negra siempre. El color solo aparece para señalar: **verde** para lo nuestro —la marca, los enlaces, los bloques— y **bermellón** para la cuña, el «Por» y lo urgente. Nada más.
+**Regla de uso.** Fondo blanco y letra negra siempre. El color solo aparece para señalar: **verde** para lo nuestro —los enlaces, los bloques— y **bermellón** para la cuña y lo urgente. La marca «Por Águilas» va aparte, con los colores del logotipo: morado y verde claro. Nada más.
 
-**Vetados:** morado y magenta · verde lima o manzana (Vox) · azul medio brillante (PP).
+**Vetados:** magenta · verde lima o manzana (Vox) · azul medio brillante (PP).
 
 ### Diferenciación frente al PSOE
 

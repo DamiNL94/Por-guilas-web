@@ -940,6 +940,52 @@ async function main() {
       assert.equal(f.rows[0].token_conf_hash, null, "el token debe quemarse");
     });
 
+    // Chrome ata el Origin de un POST de navegación a la Referrer-Policy, y la
+    // página de confirmar va con no-referrer: manda "null" aunque el formulario
+    // sea de la propia página. Mientras eso se tomó por origen ajeno, nadie que
+    // usara Chrome llegaba a quedar apuntado.
+    await prueba("confirmar acepta el Origin opaco de Chrome", async () => {
+      const t = util.nuevoToken();
+      const ins = await db.consulta(
+        `insert into altas (email,nombre,token_conf_hash,token_conf_expira)
+         values ('opaca@ejemplo.es','Opaca',$1, now() + interval '48 hours') returning id`,
+        [t.hash]
+      );
+      const r = await pedir("/api/sumate/confirmar", {
+        method: "POST",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          origin: "null",
+          "sec-fetch-site": "same-origin",
+        },
+        body: new URLSearchParams({ token: t.claro }).toString(),
+      });
+      assert.equal(r.cabeceras.get("location"), "/sumate/gracias");
+      const f = await db.consulta("select estado from altas where id=$1", [ins.rows[0].id]);
+      assert.equal(f.rows[0].estado, "confirmado");
+      await db.consulta("delete from altas where id=$1", [ins.rows[0].id]);
+    });
+
+    // Y sin la cabecera que lo respalda no se abre la mano: un Origin opaco a
+    // secas sigue siendo un origen del que no se sabe nada.
+    await prueba("pero un Origin opaco sin Sec-Fetch-Site sigue rechazándose", async () => {
+      const t = util.nuevoToken();
+      const ins = await db.consulta(
+        `insert into altas (email,nombre,token_conf_hash,token_conf_expira)
+         values ('opaca2@ejemplo.es','Opaca2',$1, now() + interval '48 hours') returning id`,
+        [t.hash]
+      );
+      const r = await pedir("/api/sumate/confirmar", {
+        method: "POST",
+        headers: { "content-type": "application/x-www-form-urlencoded", origin: "null" },
+        body: new URLSearchParams({ token: t.claro }).toString(),
+      });
+      assert.equal(r.cabeceras.get("location"), "/sumate/enlace-caducado");
+      const f = await db.consulta("select estado from altas where id=$1", [ins.rows[0].id]);
+      assert.equal(f.rows[0].estado, "pendiente");
+      await db.consulta("delete from altas where id=$1", [ins.rows[0].id]);
+    });
+
     await prueba("el mismo enlace no vale dos veces", async () => {
       const t = util.nuevoToken();
       const r = await pedir("/api/sumate/confirmar", {
