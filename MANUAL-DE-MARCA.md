@@ -77,8 +77,8 @@ El perfil está calcado punto a punto sobre una fotografía del peñón tomada d
 | Banda del faro | Amarillo sol (calada) | `#F4B826` |
 | Franja gruesa superior — el agua | Turquesa | `#1B96AD` |
 | Franja fina inferior — la playa | Tierra | `#B0703C` |
-| «Por» | Bermellón | `#D9351F` |
-| «Águilas» | Verde Águilas | `#0E7A5F` |
+| «Por» del logotipo | Morado del corazón | `#8229A7` |
+| «Águilas» del logotipo | Verde Águilas | `#0E7A5F` |
 
 > **Regla de contención:** el amarillo, el turquesa y el tierra **viven solo dentro del logotipo**. En carteles, redes, papelería y web manda el sistema: fondo blanco, letra negra, verde y bermellón. Si el amarillo empieza a aparecer como fondo de cartel, el sistema se rompe.
 
